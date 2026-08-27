@@ -1,0 +1,74 @@
+{
+  "project": "Virtual Acoustic Object (VAO) Standard",
+  "targetVersion": "0.2.2",
+  "compatibilityLine": "0.2",
+  "supersedesPrivateSnapshot": "0.2.1",
+  "changeClassification": "backward-compatible-patch-contract-revision",
+  "readerCompatibility": "0.2.x",
+  "status": "private-development",
+  "noPublish": true,
+  "implementationMaturity": "checksum-pinned-private-snapshot",
+  "implementationPolicy": "Suitable for prototypes, research software, internal tools, and controlled interoperability trials against one pinned snapshot; not a published or stable production compatibility target.",
+  "identifierRoot": "https://w3id.org/modavis/",
+  "exactReleaseIRI": "https://w3id.org/modavis/vao/0.2.2/",
+  "compatibilityIRI": "https://w3id.org/modavis/vao/0.2/",
+  "creator": {
+    "name": "Dominik Ukolov",
+    "orcid": "https://orcid.org/0000-0002-7904-3892",
+    "affiliations": [
+      "Digital Humanities (Image/Object), Friedrich-Schiller-University Jena",
+      "Research Group DIGITAL ORGANOLOGY, Leipzig University"
+    ]
+  },
+  "publisher": null,
+  "publicRepository": null,
+  "publicationHost": null,
+  "securityContact": null,
+  "maintainerContacts": [],
+  "licenses": {
+    "specificationSchemasVocabularyDocumentation": {
+      "proposed": "CC-BY-4.0",
+      "approved": false
+    },
+    "referenceCode": {
+      "proposed": "Apache-2.0",
+      "approved": false
+    }
+  },
+  "requiredReviews": {
+    "domain": [],
+    "ontologyEngineering": [],
+    "preservationAndSecurity": [],
+    "independentImplementation": []
+  },
+  "dependencies": {
+    "modavisAudioModule": {
+      "status": "provisional-development",
+      "ontologyIRI": "https://w3id.org/modavis/ontology/audio",
+      "version": "0.2.0-dev",
+      "namespaceFrozen": false
+    },
+    "modavisOntologyRelease": {
+      "status": "pending",
+      "ontologyIRI": "https://w3id.org/modavis/ontology",
+      "versionIRI": null,
+      "mappingIRI": null
+    },
+    "modavisRelease13VocabularySnapshot": {
+      "status": "pending",
+      "releaseIRI": null,
+      "manifestSHA256": null,
+      "requiredFor": [
+        "final classifications and controlled-concept mappings",
+        "final VAO-to-MODAVIS term ledger",
+        "vocabulary compatibility report",
+        "released MODAVIS binding fixture"
+      ]
+    }
+  },
+  "mediaType": {
+    "value": "application/vnd.modavis.vao+zip",
+    "status": "provisional-unregistered",
+    "registrationRequiredForPublicDraft": false
+  }
+}

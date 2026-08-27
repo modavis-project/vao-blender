@@ -1,0 +1,42 @@
+{
+  "access_right": "open",
+  "creators": [
+    {
+      "affiliation": "Digital Humanities (Image/Object), Friedrich Schiller University Jena; Research Group DIGITAL ORGANOLOGY, Leipzig University",
+      "name": "Ukolov, Dominik",
+      "orcid": "0000-0002-7904-3892"
+    }
+  ],
+  "description": "<p>VAO Blender is a security-conscious Blender extension for validating, inspecting, and importing supported Virtual Acoustic Object packages. Release 0.3.0-rc.1 implements the published VAO Standard 0.4.0 and retains isolated compatibility readers for VAO 0.3.2 and 0.2.2.</p><p>The extension verifies carrier structure, manifests, release binding, inventories, byte sizes, SHA-256 fixity, and immutable references before media access. It supports metadata inspection and exact embedded GLB visual-realization import while preserving package, asset, realization, frame, and pose provenance in Blender.</p><p>VAO Blender works offline, does not modify source packages, and does not execute packaged scripts. VAO 0.4.0 interaction/runtime execution, room-impulse-response convolution, acoustic simulation, and acoustic rendering are outside this release candidate's scope.</p>",
+  "keywords": [
+    "acoustics",
+    "Blender",
+    "digital preservation",
+    "research software",
+    "Virtual Acoustic Object",
+    "visual-acoustic scene"
+  ],
+  "language": "eng",
+  "license": "gpl-3.0-or-later",
+  "publication_date": "2026-08-27",
+  "notes": "Release candidate. Blender validated the Windows x64, macOS x64, macOS Apple Silicon, and Linux x64 packages. The installed-extension smoke test was completed on macOS Apple Silicon; native installed-extension smoke tests on Windows x64, macOS x64, and Linux x64 remain follow-up work.",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/modavis-project/vao-blender/releases/tag/v0.3.0-rc.1",
+      "relation": "isIdenticalTo",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://doi.org/10.5281/zenodo.22122774",
+      "relation": "references"
+    },
+    {
+      "identifier": "https://github.com/modavis-project/vao-standard/tree/v0.4.0",
+      "relation": "references",
+      "resource_type": "software"
+    }
+  ],
+  "title": "VAO Blender: A Blender Extension for Virtual Acoustic Objects",
+  "upload_type": "software",
+  "version": "0.3.0-rc.1"
+}

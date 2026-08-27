@@ -1,0 +1,157 @@
+@prefix modaudio: <https://w3id.org/modavis/ontology/audio#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/modavis/ontology/audio> a owl:Ontology ;
+  dcterms:title "MODAVIS provisional audio analysis and sampled-playback module"@en ;
+  dcterms:description "Reusable development model for source-bound signal regions, loop point sets, tuning maps, and protocol-neutral sampled-instrument playback. Development status: not namespace-frozen."@en ;
+  owl:versionInfo "0.2.0-dev" .
+
+modaudio:LoopPointSet a owl:Class ;
+  rdfs:subClassOf prov:Entity ;
+  rdfs:label "loop point set"@en ;
+  rdfs:comment "A versioned proposal or reviewed decision grouping one or more source-signal loop regions and playback policy."@en .
+
+modaudio:SignalRegion a owl:Class ;
+  rdfs:subClassOf prov:Entity ;
+  rdfs:label "sample-clock signal region"@en ;
+  rdfs:comment "A source-bound half-open frame interval. Start is inclusive and end is exclusive."@en .
+
+modaudio:SustainLoopRegion a owl:Class ;
+  rdfs:subClassOf modaudio:SignalRegion ;
+  rdfs:label "sustain loop region"@en .
+
+modaudio:SampleExtractionRegion a owl:Class ;
+  rdfs:subClassOf modaudio:SignalRegion ;
+  rdfs:label "sample extraction region"@en ;
+  rdfs:comment "The exact interval of a source master used to create a derived sample."@en .
+
+modaudio:AttackRegion a owl:Class ;
+  rdfs:subClassOf modaudio:SignalRegion ;
+  rdfs:label "attack region"@en .
+
+modaudio:StableSustainRegion a owl:Class ;
+  rdfs:subClassOf modaudio:SignalRegion ;
+  rdfs:label "stable sustain region"@en .
+
+modaudio:ReleaseRegion a owl:Class ;
+  rdfs:subClassOf modaudio:SignalRegion ;
+  rdfs:label "release region"@en .
+
+modaudio:SamplePlaybackParameters a owl:Class ;
+  rdfs:subClassOf prov:Entity ;
+  rdfs:label "sample playback parameters"@en ;
+  rdfs:comment "A reviewed or inferred protocol-neutral mapping from a control domain to a fixed sample, tuning decision, region and envelope policy."@en .
+
+modaudio:TuningMap a owl:Class ;
+  rdfs:subClassOf prov:Entity ;
+  rdfs:label "tuning map"@en ;
+  rdfs:comment "A versioned mapping from logical keys or components to exact target frequencies, distinct from the measurements or documentary assertions supporting it."@en .
+
+modaudio:TuningCalibration a owl:Class ;
+  rdfs:subClassOf prov:Entity ;
+  rdfs:label "tuning calibration"@en .
+
+modaudio:appliesToSignal a owl:ObjectProperty ;
+  rdfs:label "applies to signal"@en ;
+  rdfs:comment "Links a source-scoped decision or region to the fixed signal asset on whose sample clock its coordinates are expressed."@en .
+
+modaudio:hasLoopRegion a owl:ObjectProperty ;
+  rdfs:domain modaudio:LoopPointSet ;
+  rdfs:range modaudio:SignalRegion ;
+  rdfs:label "has loop region"@en .
+
+modaudio:usesLoopPointSet a owl:ObjectProperty ;
+  rdfs:range modaudio:LoopPointSet ;
+  rdfs:label "uses loop point set"@en .
+
+modaudio:hasSignalRegion a owl:ObjectProperty ;
+  rdfs:range modaudio:SignalRegion ;
+  rdfs:label "has signal region"@en .
+
+modaudio:extractedFromRegion a owl:ObjectProperty ;
+  rdfs:range modaudio:SampleExtractionRegion ;
+  rdfs:label "extracted from region"@en .
+
+modaudio:usesPlaybackParameters a owl:ObjectProperty ;
+  rdfs:range modaudio:SamplePlaybackParameters ;
+  rdfs:label "uses playback parameters"@en .
+
+modaudio:hasTuningMap a owl:ObjectProperty ;
+  rdfs:range modaudio:TuningMap ;
+  rdfs:label "has tuning map"@en .
+
+modaudio:usesTuningMap a owl:ObjectProperty ;
+  rdfs:range modaudio:TuningMap ;
+  rdfs:label "uses tuning map"@en .
+
+modaudio:usesReleaseRegion a owl:ObjectProperty ;
+  rdfs:range modaudio:ReleaseRegion ;
+  rdfs:label "uses release region"@en .
+
+modaudio:startFrameInclusive a owl:DatatypeProperty ;
+  rdfs:domain modaudio:SignalRegion ;
+  rdfs:range xsd:nonNegativeInteger ;
+  rdfs:label "inclusive start frame"@en .
+
+modaudio:endFrameExclusive a owl:DatatypeProperty ;
+  rdfs:domain modaudio:SignalRegion ;
+  rdfs:range xsd:positiveInteger ;
+  rdfs:label "exclusive end frame"@en .
+
+modaudio:crossfadeFrames a owl:DatatypeProperty ;
+  rdfs:domain modaudio:SignalRegion ;
+  rdfs:range xsd:nonNegativeInteger ;
+  rdfs:label "crossfade length in frames"@en .
+
+modaudio:sampleRate a owl:DatatypeProperty ;
+  rdfs:range xsd:decimal ;
+  rdfs:label "sample rate in hertz"@en .
+
+modaudio:sourceAudioSHA256 a owl:DatatypeProperty ;
+  rdfs:range xsd:string ;
+  rdfs:label "source audio SHA-256"@en .
+
+modaudio:channelCount a owl:DatatypeProperty ; rdfs:domain modaudio:LoopPointSet ; rdfs:range xsd:positiveInteger .
+modaudio:totalFrames a owl:DatatypeProperty ; rdfs:range xsd:positiveInteger .
+modaudio:status a owl:DatatypeProperty ; rdfs:range xsd:string .
+modaudio:loopability a owl:DatatypeProperty ; rdfs:domain modaudio:LoopPointSet ; rdfs:range xsd:string .
+modaudio:confidence a owl:DatatypeProperty ; rdfs:domain modaudio:LoopPointSet ; rdfs:range xsd:decimal .
+modaudio:mode a owl:DatatypeProperty ; rdfs:domain modaudio:SignalRegion ; rdfs:range xsd:string .
+modaudio:exitPolicy a owl:DatatypeProperty ; rdfs:domain modaudio:SignalRegion ; rdfs:range xsd:string .
+modaudio:releaseStartFrame a owl:DatatypeProperty ; rdfs:domain modaudio:SignalRegion ; rdfs:range xsd:nonNegativeInteger .
+modaudio:regionRole a owl:DatatypeProperty ; rdfs:domain modaudio:SignalRegion ; rdfs:range xsd:string .
+modaudio:censoring a owl:DatatypeProperty ; rdfs:domain modaudio:SignalRegion ; rdfs:range xsd:string .
+modaudio:boundaryConfidence a owl:DatatypeProperty ; rdfs:domain modaudio:SignalRegion ; rdfs:range xsd:decimal .
+modaudio:referenceChannelIndex a owl:DatatypeProperty ; rdfs:range xsd:nonNegativeInteger .
+modaudio:captureSequenceIndex a owl:DatatypeProperty ; rdfs:domain modaudio:SampleExtractionRegion ; rdfs:range xsd:nonNegativeInteger .
+modaudio:takeNumber a owl:DatatypeProperty ; rdfs:domain modaudio:SampleExtractionRegion ; rdfs:range xsd:positiveInteger .
+modaudio:assignedKeyNumber a owl:DatatypeProperty ; rdfs:domain modaudio:SampleExtractionRegion ; rdfs:range xsd:nonNegativeInteger .
+modaudio:assignmentMode a owl:DatatypeProperty ; rdfs:domain modaudio:SampleExtractionRegion ; rdfs:range xsd:string .
+modaudio:assignmentConfidence a owl:DatatypeProperty ; rdfs:domain modaudio:SampleExtractionRegion ; rdfs:range xsd:decimal .
+modaudio:contractVersion a owl:DatatypeProperty ; rdfs:range xsd:string .
+modaudio:rootKeyNumber a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:nonNegativeInteger .
+modaudio:minimumKeyNumber a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:nonNegativeInteger .
+modaudio:maximumKeyNumber a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:nonNegativeInteger .
+modaudio:minimumVelocity a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:nonNegativeInteger .
+modaudio:maximumVelocity a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:nonNegativeInteger .
+modaudio:sourceFundamentalHz a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:decimal .
+modaudio:targetFrequencyHz a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+modaudio:tuningOffsetCents a owl:DatatypeProperty ; rdfs:range xsd:decimal .
+modaudio:pitchTrackingMode a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:string .
+modaudio:gainDB a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:decimal .
+modaudio:normalizationGainDB a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:decimal .
+modaudio:envelope a owl:ObjectProperty ; rdfs:label "playback envelope"@en .
+modaudio:roundRobinGroup a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:string .
+modaudio:roundRobinIndex a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:nonNegativeInteger .
+modaudio:selectionPriority a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:integer .
+modaudio:latencyCompensationFrames a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:integer .
+modaudio:channelPolicy a owl:ObjectProperty ; rdfs:domain modaudio:SamplePlaybackParameters .
+modaudio:noteOffPolicy a owl:DatatypeProperty ; rdfs:domain modaudio:SamplePlaybackParameters ; rdfs:range xsd:string .
+modaudio:referenceA4Hz a owl:DatatypeProperty ; rdfs:domain modaudio:TuningMap ; rdfs:range xsd:decimal .
+modaudio:referenceKeyNumber a owl:DatatypeProperty ; rdfs:domain modaudio:TuningMap ; rdfs:range xsd:nonNegativeInteger .
+modaudio:temperamentIdentifier a owl:DatatypeProperty ; rdfs:domain modaudio:TuningMap ; rdfs:range xsd:string .
+modaudio:tuningEntries a owl:ObjectProperty ; rdfs:domain modaudio:TuningMap .

@@ -1,0 +1,56 @@
+name: Bug report
+description: Report a reproducible VAO Blender problem
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not attach confidential or rights-restricted VAOs. Report vulnerabilities through the Security tab.
+  - type: input
+    id: extension-version
+    attributes:
+      label: VAO Blender version
+      placeholder: 0.3.0-rc.1
+    validations:
+      required: true
+  - type: input
+    id: blender-version
+    attributes:
+      label: Blender version
+      placeholder: 5.1.1
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Operating system and architecture
+      placeholder: macOS 15 Apple Silicon
+    validations:
+      required: true
+  - type: input
+    id: vao-version
+    attributes:
+      label: VAO format and carrier mode
+      placeholder: 0.4.0 embedded
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Give minimal steps and diagnostic codes; redact absolute paths and personal data.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Expected and actual result
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues and troubleshooting documentation.
+          required: true
+        - label: I am authorized to share every attached file.
+          required: true

@@ -1,0 +1,394 @@
+@prefix vao: <https://w3id.org/modavis/vao/ontology#> .
+@prefix role: <https://w3id.org/modavis/vao/vocab/asset-role/> .
+@prefix capability: <https://w3id.org/modavis/vao/vocab/capability/> .
+@prefix analysis: <https://w3id.org/modavis/vao/vocab/analysis/> .
+@prefix interaction: <https://w3id.org/modavis/vao/vocab/interaction/> .
+@prefix modaudio: <https://w3id.org/modavis/ontology/audio#> .
+@prefix repstatus: <https://w3id.org/modavis/vao/vocab/representation-status/> .
+@prefix hs: <https://w3id.org/modavis/vao/vocab/hornbostel-sachs/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<https://w3id.org/modavis/vao/ontology> a owl:Ontology ;
+  dcterms:title "VAO container extension vocabulary"@en ;
+  dcterms:description "Terms for evidence, acoustic scenes, spatial media, runtime rendering, and analytical records needed by VAO 0.2 and not yet released by the MODAVIS Ontology Network."@en ;
+  dcterms:creator <https://orcid.org/0000-0002-7904-3892> ;
+  owl:versionInfo "0.2.2" ;
+  owl:imports <https://w3id.org/modavis/ontology/audio> .
+
+vao:VirtualAcousticObject a owl:Class ; rdfs:label "virtual acoustic object"@en .
+vao:DigitalAsset a owl:Class ; rdfs:label "digital asset"@en .
+vao:Analysis a owl:Class ; rdfs:label "analysis"@en .
+vao:Interaction a owl:Class ; rdfs:label "interaction"@en .
+vao:SpatialRegion a owl:Class ; rdfs:label "spatial region"@en .
+vao:Experience a owl:Class ; rdfs:label "experience"@en .
+vao:AssetGroup a owl:Class ; rdfs:label "asset group"@en .
+vao:Building a owl:Class ; rdfs:label "building"@en .
+vao:Space a owl:Class ; rdfs:label "bounded acoustic space"@en .
+vao:Boundary a owl:Class ; rdfs:label "space boundary"@en .
+vao:Opening a owl:Class ; rdfs:label "opening or portal"@en .
+vao:AcousticMaterial a owl:Class ; rdfs:label "acoustic material"@en .
+vao:AcousticEmitter a owl:Class ; rdfs:label "acoustic emitter"@en .
+vao:AcousticReceiver a owl:Class ; rdfs:label "acoustic receiver"@en .
+vao:ReceiverArray a owl:Class ; rdfs:label "receiver array"@en .
+vao:CoordinateFrame a owl:Class ; rdfs:label "coordinate frame"@en .
+vao:Pose a owl:Class ; rdfs:label "spatial pose"@en .
+vao:GeometryBinding a owl:Class ; rdfs:label "geometry binding"@en .
+vao:AcousticResponseSet a owl:Class ; rdfs:label "acoustic response set"@en .
+vao:AcousticMetricSet a owl:Class ; rdfs:label "acoustic metric set"@en .
+vao:SpatialAudioScene a owl:Class ; rdfs:label "spatial audio scene"@en .
+vao:RenderConfiguration a owl:Class ; rdfs:label "declarative acoustic render configuration"@en .
+modaudio:LoopPointSet a owl:Class ; rdfs:label "loop point set"@en .
+modaudio:SignalRegion a owl:Class ; rdfs:label "sample-clock signal region"@en .
+modaudio:SustainLoopRegion a owl:Class ; rdfs:subClassOf modaudio:SignalRegion ; rdfs:label "sustain loop region"@en .
+modaudio:SampleExtractionRegion a owl:Class ; rdfs:subClassOf modaudio:SignalRegion ; rdfs:label "sample extraction region"@en .
+modaudio:AttackRegion a owl:Class ; rdfs:subClassOf modaudio:SignalRegion ; rdfs:label "attack region"@en .
+modaudio:StableSustainRegion a owl:Class ; rdfs:subClassOf modaudio:SignalRegion ; rdfs:label "stable sustain region"@en .
+modaudio:ReleaseRegion a owl:Class ; rdfs:subClassOf modaudio:SignalRegion ; rdfs:label "release region"@en .
+modaudio:SamplePlaybackParameters a owl:Class ; rdfs:label "sample playback parameters"@en .
+modaudio:TuningMap a owl:Class ; rdfs:label "tuning map"@en .
+modaudio:TuningCalibration a owl:Class ; rdfs:label "tuning calibration"@en .
+vao:entity a owl:ObjectProperty ; rdfs:label "has entity record"@en .
+vao:relation a owl:ObjectProperty ; rdfs:label "has relation record"@en .
+vao:asset a owl:ObjectProperty ; rdfs:label "has asset record"@en .
+vao:paradata a owl:ObjectProperty ; rdfs:label "has paradata record"@en .
+vao:analysis a owl:ObjectProperty ; rdfs:label "has analysis record"@en .
+vao:rootEntity a owl:ObjectProperty ; rdfs:label "has root entity (VAO 0.1 legacy)"@en ; owl:deprecated true .
+vao:primaryEntity a owl:ObjectProperty ; rdfs:label "has primary entity"@en .
+vao:focusEntity a owl:ObjectProperty ; rdfs:label "has focus entity"@en .
+vao:acoustics a owl:ObjectProperty ; rdfs:label "has closed acoustic technical description"@en .
+vao:coordinateFrame a owl:ObjectProperty ; rdfs:label "has coordinate frame"@en .
+vao:pose a owl:ObjectProperty ; rdfs:label "has pose"@en .
+vao:geometryBinding a owl:ObjectProperty ; rdfs:label "has geometry binding"@en .
+vao:materialModel a owl:ObjectProperty ; rdfs:label "has acoustic material model"@en .
+vao:responseSet a owl:ObjectProperty ; rdfs:label "has acoustic response set"@en .
+vao:metricSet a owl:ObjectProperty ; rdfs:label "has acoustic metric set"@en .
+vao:audioScene a owl:ObjectProperty ; rdfs:label "has spatial audio scene"@en .
+vao:renderConfiguration a owl:ObjectProperty ; rdfs:label "has render configuration"@en .
+vao:assetReference a owl:ObjectProperty ; rdfs:label "references asset"@en .
+vao:materialEntity a owl:ObjectProperty ; rdfs:label "describes material entity"@en .
+vao:responseEntity a owl:ObjectProperty ; rdfs:label "describes acoustic response entity"@en .
+vao:sceneEntity a owl:ObjectProperty ; rdfs:label "describes audio scene entity"@en .
+vao:space a owl:ObjectProperty ; rdfs:label "references space"@en .
+vao:mediaAsset a owl:ObjectProperty ; rdfs:label "references media asset"@en .
+vao:metadataAsset a owl:ObjectProperty ; rdfs:label "references metadata asset"@en .
+vao:modelAsset a owl:ObjectProperty ; rdfs:label "references model asset"@en .
+vao:configuration a owl:ObjectProperty ; rdfs:label "references configuration"@en .
+vao:state a owl:ObjectProperty ; rdfs:label "references state"@en .
+vao:spatialRegion a owl:ObjectProperty ; rdfs:label "references spatial region"@en .
+vao:trajectoryAsset a owl:ObjectProperty ; rdfs:label "references trajectory asset"@en .
+vao:surfaceImpedanceAsset a owl:ObjectProperty ; rdfs:label "references surface-impedance asset"@en .
+vao:environmentState a owl:ObjectProperty ; rdfs:label "references environmental state"@en .
+vao:delayAsset a owl:ObjectProperty ; rdfs:label "references delay asset"@en .
+vao:calibration a owl:ObjectProperty ; rdfs:label "references calibration"@en .
+vao:transmissionPath a owl:ObjectProperty ; rdfs:label "references acoustic transmission path"@en .
+vao:entityReference a owl:ObjectProperty ; rdfs:label "references entity"@en .
+vao:directivityResponseSet a owl:ObjectProperty ; rdfs:label "references source directivity response set"@en .
+vao:fallback a owl:ObjectProperty ; rdfs:label "references runtime fallback"@en .
+vao:personalizationAsset a owl:ObjectProperty ; rdfs:label "references listener-personalization asset"@en .
+vao:headphoneCompensationAsset a owl:ObjectProperty ; rdfs:label "references headphone-compensation asset"@en .
+vao:protocolAsset a owl:ObjectProperty ; rdfs:label "references protocol asset"@en .
+vao:equipment a owl:ObjectProperty ; rdfs:label "references equipment"@en .
+vao:trainingInput a owl:ObjectProperty ; rdfs:label "references machine-learning training input"@en .
+vao:validationInput a owl:ObjectProperty ; rdfs:label "references validation input"@en .
+vao:qualityMetricSet a owl:ObjectProperty ; rdfs:label "references quality metric set"@en .
+vao:interpolationDomain a owl:ObjectProperty ; rdfs:label "references interpolation domain"@en .
+vao:evidence a owl:ObjectProperty ; rdfs:label "references evidence"@en .
+vao:navigatorSnapshotAsset a owl:ObjectProperty ; rdfs:label "references Navigator snapshot asset"@en .
+vao:activityType a owl:ObjectProperty ; rdfs:label "has activity type"@en .
+vao:analysisType a owl:ObjectProperty ; rdfs:label "has analysis type"@en .
+vao:channelTopology a owl:ObjectProperty ; rdfs:label "has channel topology"@en .
+vao:crs a owl:ObjectProperty ; rdfs:label "uses coordinate reference system"@en .
+vao:datatype a owl:ObjectProperty ; rdfs:label "has datatype"@en .
+vao:mappingIRI a owl:ObjectProperty ; rdfs:label "uses mapping"@en .
+vao:ontologyIRI a owl:ObjectProperty ; rdfs:label "uses ontology"@en .
+vao:ontologyVersionIRI a owl:ObjectProperty ; rdfs:label "uses ontology version"@en .
+vao:rendererRequirement a owl:ObjectProperty ; rdfs:label "has renderer requirement"@en .
+vao:resolvesTo a owl:ObjectProperty ; rdfs:label "resolves to"@en .
+vao:identifierScheme a owl:ObjectProperty ; rdfs:label "uses identifier scheme"@en .
+vao:signatureProfile a owl:ObjectProperty ; rdfs:label "uses signature profile"@en .
+vao:standard a owl:ObjectProperty ; rdfs:label "implements standard"@en .
+vao:uri a owl:ObjectProperty ; rdfs:label "has URI"@en .
+vao:vocabularyReleaseIRI a owl:ObjectProperty ; rdfs:label "uses vocabulary release"@en .
+vao:requiredCapability a owl:ObjectProperty ; rdfs:label "requires capability"@en .
+vao:observedProperty a owl:ObjectProperty ; rdfs:label "observed property"@en .
+vao:unit a owl:ObjectProperty ; rdfs:label "observation unit"@en .
+vao:aggregation a owl:ObjectProperty ; rdfs:label "aggregation method"@en .
+vao:sourceRegion a owl:ObjectProperty ; rdfs:label "observation source region"@en .
+vao:valueAsset a owl:ObjectProperty ; rdfs:label "observation value asset"@en .
+vao:clockAsset a owl:ObjectProperty ; rdfs:label "time-range clock asset"@en .
+vao:observationValue a owl:DatatypeProperty ; rdfs:label "observation value"@en .
+vao:uncertainty a owl:DatatypeProperty ; rdfs:label "observation uncertainty"@en .
+vao:confidence a owl:DatatypeProperty ; rdfs:label "confidence"@en .
+vao:coverage a owl:DatatypeProperty ; rdfs:label "eligible-evidence coverage"@en .
+vao:evidenceCount a owl:DatatypeProperty ; rdfs:label "evidence count"@en .
+vao:status a owl:DatatypeProperty ; rdfs:label "review or assertion status"@en .
+vao:applicability a owl:DatatypeProperty ; rdfs:label "observation applicability"@en .
+vao:censoring a owl:DatatypeProperty ; rdfs:label "observation censoring"@en .
+vao:channelIndex a owl:DatatypeProperty ; rdfs:label "zero-based channel index"@en .
+vao:qualityFlag a owl:DatatypeProperty ; rdfs:label "quality flag"@en .
+vao:timeRange a owl:ObjectProperty ; rdfs:label "qualified time range"@en .
+vao:startSeconds a owl:DatatypeProperty ; rdfs:label "start in seconds"@en .
+vao:endSeconds a owl:DatatypeProperty ; rdfs:label "end in seconds"@en .
+vao:subject a owl:ObjectProperty ; rdfs:label "has relation subject"@en .
+vao:predicate a owl:ObjectProperty ; rdfs:label "has relation predicate"@en .
+vao:object a owl:ObjectProperty ; rdfs:label "has relation object"@en .
+vao:role a owl:ObjectProperty ; rdfs:label "has asset or graph role"@en .
+vao:representationStatus a owl:ObjectProperty ; rdfs:label "has representation status"@en .
+vao:appliesTo a owl:ObjectProperty ; rdfs:label "rights record applies to"@en .
+vao:hasRepresentation a owl:ObjectProperty ; rdfs:label "has representation"@en .
+vao:emittedBy a owl:ObjectProperty ; rdfs:label "emitted by"@en .
+vao:depicts a owl:ObjectProperty ; rdfs:label "depicts"@en .
+vao:activates a owl:ObjectProperty ; rdfs:label "activates"@en .
+vao:modulates a owl:ObjectProperty ; rdfs:label "modulates"@en .
+vao:causes a owl:ObjectProperty ; rdfs:label "causes"@en .
+vao:drivesAnimation a owl:ObjectProperty ; rdfs:label "drives animation"@en .
+vao:usesSample a owl:ObjectProperty ; rdfs:label "uses sample"@en .
+vao:presents a owl:ObjectProperty ; rdfs:label "presents entity"@en .
+vao:usesModel a owl:ObjectProperty ; rdfs:label "uses model"@en .
+vao:hasPerformance a owl:ObjectProperty ; rdfs:label "has performance"@en .
+vao:usesMedia a owl:ObjectProperty ; rdfs:label "uses media"@en .
+vao:triggeredBy a owl:ObjectProperty ; rdfs:label "triggered by"@en .
+vao:usesTarget a owl:ObjectProperty ; rdfs:label "uses image target"@en .
+vao:usesTrackingData a owl:ObjectProperty ; rdfs:label "uses tracking data"@en .
+vao:hasListeningPoint a owl:ObjectProperty ; rdfs:label "has listening point"@en .
+vao:offersAssetGroup a owl:ObjectProperty ; rdfs:label "offers asset group"@en .
+vao:includesAsset a owl:ObjectProperty ; rdfs:label "includes asset"@en .
+vao:offersConfiguration a owl:ObjectProperty ; rdfs:label "offers replaceable configuration"@en .
+vao:usesCarrier a owl:ObjectProperty ; rdfs:label "uses media carrier"@en .
+vao:hasLabelImage a owl:ObjectProperty ; rdfs:label "has carrier label image"@en .
+vao:targets a owl:ObjectProperty ; rdfs:label "targets entity"@en .
+vao:hasInteraction a owl:ObjectProperty ; rdfs:label "has declarative interaction"@en .
+modaudio:appliesToSignal a owl:ObjectProperty ; rdfs:label "applies to signal"@en .
+modaudio:hasLoopRegion a owl:ObjectProperty ; rdfs:label "has loop region"@en .
+modaudio:usesLoopPointSet a owl:ObjectProperty ; rdfs:label "uses loop point set"@en .
+modaudio:hasSignalRegion a owl:ObjectProperty ; rdfs:label "has signal region"@en .
+modaudio:extractedFromRegion a owl:ObjectProperty ; rdfs:label "extracted from region"@en .
+modaudio:usesPlaybackParameters a owl:ObjectProperty ; rdfs:label "uses playback parameters"@en .
+modaudio:hasTuningMap a owl:ObjectProperty ; rdfs:label "has tuning map"@en .
+modaudio:usesTuningMap a owl:ObjectProperty ; rdfs:label "uses tuning map"@en .
+modaudio:usesReleaseRegion a owl:ObjectProperty ; rdfs:label "uses release region"@en .
+modaudio:startFrameInclusive a owl:DatatypeProperty ; rdfs:label "inclusive start frame"@en .
+modaudio:endFrameExclusive a owl:DatatypeProperty ; rdfs:label "exclusive end frame"@en .
+modaudio:crossfadeFrames a owl:DatatypeProperty ; rdfs:label "crossfade length in frames"@en .
+modaudio:sampleRate a owl:DatatypeProperty ; rdfs:label "sample rate"@en .
+modaudio:sourceAudioSHA256 a owl:DatatypeProperty ; rdfs:label "source audio SHA-256"@en .
+modaudio:regionRole a owl:DatatypeProperty ; rdfs:label "signal-region role"@en .
+modaudio:censoring a owl:DatatypeProperty ; rdfs:label "boundary censoring"@en .
+modaudio:boundaryConfidence a owl:DatatypeProperty ; rdfs:label "boundary confidence"@en .
+modaudio:referenceChannelIndex a owl:DatatypeProperty ; rdfs:label "zero-based reference channel index"@en .
+modaudio:captureSequenceIndex a owl:DatatypeProperty ; rdfs:label "captured event sequence index"@en .
+modaudio:takeNumber a owl:DatatypeProperty ; rdfs:label "take number"@en .
+modaudio:assignedKeyNumber a owl:DatatypeProperty ; rdfs:label "assigned key number"@en .
+modaudio:assignmentMode a owl:DatatypeProperty ; rdfs:label "sequence assignment mode"@en .
+modaudio:assignmentConfidence a owl:DatatypeProperty ; rdfs:label "sequence assignment confidence"@en .
+modaudio:rootKeyNumber a owl:DatatypeProperty ; rdfs:label "root key number"@en .
+modaudio:minimumKeyNumber a owl:DatatypeProperty ; rdfs:label "minimum key number"@en .
+modaudio:maximumKeyNumber a owl:DatatypeProperty ; rdfs:label "maximum key number"@en .
+modaudio:minimumVelocity a owl:DatatypeProperty ; rdfs:label "minimum velocity"@en .
+modaudio:maximumVelocity a owl:DatatypeProperty ; rdfs:label "maximum velocity"@en .
+modaudio:sourceFundamentalHz a owl:DatatypeProperty ; rdfs:label "measured source fundamental"@en .
+modaudio:targetFrequencyHz a owl:DatatypeProperty ; rdfs:label "playback target frequency"@en .
+modaudio:tuningOffsetCents a owl:DatatypeProperty ; rdfs:label "playback tuning offset"@en .
+modaudio:pitchTrackingMode a owl:DatatypeProperty ; rdfs:label "sample pitch-tracking mode"@en .
+modaudio:gainDB a owl:DatatypeProperty ; rdfs:label "playback gain"@en .
+modaudio:normalizationGainDB a owl:DatatypeProperty ; rdfs:label "normalization gain"@en .
+modaudio:envelope a owl:ObjectProperty ; rdfs:label "playback envelope"@en .
+modaudio:roundRobinGroup a owl:DatatypeProperty ; rdfs:label "round-robin group"@en .
+modaudio:roundRobinIndex a owl:DatatypeProperty ; rdfs:label "round-robin index"@en .
+modaudio:selectionPriority a owl:DatatypeProperty ; rdfs:label "sample-selection priority"@en .
+modaudio:latencyCompensationFrames a owl:DatatypeProperty ; rdfs:label "latency compensation in frames"@en .
+modaudio:channelPolicy a owl:ObjectProperty ; rdfs:label "playback channel policy"@en .
+modaudio:noteOffPolicy a owl:DatatypeProperty ; rdfs:label "note-off policy"@en .
+modaudio:referenceA4Hz a owl:DatatypeProperty ; rdfs:label "A4 reference frequency"@en .
+modaudio:referenceKeyNumber a owl:DatatypeProperty ; rdfs:label "reference key number"@en .
+modaudio:temperamentIdentifier a owl:DatatypeProperty ; rdfs:label "temperament identifier"@en .
+modaudio:tuningEntries a owl:ObjectProperty ; rdfs:label "exact tuning entries"@en .
+vao:hasAcousticResponse a owl:ObjectProperty ; rdfs:label "has acoustic response"@en .
+vao:boundedBy a owl:ObjectProperty ; rdfs:label "bounded by"@en .
+vao:separates a owl:ObjectProperty ; rdfs:label "separates spaces"@en .
+vao:connects a owl:ObjectProperty ; rdfs:label "connects spaces"@en .
+vao:hasAcousticMaterial a owl:ObjectProperty ; rdfs:label "has acoustic material"@en .
+vao:source a owl:ObjectProperty ; rdfs:label "has acoustic source"@en .
+vao:receiver a owl:ObjectProperty ; rdfs:label "has acoustic receiver"@en .
+vao:sourcePose a owl:ObjectProperty ; rdfs:label "has source pose"@en .
+vao:receiverPose a owl:ObjectProperty ; rdfs:label "has receiver pose"@en .
+vao:sourceSpace a owl:ObjectProperty ; rdfs:label "has source space"@en .
+vao:receivingSpace a owl:ObjectProperty ; rdfs:label "has receiving space"@en .
+vao:separatingElement a owl:ObjectProperty ; rdfs:label "has separating element"@en .
+vao:parentFrame a owl:ObjectProperty ; rdfs:label "has parent coordinate frame"@en .
+vao:validDomain a owl:ObjectProperty ; rdfs:label "has valid spatial domain"@en .
+vao:fallbackResponseSet a owl:ObjectProperty ; rdfs:label "has fallback response set"@en .
+vao:orientationXYZW a owl:DatatypeProperty ; rdfs:label "XYZW orientation quaternion"@en .
+vao:transformToParent a owl:DatatypeProperty ; rdfs:label "column-major transform to parent frame"@en .
+vao:responseKind a owl:DatatypeProperty ; rdfs:label "acoustic response kind"@en .
+vao:representationType a owl:DatatypeProperty ; rdfs:label "audio scene representation type"@en .
+vao:outsideDomainPolicy a owl:DatatypeProperty ; rdfs:label "outside-domain rendering policy"@en .
+vao:interactionType a owl:DatatypeProperty ; rdfs:label "interaction type"@en .
+vao:controlProtocol a owl:ObjectProperty ; rdfs:label "control protocol"@en .
+vao:controlDomain a owl:ObjectProperty ; rdfs:label "control domain"@en .
+vao:timingPolicy a owl:ObjectProperty ; rdfs:label "timing policy"@en .
+vao:coordinateSystem a owl:DatatypeProperty ; rdfs:label "coordinate system"@en .
+vao:coordinateUnit a owl:ObjectProperty ; rdfs:label "coordinate unit"@en .
+vao:handedness a owl:DatatypeProperty ; rdfs:label "coordinate handedness"@en .
+vao:upAxis a owl:DatatypeProperty ; rdfs:label "up axis"@en .
+vao:experienceCapability a owl:ObjectProperty ; rdfs:label "declares experience capability"@en .
+vao:physicalDimensions a owl:ObjectProperty ; rdfs:label "physical dimensions"@en .
+vao:timelineClock a owl:ObjectProperty ; rdfs:label "timeline clock"@en .
+vao:placementPolicy a owl:ObjectProperty ; rdfs:label "surface placement policy"@en .
+vao:position a owl:ObjectProperty ; rdfs:label "coordinate position"@en .
+vao:assetGroupPolicy a owl:ObjectProperty ; rdfs:label "asset group policy"@en .
+vao:selectionPolicy a owl:DatatypeProperty ; rdfs:label "selection policy"@en .
+vao:transportPolicy a owl:ObjectProperty ; rdfs:label "media transport policy"@en .
+vao:animationBindings a owl:ObjectProperty ; rdfs:label "animation layer bindings"@en .
+vao:actionSequence a owl:ObjectProperty ; rdfs:label "declarative action sequence"@en .
+
+<https://w3id.org/modavis/vao/vocab/asset-role> a skos:ConceptScheme ; skos:prefLabel "VAO asset roles"@en .
+role:audio-master a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "preservation audio master"@en .
+role:audio-derivative a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "audio derivative"@en .
+role:impulse-response a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "impulse response"@en .
+role:three-dimensional-model a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "3D model"@en .
+role:animation a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "animation"@en .
+role:spatial-model a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "spatial or acoustic model"@en .
+role:performance-control a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "performance control data"@en .
+role:analysis-result a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "analysis result"@en .
+role:source-evidence a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "source evidence"@en .
+role:paradata-record a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "paradata record"@en .
+role:application-state a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "application state"@en .
+role:performance-media a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "performance media"@en .
+role:image-target a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "image tracking target"@en .
+role:tracking-data a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "precomputed tracking data"@en .
+role:spatial-listening-audio a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "spatial listening-point audio"@en .
+role:carrier-label-image a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "replaceable carrier label image"@en .
+role:tuning-table a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "machine-actionable tuning table"@en .
+role:feature-track a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "time-varying acoustical feature track"@en .
+role:acoustic-model a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "acoustic simulation or learned model"@en .
+role:machine-learning-model a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "machine-learning inference model"@en ; skos:definition "A fixed, indexed model artifact required to reproduce or audit a machine-learning inference."@en .
+role:acoustic-scene-metadata a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "spatial audio scene metadata"@en .
+role:acoustic-material-data a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "frequency-dependent acoustic material data"@en .
+role:head-related-transfer-function a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "head-related transfer function"@en .
+role:acoustic-calibration a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/asset-role> ; skos:prefLabel "acoustic calibration data"@en .
+
+<https://w3id.org/modavis/vao/vocab/capability> a skos:ConceptScheme ; skos:prefLabel "VAO capabilities"@en .
+capability:core-graph a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "core graph"@en .
+capability:fixity a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "payload fixity"@en .
+capability:paradata a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "paradata"@en .
+capability:analysis a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "analysis"@en .
+capability:audio a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "audio"@en .
+capability:sample-looping a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "sample-clock looping"@en .
+capability:spatial a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "spatial assets"@en .
+capability:interaction a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "interaction graph"@en .
+capability:preservation a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "preservation profile"@en .
+capability:generic-model-viewing a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "generic model viewing"@en .
+capability:synchronized-media-animation a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "synchronized media and animation"@en .
+capability:image-target-ar a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "image-target augmented reality"@en .
+capability:surface-placement-ar a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "surface-placement augmented reality"@en .
+capability:spatial-listening-map a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "spatial listening map"@en .
+capability:offline-asset-groups a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "offline asset groups"@en .
+capability:replaceable-performance-media a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "replaceable performance media"@en .
+capability:sampled-instrument-playback a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "protocol-neutral sampled-instrument playback"@en .
+capability:source-segmentation a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "source-bound audio segmentation"@en .
+capability:acoustical-analysis a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "portable acoustical analysis"@en .
+capability:tuning-map a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "exact-frequency tuning map"@en .
+capability:empirical-timbre-classification a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "empirically calibrated timbre classification"@en ; skos:definition "A probabilistic timbre-family inference with indexed model lineage, calibrated class distribution, explicit out-of-distribution assessment, and an abstention decision."@en .
+capability:pitch-dependent-rank-fingerprint a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "pitch-dependent rank fingerprint"@en ; skos:definition "A key-indexed acoustical trajectory with pitch trends and statistically qualified construction-transition candidates."@en .
+capability:collection-acoustic-diagnostics a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "evidence-qualified collection acoustic diagnostics"@en ; skos:definition "A collection-level acoustic analysis retaining per-take evidence quality, uncertainty-aware rank and session aggregates, review-only anomaly candidates, and harmonic-aligned similarity candidates."@en .
+capability:semantic-building-model a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "semantic building model"@en .
+capability:measured-impulse-response a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "measured impulse response"@en .
+capability:spatial-response-field a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "spatial acoustic response field"@en .
+capability:source-directivity a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "source directivity"@en .
+capability:room-acoustic-metrics a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "room-acoustic metrics"@en .
+capability:building-acoustic-performance a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "building-acoustic performance"@en .
+capability:spatial-audio-scene a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "spatial audio scene"@en .
+capability:tracked-listener-convolution a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "tracked-listener convolution"@en .
+capability:tracked-sources a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "tracked acoustic sources"@en .
+capability:geometry-acoustic-rendering a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "geometry-acoustic rendering"@en .
+capability:hybrid-acoustic-rendering a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "hybrid response and geometry rendering"@en .
+capability:learned-acoustic-field a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/capability> ; skos:prefLabel "learned acoustic field"@en .
+
+<https://w3id.org/modavis/vao/vocab/hornbostel-sachs> a skos:ConceptScheme ;
+  skos:prefLabel "Hornbostel-Sachs top-level compatibility concepts"@en ;
+  skos:scopeNote "Reference bridge only. Detailed classification should use a cited authoritative vocabulary and retain its exact code and edition."@en .
+hs:1 a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/hornbostel-sachs> ; skos:prefLabel "idiophone"@en .
+hs:2 a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/hornbostel-sachs> ; skos:prefLabel "membranophone"@en .
+hs:3 a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/hornbostel-sachs> ; skos:prefLabel "chordophone"@en .
+hs:4 a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/hornbostel-sachs> ; skos:prefLabel "aerophone"@en .
+hs:5 a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/hornbostel-sachs> ; skos:prefLabel "electrophone"@en .
+
+<https://w3id.org/modavis/vao/vocab/analysis> a skos:ConceptScheme ; skos:prefLabel "VAO analysis types"@en .
+analysis:pitch a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "pitch analysis"@en .
+analysis:spectrum a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "spectral analysis"@en .
+analysis:temporal-envelope a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "temporal-envelope analysis"@en .
+analysis:loudness a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "loudness analysis"@en .
+analysis:directivity a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "directivity analysis"@en .
+analysis:room-acoustics a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "room-acoustics analysis"@en .
+analysis:material a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "material analysis"@en .
+analysis:geometry a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "geometric analysis"@en .
+analysis:pipe-sample-characterization a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "pipe-sample characterization"@en .
+analysis:source-segmentation a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "source segmentation"@en .
+analysis:tuning-calibration a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "tuning calibration"@en .
+analysis:temperament-inference a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "temperament inference"@en .
+analysis:collection-tuning a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "collection-level tuning analysis"@en .
+analysis:empirical-hierarchical-timbre-classification a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "empirical hierarchical timbre classification"@en .
+analysis:pitch-dependent-rank-fingerprint a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "pitch-dependent rank fingerprint and transition analysis"@en .
+analysis:evidence-qualified-collection-acoustic-diagnostics a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis> ; skos:prefLabel "evidence-qualified collection acoustic diagnostics"@en .
+<https://w3id.org/modavis/vao/vocab/analysis/collection> a skos:ConceptScheme ; skos:prefLabel "collection acoustic diagnostic observations"@en .
+<https://w3id.org/modavis/vao/vocab/analysis/collection/evidence-summary> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis/collection> ; skos:prefLabel "collection evidence summary"@en .
+<https://w3id.org/modavis/vao/vocab/analysis/collection/take-evidence> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis/collection> ; skos:prefLabel "per-take collection evidence ledger"@en .
+<https://w3id.org/modavis/vao/vocab/analysis/collection/rank-tuning-curves> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis/collection> ; skos:prefLabel "evidence-qualified rank tuning curves"@en .
+<https://w3id.org/modavis/vao/vocab/analysis/collection/rank-stretch> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis/collection> ; skos:prefLabel "robust rank stretch"@en .
+<https://w3id.org/modavis/vao/vocab/analysis/collection/session-offset> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis/collection> ; skos:prefLabel "session median pitch offset"@en .
+<https://w3id.org/modavis/vao/vocab/analysis/collection/session-drift> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis/collection> ; skos:prefLabel "within-target session pitch drift"@en .
+<https://w3id.org/modavis/vao/vocab/analysis/collection/acoustic-anomaly-candidates> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis/collection> ; skos:prefLabel "acoustic anomaly review candidates"@en .
+<https://w3id.org/modavis/vao/vocab/analysis/collection/acoustic-similarity-candidates> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/analysis/collection> ; skos:prefLabel "acoustic similarity review candidates"@en .
+
+<https://w3id.org/modavis/vao/vocab/aggregation> a skos:ConceptScheme ; skos:prefLabel "VAO analytical aggregation methods"@en .
+<https://w3id.org/modavis/vao/vocab/aggregation/quality-weighted-median> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/aggregation> ; skos:prefLabel "quality and inverse-variance weighted median"@en .
+<https://w3id.org/modavis/vao/vocab/aggregation/siegel-repeated-median> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/aggregation> ; skos:prefLabel "Siegel repeated-median regression"@en .
+<https://w3id.org/modavis/vao/vocab/aggregation/median> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/aggregation> ; skos:prefLabel "median aggregation"@en .
+<https://w3id.org/modavis/vao/vocab/aggregation/within-target-median-slope> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/aggregation> ; skos:prefLabel "within-target median slope"@en .
+<https://w3id.org/modavis/vao/vocab/aggregation/robust-multivariate-distance> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/aggregation> ; skos:prefLabel "robust multivariate distance"@en .
+<https://w3id.org/modavis/vao/vocab/aggregation/harmonic-aligned-cosine> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/aggregation> ; skos:prefLabel "harmonic-number-aligned cosine similarity"@en .
+
+<https://w3id.org/modavis/vao/vocab/timbre-family> a skos:ConceptScheme ;
+  skos:prefLabel "broad organ-pipe timbre families"@en ;
+  skos:scopeNote "These broad acoustical inference targets do not replace documented stop identity, construction, material, maker, period, or organological classification."@en .
+<https://w3id.org/modavis/vao/vocab/timbre-family/flute> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/timbre-family> ; skos:prefLabel "flute family"@en .
+<https://w3id.org/modavis/vao/vocab/timbre-family/diapason> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/timbre-family> ; skos:prefLabel "diapason or principal family"@en .
+<https://w3id.org/modavis/vao/vocab/timbre-family/string> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/timbre-family> ; skos:prefLabel "string family"@en .
+<https://w3id.org/modavis/vao/vocab/timbre-family/reed> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/timbre-family> ; skos:prefLabel "reed family"@en .
+
+<https://w3id.org/modavis/vao/vocab/unit/cent> a skos:Concept ;
+  skos:prefLabel "musical cent"@en ;
+  skos:definition "A logarithmic frequency interval equal to exactly one twelve-hundredth of an octave."@en .
+<https://w3id.org/modavis/vao/vocab/unit/cent-per-second> a skos:Concept ; skos:prefLabel "cent per second"@en .
+<https://w3id.org/modavis/vao/vocab/unit/cent-per-hour> a skos:Concept ; skos:prefLabel "cent per hour"@en .
+<https://w3id.org/modavis/vao/vocab/unit/cent-per-octave> a skos:Concept ; skos:prefLabel "cent per octave"@en .
+<https://w3id.org/modavis/vao/vocab/unit/dbfs> a skos:Concept ; skos:prefLabel "decibels relative to digital full scale"@en .
+<https://w3id.org/modavis/vao/vocab/unit/full-scale-ratio> a skos:Concept ; skos:prefLabel "digital full-scale ratio"@en .
+<https://w3id.org/modavis/vao/vocab/unit/fundamental-period> a skos:Concept ; skos:prefLabel "fundamental period count"@en .
+<https://w3id.org/modavis/vao/vocab/unit/normalized-penalty> a skos:Concept ; skos:prefLabel "normalized penalty"@en .
+
+<https://w3id.org/modavis/vao/vocab/interaction> a skos:ConceptScheme ; skos:prefLabel "VAO interaction types"@en .
+interaction:note-on a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/interaction> ; skos:prefLabel "note on"@en .
+interaction:note-off a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/interaction> ; skos:prefLabel "note off"@en .
+interaction:continuous-control a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/interaction> ; skos:prefLabel "continuous control"@en .
+interaction:select a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/interaction> ; skos:prefLabel "selection"@en .
+interaction:excite a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/interaction> ; skos:prefLabel "excitation"@en .
+interaction:release a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/interaction> ; skos:prefLabel "release"@en .
+
+<https://w3id.org/modavis/vao/vocab/representation-status> a skos:ConceptScheme ;
+  skos:prefLabel "VAO representation statuses"@en ;
+  skos:scopeNote "Describes the epistemic or production status of an asset; processing lineage remains separately documented as paradata."@en .
+repstatus:captured a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "directly captured"@en .
+repstatus:authored a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "authored documentary content"@en .
+repstatus:processed a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "processed derivative"@en .
+repstatus:reconstructed a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "evidence-based reconstruction"@en .
+repstatus:simulated a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "simulation result"@en .
+repstatus:inferred a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "analytically inferred"@en .
+repstatus:measured a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "measured acoustic representation"@en .
+repstatus:learned a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "machine-learned acoustic representation"@en .
+repstatus:hybrid a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "hybrid measured and simulated or learned representation"@en .
+repstatus:creative a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "creative transformation"@en .

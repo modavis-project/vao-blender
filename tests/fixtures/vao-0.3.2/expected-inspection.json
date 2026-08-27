@@ -1,0 +1,43 @@
+{
+  "formatVersion": "0.3.2",
+  "carrierSHA256": "54aef8656162f485a0c4aa37dca56accc909284db4f746b33f85500749da2286",
+  "manifestSHA256": "8bf67a8240db327d481bcc23f532ba2c198c8a886f5659efcab909a9273ab652",
+  "carrierMode": "preservation-closure",
+  "embeddedRealizationCount": 8,
+  "verifiedPayloadBytes": 1722650,
+  "coordinateFrameCount": 2,
+  "poseCount": 2,
+  "measurementCount": 1,
+  "geometryRealizationCount": 2,
+  "impulseResponseRealizationCount": 1,
+  "source": {
+    "entityId": "urn:vao:fixture:acousticrooms:source:0",
+    "poseId": "urn:vao:fixture:acousticrooms:pose:source:0",
+    "frameId": "urn:vao:fixture:acousticrooms:frame:dataset",
+    "position": [2.3496, 0.7269, 1.353]
+  },
+  "receiver": {
+    "entityId": "urn:vao:fixture:acousticrooms:receiver:11",
+    "poseId": "urn:vao:fixture:acousticrooms:pose:receiver:11",
+    "frameId": "urn:vao:fixture:acousticrooms:frame:dataset",
+    "position": [2.8176, 0.9871, 1.4665]
+  },
+  "visualGeometry": {
+    "realizationId": "urn:vao:fixture:acousticrooms:realization:geometry:glb",
+    "path": "payload/geometry/Bathrooms_idx_0.glb",
+    "sha256": "03e1bb41f2db881da22212184baa765a71ae9e3248ef610237f67322b039798a",
+    "frameId": "urn:vao:fixture:acousticrooms:frame:gltf",
+    "expectedMeshName": "Bathrooms_idx_0",
+    "expectedVertexCount": 17429,
+    "expectedPolygonCount": 21760
+  },
+  "impulseResponse": {
+    "realizationId": "urn:vao:fixture:acousticrooms:realization:rir:wav",
+    "path": "payload/acoustics/S000_R0011_hybrid_IR.wav",
+    "sha256": "acfa34ce1f465e78337da0ac7032b92e2913dfa4203c077acd1e5cbe6dd446b6",
+    "sampleRate": 22050,
+    "sampleCount": 11864,
+    "channelCount": 1,
+    "encoding": "WAV"
+  }
+}

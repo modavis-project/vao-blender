@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use VAO Blender in research, cite this software and the VAO Standard used by your data."
+title: "VAO Blender: A Blender Extension for Virtual Acoustic Objects"
+type: software
+version: 0.3.0-rc.1
+date-released: 2026-08-27
+license: GPL-3.0-or-later
+doi: "10.5281/zenodo.22134389"
+abstract: "A security-conscious Blender extension for validating, inspecting, and importing supported Virtual Acoustic Object packages."
+keywords:
+  - acoustics
+  - Blender
+  - research software
+  - Virtual Acoustic Object
+repository-code: "https://github.com/modavis-project/vao-blender"
+url: "https://doi.org/10.5281/zenodo.22134389"
+authors:
+  - family-names: "Ukolov"
+    given-names: "Dominik"
+    orcid: "https://orcid.org/0000-0002-7904-3892"
+    affiliation: "Digital Humanities (Image/Object), Friedrich Schiller University Jena; Research Group DIGITAL ORGANOLOGY, Leipzig University"
+preferred-citation:
+  type: software
+  title: "VAO Blender: A Blender Extension for Virtual Acoustic Objects"
+  authors:
+    - family-names: "Ukolov"
+      given-names: "Dominik"
+      orcid: "https://orcid.org/0000-0002-7904-3892"
+      affiliation: "Digital Humanities (Image/Object), Friedrich Schiller University Jena; Research Group DIGITAL ORGANOLOGY, Leipzig University"
+  version: 0.3.0-rc.1
+  date-released: 2026-08-27
+  doi: "10.5281/zenodo.22134389"
+  repository-code: "https://github.com/modavis-project/vao-blender"
+references:
+  - type: standard
+    title: "Virtual Acoustic Object (VAO) Standard 0.4.0"
+    authors:
+      - family-names: "Ukolov"
+        given-names: "Dominik"
+        orcid: "https://orcid.org/0000-0002-7904-3892"
+        affiliation: "Digital Humanities (Image/Object), Friedrich Schiller University Jena; Research Group DIGITAL ORGANOLOGY, Leipzig University"
+    version: 0.4.0
+    date-released: 2026-08-27
+    doi: "10.5281/zenodo.22122774"
+    url: "https://github.com/modavis-project/vao-standard/releases/tag/v0.4.0"
+    license: CC-BY-4.0

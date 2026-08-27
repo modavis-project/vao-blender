@@ -1,0 +1,49 @@
+# VAO 0.4.0 changelog
+
+0.4.0 is a breaking successor to the unpublished 0.3.3 editor snapshot. No public compatibility promise existed.
+
+- Immutable patch-specific schema, context, vocabulary, SHACL, descriptor, and bundle identifiers.
+- Replaced open `paradata` and `analyses` with typed scientific registries.
+- Added general multimodal clocks, tracks, piecewise synchronization, uncertainty, discontinuities, and annotations.
+- Closed late interoperability ambiguities around scalar geodetic registration RMS, numerical transform/quaternion tolerances, acoustic band-axis authority, and publication-date mapping in RO-Crate.
+- Required every registration RMS to identify its metric/residual method and rejected ambiguous channel selections across logical-asset realizations with different channel counts.
+- Added bounded semantic validation, CLI commands, publication-set and exact manifest/carrier cross-checking, source-carrier-bound receipts, and positive/negative coverage for every companion descriptor; explicitly scoped the Zenodo companion to the legacy Depositions API.
+- Hardened portable carrier paths against ASCII controls, NFC collisions, and Unicode case-fold collisions, and bounded structural ZIP reads before allocation.
+- Added physical component/port/connection/sensor/actuator/state topology.
+- Added normative scheduling semantics, reproducible random sources, renderer descriptors, and machine-checked conformance traces.
+- Added MIDI 2 UMP, function-block, resolution, JR timestamp, per-note, Profile, and Property Exchange fields.
+- Added multivariate/dynamic transfer-function domains, uncertainty, hysteresis, extrapolation, and residuals.
+- Allowed explicitly delayed feedback while rejecting zero-delay cycles.
+- Added video, depth, volumetric, motion, sensor, event, score, and trajectory technical metadata.
+- Added alternate digests, chunks, Merkle roots, streaming indices, and authenticity-envelope references.
+- Added performer consent, privacy, embargo, community authority, TK Label, CARE, and redaction lineage.
+- Added DataCite-ready discovery plus RO-Crate 1.3, IIIF, OCFL, and explicitly bounded JSON-LD/RDF semantic projections; the RO-Crate projection supplies mandatory root metadata, rights, typed profiles, software/provenance links, and graph reference closure.
+- Consolidated the carrier, release, distribution, materialization, Spatial/Acoustics, Playable, sample, capture, and repository contracts into a self-contained 0.4.0 specification while retaining regression checks against the private 0.3.3 snapshot.
+- Hardened archive validation against normalized path collisions, special files, encryption, unsupported compression, unknown entries, decompression ratios, and incomplete carrier modes.
+- Standardized RFC 8785 trace canonicalization and complete PCG32/xoshiro256** stochastic selection semantics.
+- Added global identifier/reference integrity, dimensioned uncertainty/covariance, chronological offset comparison, affine/geodetic/quaternion rules, acoustic dimension checks, typed registry metadata, and complete RDF projection coverage.
+- Added exact rational and dimensioned Timebases; typed and mutually consistent realization/Track clock, frame, modality, geometry, channel, Ambisonics, and provenance rules.
+- Added reciprocal provenance outputs and Claim/Review decisions, Analysis/Observation Activity consistency, property-specific material uncertainty, structured unit-aware metric uncertainty, exact acoustic response mapping, and evidence-complete learned interpolation.
+- Defined per-event microstep accounting and the narrower evidentiary scope of offline deterministic traces.
+- Added exact sub-microsecond RFC 3339 ordering, an explicit finite precision/leap-second profile, and mandatory time-scale identity for wall-clock/external-timecode Timebases.
+- Defined the finite-binary64/safe-integer JSON domain and changed PCG stream selectors from unsafe 63-bit JSON integers to fixed-width hexadecimal.
+- Replaced tolerance-based media-clock equality with exact binary64/rational rate comparison.
+- Required explicit Software Environment digest scope/coverage and typed dependency fixity, separated its `runtimeDescription` from the root Runtime object, and barred declaration-only identities from deterministic Analysis or Renderer claims.
+- Required independently hashed code as well as environment evidence where an environment lock is used for a reproducibility claim.
+- Defined direct stochastic candidate order and selection-before-child-expansion, locale-independent runtime string ordering, and iterative microstep-bounded reference expansion.
+- Added acyclic/chronological Activity data dependencies and scale-invariant affine condition validation.
+- Extended finite reference safety budgets to standalone/workspace JSON and path depth, and made source archives independent of zlib output.
+- Required disjoint Activity I/O, generated Observation outputs, processed-result lineage, Sensor/Calibration temporal agreement, Analysis parameter/validation consistency, acyclic Claim evidence, and temporally ordered Reviews.
+- Required temporally identified Activity inputs and Analysis/Claim evidence to exist by their applicable execution boundary, and extended Review chronology to Activity-produced targets.
+- Made Draft 2020-12 `format` an explicit conformance assertion and included the normative security requirements in the fixed specification bundle.
+- Added a required local Coordinate Frame for oriented Poses, compatibility rules for local/target bases, and dimensional semantics for affine coefficients and translation.
+- Distinguished syntactic unit/quantity-kind IRIs from optional pinned-vocabulary dimensional verification so conformance cannot be mistaken for registry or dimensional truth.
+- Replaced Pose/listener trajectory logical-asset references with exact, technically typed realization references.
+- Defined valid position/orientation interpolation combinations and made trajectory references present exactly when the selected Pose/listener mode consumes them.
+- Required migration callers to supply the original exact manifest-byte SHA-256 instead of silently hashing a normalized parsed object.
+- Required the canonical protected JSON-LD context first; the reference projector now embeds the pinned local context and rejects unsupported additional contexts.
+- Rejected escaped unpaired Unicode surrogates in JSON strings and property names.
+- Replaced scale-relative clock-boundary tolerance with exact rational comparison over binary64/integer segment operands.
+- Reworked covariance PSD validation around dimensionless correlation normalization and added explicit inline dimension/cell limits.
+- Made conformance-trace SHA-256 a direct schema constraint and completed general content-digest/software-dependency SHACL validation.
+- Bundled the complete schema resource set in the installable reference-tools wheel, exposed its `vao04` command, and prevented an installed wheel from falsely inheriting the source checkout's exact environment-lock claim.

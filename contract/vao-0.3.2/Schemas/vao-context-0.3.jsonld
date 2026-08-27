@@ -1,0 +1,44 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "vao": "https://w3id.org/modavis/vao/ontology#",
+    "vocab": "https://w3id.org/modavis/vao/vocab/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/",
+    "id": "@id",
+    "type": "@type",
+    "title": "dcterms:title",
+    "description": "dcterms:description",
+    "createdAt": { "@id": "dcterms:created", "@type": "http://www.w3.org/2001/XMLSchema#dateTime" },
+    "modifiedAt": { "@id": "dcterms:modified", "@type": "http://www.w3.org/2001/XMLSchema#dateTime" },
+    "conformsTo": { "@id": "dcterms:conformsTo", "@type": "@id", "@container": "@set" },
+    "primaryEntityId": { "@id": "schema:mainEntity", "@type": "@id" },
+    "focusEntityIds": { "@id": "vao:focusEntity", "@type": "@id", "@container": "@set" },
+    "assetId": { "@id": "vao:realizesAsset", "@type": "@id" },
+    "realizationIds": { "@id": "vao:hasRealization", "@type": "@id", "@container": "@set" },
+    "distributionIds": { "@id": "vao:hasDistribution", "@type": "@id", "@container": "@set" },
+    "repositoryBindingId": { "@id": "vao:repositoryBinding", "@type": "@id" },
+    "representationStatus": { "@id": "vao:representationStatus", "@type": "@id" },
+    "rightsIds": { "@id": "dcterms:rights", "@type": "@id", "@container": "@set" },
+    "provenanceIds": { "@id": "prov:wasGeneratedBy", "@type": "@id", "@container": "@set" },
+    "dependsOnGroupIds": { "@id": "vao:dependsOnGroup", "@type": "@id", "@container": "@set" },
+    "fallbackGroupId": { "@id": "vao:fallbackGroup", "@type": "@id" }
+    ,"acoustics": { "@id": "vao:acoustics", "@type": "@json" }
+    ,"logicalAssetId": { "@id": "vao:logicalAsset", "@type": "@id" }
+    ,"coordinateFrameId": { "@id": "vao:coordinateFrame", "@type": "@id" }
+    ,"frameId": { "@id": "vao:coordinateFrame", "@type": "@id" }
+    ,"parentFrameId": { "@id": "vao:parentFrame", "@type": "@id" }
+    ,"subjectId": { "@id": "vao:subject", "@type": "@id" }
+    ,"sourceId": { "@id": "vao:source", "@type": "@id" }
+    ,"receiverId": { "@id": "vao:receiver", "@type": "@id" }
+    ,"sourcePoseId": { "@id": "vao:sourcePose", "@type": "@id" }
+    ,"receiverPoseId": { "@id": "vao:receiverPose", "@type": "@id" }
+    ,"measurementIds": { "@id": "vao:measurement", "@type": "@id", "@container": "@set" }
+    ,"responseSetId": { "@id": "vao:responseSet", "@type": "@id" }
+    ,"measurementId": { "@id": "vao:measurement", "@type": "@id" }
+    ,"generatedById": { "@id": "prov:wasGeneratedBy", "@type": "@id" }
+    ,"mediaAssetIds": { "@id": "vao:mediaAsset", "@type": "@id", "@container": "@set" }
+    ,"sceneId": { "@id": "vao:scene", "@type": "@id" }
+  }
+}

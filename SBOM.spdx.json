@@ -1,0 +1,171 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "creationInfo": {
+    "created": "2026-08-27T00:00:00Z",
+    "creators": [
+      "Tool: VAO-Blender release preparation"
+    ]
+  },
+  "dataLicense": "CC0-1.0",
+  "documentDescribes": [
+    "SPDXRef-Package-VAO-Blender"
+  ],
+  "documentNamespace": "https://github.com/modavis-project/vao-blender/spdx/v0.3.0-rc.1",
+  "name": "VAO-Blender-0.3.0-rc.1-SBOM",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-Package-VAO-Blender",
+      "copyrightText": "Copyright 2026 VAO-Blender contributors",
+      "downloadLocation": "https://github.com/modavis-project/vao-blender",
+      "filesAnalyzed": false,
+      "licenseConcluded": "GPL-3.0-or-later",
+      "licenseDeclared": "GPL-3.0-or-later",
+      "name": "VAO Blender",
+      "supplier": "Organization: VAO-Blender contributors",
+      "versionInfo": "0.3.0-rc.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-VAO-Standard",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2acbda0a257c7f71e2b57e01617678745de2ecf11197b4687aa623f71d23955d"
+        }
+      ],
+      "copyrightText": "Copyright 2026 Dominik Ukolov and contributors",
+      "downloadLocation": "https://github.com/modavis-project/vao-standard/releases/tag/v0.4.0",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION",
+      "name": "Virtual Acoustic Object (VAO) Standard",
+      "supplier": "Organization: VAO Standard contributors",
+      "versionInfo": "0.4.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-attrs",
+      "checksums": [{"algorithm": "SHA256", "checksumValue": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309"}],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://pypi.org/project/attrs/26.1.0/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "attrs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "26.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-jsonschema",
+      "checksums": [{"algorithm": "SHA256", "checksumValue": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce"}],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://pypi.org/project/jsonschema/4.26.0/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "jsonschema",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.26.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-jsonschema-specifications",
+      "checksums": [{"algorithm": "SHA256", "checksumValue": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe"}],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://pypi.org/project/jsonschema-specifications/2025.9.1/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "jsonschema-specifications",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2025.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-referencing",
+      "checksums": [{"algorithm": "SHA256", "checksumValue": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231"}],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://pypi.org/project/referencing/0.37.0/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "referencing",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.37.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-rfc3339-validator",
+      "checksums": [{"algorithm": "SHA256", "checksumValue": "24f6ec1eda14ef823da9e36ec7113124b39c04d50a4d3d3a3c2859577e7791fa"}],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://pypi.org/project/rfc3339-validator/0.1.4/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "rfc3339-validator",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.1.4"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-rfc3987",
+      "checksums": [{"algorithm": "SHA256", "checksumValue": "10702b1e51e5658843460b189b185c0366d2cf4cff716f13111b0ea9fd2dce53"}],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://pypi.org/project/rfc3987/1.3.8/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "GPL-3.0-or-later",
+      "licenseDeclared": "GPL-3.0-or-later",
+      "name": "rfc3987",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.3.8"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-rfc8785",
+      "checksums": [{"algorithm": "SHA256", "checksumValue": "520d690b448ecf0703691c76e1a34a24ddcd4fc5bc41d589cb7c58ec651bcd48"}],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://pypi.org/project/rfc8785/0.1.4/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "name": "rfc8785",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.1.4"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-rpds-py",
+      "checksums": [
+        {"algorithm": "SHA256", "checksumValue": "3cfe765c1da0072636ca06628261e0ea05688e160d5c8a03e0217c3854037223"},
+        {"algorithm": "SHA256", "checksumValue": "f4d78253f6996be4901669ad25319f842f740eccf4d58e3c7f3dd39e6dde1d8f"},
+        {"algorithm": "SHA256", "checksumValue": "acac386b453c2516111b50985d60ce46e7fadb5ea71ae7b25f4c946935bf27cf"},
+        {"algorithm": "SHA256", "checksumValue": "9250a9a0a6fd4648b3f868da8d91a4c52b5811a62df58e753d50ae4454a36f80"}
+      ],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://pypi.org/project/rpds-py/2026.6.3/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "rpds-py",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2026.6.3"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-six",
+      "checksums": [{"algorithm": "SHA256", "checksumValue": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"}],
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://pypi.org/project/six/1.17.0/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "six",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.17.0"
+    }
+  ],
+  "relationships": [
+    {"relatedSpdxElement": "SPDXRef-Package-VAO-Standard", "relationshipType": "CONTAINS", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-attrs", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-jsonschema", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-jsonschema-specifications", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-referencing", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-rfc3339-validator", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-rfc3987", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-rfc8785", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-rpds-py", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-six", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"}
+  ],
+  "spdxVersion": "SPDX-2.3"
+}

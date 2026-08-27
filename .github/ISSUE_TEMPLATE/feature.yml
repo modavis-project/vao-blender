@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose a scoped capability or usability improvement
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and user outcome
+    validations:
+      required: true
+  - type: dropdown
+    id: format
+    attributes:
+      label: VAO format
+      options: ["0.4.0", "0.3.2 compatibility", "0.2.2 compatibility", "Not format-specific"]
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Include relevant standard sections and security, rights, or scientific-scope implications.
+    validations:
+      required: true

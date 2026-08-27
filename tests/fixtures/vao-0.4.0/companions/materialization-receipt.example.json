@@ -1,0 +1,51 @@
+{
+  "$schema": "https://w3id.org/modavis/vao/0.4.0/schema/materialization-receipt.json",
+  "type": "VAOMaterializationReceipt",
+  "formatVersion": "0.4.0",
+  "releaseId": "urn:vao:release:example:companion-contracts:0.4.0",
+  "manifestSHA256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "instanceId": "urn:uuid:00000000-0000-4000-8000-000000000004",
+  "createdAt": "2026-08-27T12:00:00Z",
+  "implementation": {
+    "name": "Synthetic VAO receipt producer",
+    "version": "test-only",
+    "identity": {
+      "algorithm": "sha256",
+      "value": "4444444444444444444444444444444444444444444444444444444444444444"
+    },
+    "identityScope": "source-file",
+    "identityDescription": "Synthetic digest used only to exercise the companion schema; it does not identify released software."
+  },
+  "sourceCarrier": {
+    "kind": "workspace",
+    "descriptorByteSize": 1,
+    "descriptorSHA256": "5555555555555555555555555555555555555555555555555555555555555555"
+  },
+  "selectedGroupIds": [
+    "urn:vao:asset-group:example:bootstrap"
+  ],
+  "acquisitions": [
+    {
+      "realizationId": "urn:vao:realization:example:audio",
+      "distributionId": "urn:vao:distribution:example:embedded",
+      "byteSize": 3,
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "status": "verified",
+      "attemptedAt": "2026-08-27T11:59:58Z",
+      "verifiedAt": "2026-08-27T11:59:59Z"
+    },
+    {
+      "realizationId": "urn:vao:realization:example:restricted-evidence",
+      "distributionId": "urn:vao:distribution:example:restricted",
+      "status": "policy-blocked",
+      "attemptedAt": "2026-08-27T11:59:59Z",
+      "diagnostic": "Synthetic policy denial; no payload bytes were acquired."
+    }
+  ],
+  "profileStates": [
+    {
+      "profileId": "https://w3id.org/modavis/vao/profile/core/0.4.0",
+      "state": "embedded-valid"
+    }
+  ]
+}

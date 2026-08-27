@@ -1,0 +1,175 @@
+{
+  "$schema": "https://w3id.org/modavis/vao/0.2/schema/manifest.json",
+  "@context": [
+    "https://w3id.org/modavis/vao/0.2/context.jsonld"
+  ],
+  "analyses": [],
+  "assets": [
+    {
+      "aboutEntityIds": [
+        "urn:uuid:10000000-0000-4000-8000-000000000001"
+      ],
+      "byteSize": 63,
+      "createdAt": "2026-08-15T00:00:00Z",
+      "encoding": "UTF-8",
+      "id": "urn:vao:asset:362ae56681822adc862396e3c51c838ef16d4ea791fd3d0e30cb25e446e947e4",
+      "mediaType": "text/plain",
+      "originalFilename": "source.txt",
+      "path": "payload/evidence/source.txt",
+      "properties": {},
+      "representationStatus": "https://w3id.org/modavis/vao/vocab/representation-status/authored",
+      "roles": [
+        "https://w3id.org/modavis/vao/vocab/asset-role/source-evidence"
+      ],
+      "sha256": "362ae56681822adc862396e3c51c838ef16d4ea791fd3d0e30cb25e446e947e4"
+    }
+  ],
+  "conformsTo": [
+    "https://w3id.org/modavis/vao/profile/core/0.2",
+    "https://w3id.org/modavis/vao/profile/playable/0.2"
+  ],
+  "createdAt": "2026-08-15T00:00:00Z",
+  "description": {
+    "en": "Positive playable-profile fixture with a protocol-independent excitation interaction."
+  },
+  "entities": [
+    {
+      "classifications": [
+        {
+          "code": "3",
+          "id": "https://w3id.org/modavis/vao/vocab/hornbostel-sachs/3",
+          "label": {
+            "en": "chordophone"
+          },
+          "scheme": "https://w3id.org/modavis/vao/vocab/hornbostel-sachs"
+        }
+      ],
+      "externalIdentifiers": [],
+      "id": "urn:uuid:10000000-0000-4000-8000-000000000001",
+      "kind": "instrument",
+      "labels": {
+        "en": "Minimal playable string instrument"
+      },
+      "properties": {},
+      "types": [
+        "https://w3id.org/modavis/ontology/instrument#MusicalInstrument"
+      ]
+    },
+    {
+      "externalIdentifiers": [],
+      "id": "urn:uuid:10000000-0000-4000-8000-000000000002",
+      "kind": "component",
+      "labels": {
+        "en": "Excited string"
+      },
+      "properties": {},
+      "types": [
+        "https://w3id.org/modavis/ontology/instrument#InstrumentComponent"
+      ]
+    },
+    {
+      "externalIdentifiers": [],
+      "id": "urn:uuid:10000000-0000-4000-8000-000000000003",
+      "kind": "interaction",
+      "labels": {
+        "en": "Excite the string"
+      },
+      "properties": {
+        "https://w3id.org/modavis/vao/ontology#controlDomain": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "unit": "normalized"
+        },
+        "https://w3id.org/modavis/vao/ontology#controlProtocol": {
+          "binding": "host-note-gate",
+          "noteDomain": "application-defined"
+        },
+        "https://w3id.org/modavis/vao/ontology#interactionType": "https://w3id.org/modavis/vao/vocab/interaction/excite",
+        "https://w3id.org/modavis/vao/ontology#timingPolicy": {
+          "attack": "immediate",
+          "release": "on-gate-close"
+        }
+      },
+      "types": [
+        "https://w3id.org/modavis/vao/ontology#Interaction"
+      ]
+    }
+  ],
+  "extensions": {},
+  "formatVersion": "0.2.2",
+  "id": "https://example.org/vao/fixture/minimal-playable-string-instrument",
+  "integrity": {
+    "algorithm": "sha256",
+    "assetCount": 1,
+    "totalPayloadBytes": 63
+  },
+  "modavisBinding": {
+    "mappingVersion": "vao-modavis-mapping/0.2.2",
+    "notes": "Fixture binding; not a claim that MODAVIS 0.1.0 was released.",
+    "ontologyIRI": "https://w3id.org/modavis/ontology",
+    "ontologyStatus": "development",
+    "ontologyVersion": "0.1.0-dev"
+  },
+  "modifiedAt": "2026-08-15T00:00:00Z",
+  "paradata": [],
+  "profiles": [
+    {
+      "id": "https://w3id.org/modavis/vao/profile/core/0.2",
+      "requiredCapabilities": [
+        "https://w3id.org/modavis/vao/vocab/capability/core-graph",
+        "https://w3id.org/modavis/vao/vocab/capability/fixity"
+      ],
+      "version": "0.2"
+    },
+    {
+      "id": "https://w3id.org/modavis/vao/profile/playable/0.2",
+      "requiredCapabilities": [
+        "https://w3id.org/modavis/vao/vocab/capability/interaction"
+      ],
+      "version": "0.2"
+    }
+  ],
+  "relations": [
+    {
+      "id": "urn:uuid:10000000-0000-4000-8000-000000000011",
+      "objectId": "urn:uuid:10000000-0000-4000-8000-000000000002",
+      "predicate": "https://w3id.org/modavis/ontology/instrument#hasComponent",
+      "status": "asserted",
+      "subjectId": "urn:uuid:10000000-0000-4000-8000-000000000001"
+    },
+    {
+      "id": "urn:uuid:10000000-0000-4000-8000-000000000012",
+      "objectId": "urn:vao:asset:70b09653dd9dfdce4f1349d7ef2c60ab55da0f4def9b2091dd731ab09218137a",
+      "predicate": "https://w3id.org/modavis/vao/ontology#hasRepresentation",
+      "status": "asserted",
+      "subjectId": "urn:uuid:10000000-0000-4000-8000-000000000001"
+    },
+    {
+      "id": "urn:uuid:10000000-0000-4000-8000-000000000013",
+      "objectId": "urn:uuid:10000000-0000-4000-8000-000000000002",
+      "predicate": "https://w3id.org/modavis/vao/ontology#activates",
+      "status": "asserted",
+      "subjectId": "urn:uuid:10000000-0000-4000-8000-000000000003"
+    }
+  ],
+  "revision": 1,
+  "rights": [
+    {
+      "accessCondition": "Test use only until release licensing is approved.",
+      "appliesToIds": [
+        "https://example.org/vao/fixture/minimal-playable-string-instrument"
+      ],
+      "statement": {
+        "en": "Conformance-test material; release licensing must be supplied by the repository maintainers."
+      }
+    }
+  ],
+  "primaryEntityId": "urn:uuid:10000000-0000-4000-8000-000000000001",
+  "focusEntityIds": [
+    "urn:uuid:10000000-0000-4000-8000-000000000001"
+  ],
+  "title": {
+    "en": "Minimal playable string instrument fixture"
+  },
+  "type": "VirtualAcousticObject"
+}

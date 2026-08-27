@@ -1,0 +1,35 @@
+{
+  "$schema": "https://w3id.org/modavis/vao/0.4.0/schema/release.json",
+  "type": "VAORelease",
+  "formatVersion": "0.4.0",
+  "vaoId": "https://example.org/vao/fixture/embedded-private",
+  "releaseId": "urn:uuid:03000000-0000-4000-8000-000000000001",
+  "revision": 1,
+  "contentVersion": "1.0.0",
+  "publication": {
+    "topology": "single-record",
+    "rootRecord": {
+      "id": "urn:vao:publication-record:example:root",
+      "repositoryType": "https://w3id.org/modavis/vao/repository/zenodo",
+      "instance": "https://sandbox.zenodo.org",
+      "versionPersistentIdentifier": "https://sandbox.zenodo.org/records/123456",
+      "conceptPersistentIdentifier": "https://sandbox.zenodo.org/records/123455",
+      "recordIdentifier": "synthetic-review-record",
+      "files": [
+        {
+          "fileIdentifier": "vao-manifest.json",
+          "role": "manifest",
+          "byteSize": 11893,
+          "sha256": "a99c69c8cd6166942adc79eb97a3783a4cebe4bbffcb346f5e09e8cb13ba48fd"
+        },
+        {
+          "fileIdentifier": "minimal.vao",
+          "role": "carrier",
+          "byteSize": 13081,
+          "sha256": "1cb8e10c3da1013aacf0e310bfcf60a34959c99ad20e01ece64e3687fa8fe336"
+        }
+      ]
+    },
+    "familyMembers": []
+  }
+}

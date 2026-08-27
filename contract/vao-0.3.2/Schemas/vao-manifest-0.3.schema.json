@@ -1,0 +1,642 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/modavis/vao/0.3/schema/manifest.json",
+  "title": "Virtual Acoustic Object 0.3.2 manifest",
+  "description": "Carrier-independent semantic release manifest for immutable VAO 0.3 releases and dynamically materializable byte realizations.",
+  "type": "object",
+  "required": [
+    "$schema", "@context", "type", "formatVersion", "id", "release", "createdAt", "modifiedAt",
+    "title", "conformsTo", "profiles", "materializableProfiles", "modavisBinding", "primaryEntityId",
+    "focusEntityIds", "entities", "relations", "paradata", "analyses", "logicalAssets", "realizations", "distributions",
+    "repositoryBindings", "assetGroups", "rights", "integrity"
+  ],
+  "properties": {
+    "$schema": { "const": "https://w3id.org/modavis/vao/0.3/schema/manifest.json" },
+    "@context": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": { "type": "string", "format": "uri" },
+      "contains": { "const": "https://w3id.org/modavis/vao/0.3/context.jsonld" }
+    },
+    "type": { "const": "VirtualAcousticObject" },
+    "formatVersion": { "const": "0.3.2" },
+    "id": { "$ref": "#/$defs/identifier" },
+    "release": { "$ref": "#/$defs/releaseIdentity" },
+    "createdAt": { "$ref": "#/$defs/dateTime" },
+    "modifiedAt": { "$ref": "#/$defs/dateTime" },
+    "title": { "$ref": "#/$defs/localizedText" },
+    "description": { "$ref": "#/$defs/localizedText" },
+    "conformsTo": { "$ref": "#/$defs/uniqueIRIs" },
+    "profiles": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/profile" } },
+    "materializableProfiles": { "type": "array", "items": { "$ref": "#/$defs/materializableProfile" } },
+    "modavisBinding": { "$ref": "#/$defs/modavisBinding" },
+    "primaryEntityId": { "$ref": "#/$defs/identifier" },
+    "focusEntityIds": { "$ref": "#/$defs/uniqueIdentifiers" },
+    "entities": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/entity" } },
+    "relations": { "type": "array", "items": { "$ref": "#/$defs/relation" } },
+    "paradata": { "type": "array", "items": { "type": "object" } },
+    "analyses": { "type": "array", "items": { "type": "object" } },
+    "acoustics": { "$ref": "#/$defs/acoustics" },
+    "logicalAssets": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/logicalAsset" } },
+    "realizations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/realization" } },
+    "distributions": { "type": "array", "items": { "$ref": "#/$defs/distribution" } },
+    "repositoryBindings": { "type": "array", "items": { "$ref": "#/$defs/repositoryBinding" } },
+    "assetGroups": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/assetGroup" } },
+    "rights": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/rights" } },
+    "integrity": { "$ref": "#/$defs/integrity" },
+    "extensions": { "$ref": "#/$defs/extensions" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "identifier": { "type": "string", "minLength": 3, "pattern": "^(urn:|https?:)[^\\s]+$" },
+    "iri": { "type": "string", "format": "uri" },
+    "dateTime": { "type": "string", "format": "date-time" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "safeMemberPath": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\x00]+$" },
+    "localizedText": {
+      "type": "object", "minProperties": 1,
+      "propertyNames": { "pattern": "^(und|[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*)$" },
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "uniqueIRIs": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/iri" } },
+    "uniqueIdentifiers": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/identifier" } },
+    "identifierList": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/identifier" } },
+    "extensions": {
+      "type": "object", "propertyNames": { "format": "uri" }, "additionalProperties": true
+    },
+    "releaseIdentity": {
+      "type": "object",
+      "required": ["id", "revision", "contentVersion"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "revision": { "type": "integer", "minimum": 1 },
+        "contentVersion": { "type": "string", "minLength": 1 },
+        "supersedesReleaseId": { "$ref": "#/$defs/identifier" },
+        "migratedFromManifestSHA256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "profile": {
+      "type": "object",
+      "required": ["id", "version", "requiredCapabilities"],
+      "properties": {
+        "id": { "$ref": "#/$defs/iri" },
+        "version": { "const": "0.3" },
+        "requiredCapabilities": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/iri" } }
+      },
+      "additionalProperties": false
+    },
+    "materializableProfile": {
+      "type": "object",
+      "required": ["id", "version", "requiredCapabilities", "groupIds"],
+      "properties": {
+        "id": { "$ref": "#/$defs/iri" },
+        "version": { "const": "0.3" },
+        "requiredCapabilities": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/iri" } },
+        "groupIds": { "$ref": "#/$defs/uniqueIdentifiers" }
+      },
+      "additionalProperties": false
+    },
+    "modavisBinding": {
+      "type": "object",
+      "required": ["ontologyIRI", "ontologyVersion", "ontologyStatus", "mappingVersion"],
+      "properties": {
+        "ontologyIRI": { "$ref": "#/$defs/iri" },
+        "ontologyVersion": { "type": "string", "minLength": 1 },
+        "ontologyStatus": { "enum": ["development", "released", "embedded-snapshot"] },
+        "ontologyVersionIRI": { "$ref": "#/$defs/iri" },
+        "mappingVersion": { "type": "string", "minLength": 1 },
+        "mappingIRI": { "$ref": "#/$defs/iri" },
+        "vocabularyReleaseIRI": { "$ref": "#/$defs/iri" },
+        "vocabularyManifestSHA256": { "$ref": "#/$defs/sha256" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        { "if": { "properties": { "ontologyStatus": { "const": "released" } } }, "then": { "required": ["ontologyVersionIRI", "mappingIRI"] } },
+        { "if": { "required": ["vocabularyReleaseIRI"] }, "then": { "required": ["vocabularyManifestSHA256"] } },
+        { "if": { "required": ["vocabularyManifestSHA256"] }, "then": { "required": ["vocabularyReleaseIRI"] } }
+      ]
+    },
+    "entity": {
+      "type": "object",
+      "required": ["id", "kind", "types", "labels"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "kind": { "type": "string", "minLength": 1 },
+        "types": { "$ref": "#/$defs/uniqueIRIs" },
+        "labels": { "$ref": "#/$defs/localizedText" },
+        "classifications": { "type": "array", "items": { "type": "object" } },
+        "externalIdentifiers": { "type": "array", "items": { "type": "object" } },
+        "properties": { "$ref": "#/$defs/extensions" }
+      },
+      "additionalProperties": false
+    },
+    "literal": {
+      "type": "object", "required": ["value"],
+      "properties": { "value": true, "datatype": { "$ref": "#/$defs/iri" }, "language": { "type": "string" }, "unit": { "$ref": "#/$defs/iri" } },
+      "additionalProperties": false
+    },
+    "relation": {
+      "type": "object",
+      "required": ["id", "subjectId", "predicate", "status"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" }, "subjectId": { "$ref": "#/$defs/identifier" },
+        "predicate": { "$ref": "#/$defs/iri" }, "objectId": { "$ref": "#/$defs/identifier" },
+        "literal": { "$ref": "#/$defs/literal" },
+        "status": { "enum": ["asserted", "accepted", "rejected", "superseded", "inferred"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "scope": { "type": "object" },
+        "evidenceIds": { "$ref": "#/$defs/identifierList" }, "generatedByIds": { "$ref": "#/$defs/identifierList" },
+        "properties": { "$ref": "#/$defs/extensions" }
+      },
+      "additionalProperties": false,
+      "oneOf": [ { "required": ["objectId"], "not": { "required": ["literal"] } }, { "required": ["literal"], "not": { "required": ["objectId"] } } ]
+    },
+    "logicalAsset": {
+      "type": "object",
+      "required": ["id", "type", "roles", "aboutEntityIds", "realizationIds"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" }, "type": { "const": "LogicalAsset" },
+        "labels": { "$ref": "#/$defs/localizedText" }, "roles": { "$ref": "#/$defs/uniqueIRIs" },
+        "aboutEntityIds": { "$ref": "#/$defs/uniqueIdentifiers" }, "realizationIds": { "$ref": "#/$defs/uniqueIdentifiers" },
+        "properties": { "$ref": "#/$defs/extensions" }
+      },
+      "additionalProperties": false
+    },
+    "realization": {
+      "type": "object",
+      "required": ["id", "type", "assetId", "variantSetId", "qualityTier", "mediaType", "byteSize", "sha256", "representationStatus", "rightsIds", "provenanceIds", "technicalMetadata", "distributionIds"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" }, "type": { "const": "Realization" },
+        "assetId": { "$ref": "#/$defs/identifier" }, "variantSetId": { "type": "string", "minLength": 1 },
+        "qualityTier": { "enum": ["bootstrap", "mobile", "production", "production-spatial", "preservation", "custom"] },
+        "mediaType": { "type": "string", "pattern": "^[^/\\s]+/[^\\s]+$" },
+        "byteSize": { "type": "integer", "minimum": 0 }, "sha256": { "$ref": "#/$defs/sha256" },
+        "representationStatus": { "$ref": "#/$defs/iri" }, "rightsIds": { "$ref": "#/$defs/uniqueIdentifiers" },
+        "provenanceIds": { "$ref": "#/$defs/identifierList" },
+        "technicalMetadata": { "$ref": "#/$defs/technicalMetadata" },
+        "distributionIds": { "$ref": "#/$defs/identifierList" }
+      },
+      "additionalProperties": false
+    },
+    "technicalMetadata": {
+      "type": "object", "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["audio", "geometry", "image", "document", "data", "software", "other"] },
+        "sampleRate": { "type": "number", "exclusiveMinimum": 0 }, "sampleFormat": { "type": "string", "minLength": 1 },
+        "bitDepth": { "type": "integer", "minimum": 1 }, "channelCount": { "type": "integer", "minimum": 1 },
+        "channelLabels": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "audioContainer": { "type": "string", "minLength": 1 }, "ambisonicsOrder": { "type": "integer", "minimum": 0 },
+        "ambisonicsDimensionality": { "enum": ["2D", "3D"] }, "ambisonicsChannelOrder": { "enum": ["ACN"] },
+        "ambisonicsNormalization": { "enum": ["SN3D", "N3D"] },
+        "impulseResponse": { "$ref": "#/$defs/impulseResponseTechnicalMetadata" },
+        "coordinateFrameId": { "$ref": "#/$defs/identifier" }, "coordinateUnit": { "$ref": "#/$defs/iri" },
+        "handedness": { "enum": ["left", "right"] }, "upAxis": { "enum": ["X", "Y", "Z"] },
+        "lod": { "type": "integer", "minimum": 0 }, "triangleCount": { "type": "integer", "minimum": 0 },
+        "vertexCount": { "type": "integer", "minimum": 0 }, "textureMaxDimension": { "type": "integer", "minimum": 1 },
+        "purposeLimitations": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "extensions": { "$ref": "#/$defs/extensions" }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        { "if": { "properties": { "kind": { "const": "audio" } } }, "then": { "required": ["sampleRate", "channelCount"] } },
+        { "if": { "required": ["ambisonicsOrder"] }, "then": { "required": ["ambisonicsDimensionality", "ambisonicsChannelOrder", "ambisonicsNormalization"] } },
+        { "if": { "required": ["impulseResponse"] }, "then": { "properties": { "kind": { "const": "audio" } }, "required": ["sampleRate", "channelCount"] } },
+        { "if": { "properties": { "kind": { "const": "geometry" } } }, "then": { "required": ["coordinateFrameId", "coordinateUnit", "handedness", "upAxis", "lod"] } }
+      ]
+    },
+    "vector2": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": { "type": "number" }
+    },
+    "vector3": {
+      "type": "array", "minItems": 3, "maxItems": 3,
+      "items": { "type": "number" }
+    },
+    "quaternionXYZW": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": { "type": "number", "minimum": -1, "maximum": 1 }
+    },
+    "matrix4x4": {
+      "type": "array", "minItems": 16, "maxItems": 16,
+      "items": { "type": "number" }
+    },
+    "uncertainty": {
+      "type": "object",
+      "required": ["kind", "value", "unit"],
+      "properties": {
+        "kind": { "enum": ["standard", "expanded", "bound", "covariance", "registration-rms"] },
+        "value": {},
+        "unit": { "$ref": "#/$defs/iri" },
+        "coverageFactor": { "type": "number", "minimum": 0 },
+        "confidenceLevel": { "type": "number", "minimum": 0, "maximum": 1 },
+        "method": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "coordinateFrame": {
+      "type": "object",
+      "required": ["id", "dimension", "coordinateType", "unit", "handedness", "upAxis", "forwardAxis"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "dimension": { "enum": [2, 3] },
+        "coordinateType": { "enum": ["cartesian", "geodetic", "projected", "screen", "parametric"] },
+        "unit": { "$ref": "#/$defs/iri" },
+        "handedness": { "enum": ["right", "left", "not-applicable"] },
+        "upAxis": { "enum": ["+X", "-X", "+Y", "-Y", "+Z", "-Z", "not-applicable"] },
+        "forwardAxis": { "enum": ["+X", "-X", "+Y", "-Y", "+Z", "-Z", "not-applicable"] },
+        "crs": { "$ref": "#/$defs/iri" },
+        "parentFrameId": { "$ref": "#/$defs/identifier" },
+        "transformToParent": { "$ref": "#/$defs/matrix4x4" },
+        "registrationUncertainty": { "$ref": "#/$defs/uncertainty" },
+        "generatedById": { "$ref": "#/$defs/identifier" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        { "if": { "required": ["parentFrameId"] }, "then": { "required": ["transformToParent"] } },
+        { "if": { "required": ["transformToParent"] }, "then": { "required": ["parentFrameId"] } }
+      ]
+    },
+    "pose": {
+      "type": "object",
+      "required": ["id", "subjectId", "frameId", "position", "interpolation"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "subjectId": { "$ref": "#/$defs/identifier" },
+        "frameId": { "$ref": "#/$defs/identifier" },
+        "position": { "oneOf": [{ "$ref": "#/$defs/vector2" }, { "$ref": "#/$defs/vector3" }] },
+        "orientationXYZW": { "$ref": "#/$defs/quaternionXYZW" },
+        "extent": { "$ref": "#/$defs/vector3" },
+        "positionUncertainty": { "$ref": "#/$defs/uncertainty" },
+        "orientationUncertainty": { "$ref": "#/$defs/uncertainty" },
+        "configurationId": { "$ref": "#/$defs/identifier" },
+        "stateId": { "$ref": "#/$defs/identifier" },
+        "validFrom": { "$ref": "#/$defs/dateTime" },
+        "validUntil": { "$ref": "#/$defs/dateTime" },
+        "trajectoryAssetId": { "$ref": "#/$defs/identifier" },
+        "interpolation": { "enum": ["none", "step", "linear", "spherical-linear", "cubic"] },
+        "generatedById": { "$ref": "#/$defs/identifier" }
+      },
+      "additionalProperties": false
+    },
+    "geometrySelector": {
+      "type": "object",
+      "required": ["selectorType", "value"],
+      "properties": {
+        "selectorType": { "enum": ["ifc-global-id", "citygml-id", "gltf-node-index", "usd-prim-path", "mesh-primitive", "feature-id", "wkt"] },
+        "value": {},
+        "subSelector": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "geometryBinding": {
+      "type": "object",
+      "required": ["id", "subjectId", "logicalAssetId", "role"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "subjectId": { "$ref": "#/$defs/identifier" },
+        "logicalAssetId": { "$ref": "#/$defs/identifier" },
+        "role": { "enum": ["authoritative-semantic", "acoustic-simulation", "runtime-visual", "collision", "occlusion", "navigation"] },
+        "selector": { "$ref": "#/$defs/geometrySelector" },
+        "generatedById": { "$ref": "#/$defs/identifier" }
+      },
+      "additionalProperties": false
+    },
+    "bandAxis": {
+      "type": "object",
+      "required": ["scale", "centerFrequenciesHz"],
+      "properties": {
+        "scale": { "enum": ["linear", "logarithmic", "octave", "third-octave", "erb", "bark", "custom"] },
+        "centerFrequenciesHz": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "number", "exclusiveMinimum": 0 } },
+        "lowerEdgesHz": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "upperEdgesHz": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "weighting": { "enum": ["none", "A", "C", "Z", "other"] }
+      },
+      "additionalProperties": false
+    },
+    "materialModel": {
+      "type": "object",
+      "required": ["id", "materialEntityId", "bandAxis", "absorption", "representationStatus", "generatedById"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "materialEntityId": { "$ref": "#/$defs/identifier" },
+        "bandAxis": { "$ref": "#/$defs/bandAxis" },
+        "absorption": { "type": "array", "minItems": 1, "items": { "type": "number", "minimum": 0, "maximum": 1 } },
+        "scattering": { "type": "array", "minItems": 1, "items": { "type": "number", "minimum": 0, "maximum": 1 } },
+        "transmissionLossDB": { "type": "array", "minItems": 1, "items": { "type": "number", "minimum": 0 } },
+        "surfaceImpedanceAssetId": { "$ref": "#/$defs/identifier" },
+        "incidence": { "enum": ["random", "normal", "angle-dependent", "unspecified"] },
+        "sidedness": { "enum": ["one-sided", "two-sided", "layered"] },
+        "thicknessMeters": { "type": "number", "minimum": 0 },
+        "environmentStateId": { "$ref": "#/$defs/identifier" },
+        "representationStatus": { "enum": ["measured", "simulated", "inferred", "learned", "authored", "hybrid"] },
+        "uncertainty": { "$ref": "#/$defs/uncertainty" },
+        "generatedById": { "$ref": "#/$defs/identifier" }
+      },
+      "additionalProperties": false
+    },
+    "responseMeasurement": {
+      "type": "object",
+      "required": ["id", "sourceId", "receiverId", "sourcePoseId", "receiverPoseId"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "sourceId": { "$ref": "#/$defs/identifier" },
+        "receiverId": { "$ref": "#/$defs/identifier" },
+        "sourcePoseId": { "$ref": "#/$defs/identifier" },
+        "receiverPoseId": { "$ref": "#/$defs/identifier" },
+        "spaceId": { "$ref": "#/$defs/identifier" },
+        "sourceSpaceId": { "$ref": "#/$defs/identifier" },
+        "receivingSpaceId": { "$ref": "#/$defs/identifier" },
+        "separatingElementId": { "$ref": "#/$defs/identifier" },
+        "transmissionPathIds": { "$ref": "#/$defs/identifierList" },
+        "configurationId": { "$ref": "#/$defs/identifier" },
+        "stateId": { "$ref": "#/$defs/identifier" },
+        "validFrom": { "$ref": "#/$defs/dateTime" },
+        "validUntil": { "$ref": "#/$defs/dateTime" }
+      },
+      "additionalProperties": false
+    },
+    "measurementMapping": {
+      "type": "object",
+      "required": ["measurementId", "channelIndices"],
+      "properties": {
+        "measurementId": { "$ref": "#/$defs/identifier" },
+        "dataIRIndex": { "type": "integer", "minimum": 0 },
+        "channelIndices": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "integer", "minimum": 0 } },
+        "delaySamples": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "impulseResponseTechnicalMetadata": {
+      "type": "object",
+      "required": ["responseSetId", "encoding", "sampleCount", "timeZeroPolicy", "normalization", "measurementMappings"],
+      "properties": {
+        "responseSetId": { "$ref": "#/$defs/identifier" },
+        "encoding": { "enum": ["AES69-SOFA", "WAV", "FLAC", "HDF5", "netCDF", "Zarr", "custom"] },
+        "convention": { "type": "string", "minLength": 1 },
+        "sampleCount": { "type": "integer", "minimum": 1 },
+        "timeZeroPolicy": { "enum": ["excitation-origin", "direct-arrival", "recording-start", "per-measurement-delay", "unspecified"] },
+        "normalization": { "enum": ["physical-pressure", "calibrated-relative", "peak", "energy", "none", "unspecified"] },
+        "channelTopology": { "$ref": "#/$defs/iri" },
+        "measurementMappings": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/measurementMapping" } }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        { "if": { "properties": { "encoding": { "const": "AES69-SOFA" } } }, "then": { "required": ["convention"] } }
+      ]
+    },
+    "interpolationContract": {
+      "type": "object",
+      "required": ["method", "domain", "outsideDomainPolicy"],
+      "properties": {
+        "method": { "enum": ["none", "nearest", "linear", "barycentric", "spherical-harmonic", "radial-basis", "physics-based", "neural-field", "hybrid"] },
+        "domain": { "$ref": "#/$defs/identifier" },
+        "outsideDomainPolicy": { "enum": ["reject", "nearest", "clamp", "fade-to-dry", "fallback"] },
+        "fallbackResponseSetId": { "$ref": "#/$defs/identifier" },
+        "modelAssetId": { "$ref": "#/$defs/identifier" },
+        "trainingInputIds": { "$ref": "#/$defs/identifierList" },
+        "validationInputIds": { "$ref": "#/$defs/identifierList" },
+        "qualityMetricSetId": { "$ref": "#/$defs/identifier" },
+        "determinism": { "enum": ["deterministic", "seeded", "non-deterministic"] },
+        "seed": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "responseSet": {
+      "type": "object",
+      "required": ["id", "responseEntityId", "responseKind", "logicalAssetId", "representationStatus", "measurementIds", "generatedById"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "responseEntityId": { "$ref": "#/$defs/identifier" },
+        "responseKind": { "enum": ["rir", "brir", "srir", "hrir", "hrtf", "binaural-room-transfer-function", "transfer-function", "directivity", "sound-field", "building-transfer"] },
+        "logicalAssetId": { "$ref": "#/$defs/identifier" },
+        "representationStatus": { "enum": ["measured", "simulated", "inferred", "learned", "authored", "hybrid"] },
+        "measurementIds": { "$ref": "#/$defs/uniqueIdentifiers" },
+        "delayAssetId": { "$ref": "#/$defs/identifier" },
+        "calibrationIds": { "$ref": "#/$defs/identifierList" },
+        "interpolation": { "$ref": "#/$defs/interpolationContract" },
+        "generatedById": { "$ref": "#/$defs/identifier" },
+        "qualityFlags": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      },
+      "additionalProperties": false
+    },
+    "metricValue": {
+      "type": "object",
+      "required": ["property", "values", "unit", "status"],
+      "properties": {
+        "property": { "$ref": "#/$defs/iri" },
+        "values": { "type": "array", "minItems": 1, "items": { "type": "number" } },
+        "unit": { "$ref": "#/$defs/iri" },
+        "uncertainties": { "type": "array", "items": { "type": "number", "minimum": 0 } },
+        "status": { "enum": ["observed", "calculated", "simulated", "inferred", "reviewed", "accepted"] },
+        "sourceId": { "$ref": "#/$defs/identifier" },
+        "receiverId": { "$ref": "#/$defs/identifier" },
+        "sourceSpaceId": { "$ref": "#/$defs/identifier" },
+        "receivingSpaceId": { "$ref": "#/$defs/identifier" },
+        "separatingElementId": { "$ref": "#/$defs/identifier" }
+      },
+      "additionalProperties": false
+    },
+    "metricSet": {
+      "type": "object",
+      "required": ["id", "standard", "standardEdition", "method", "subjectIds", "inputIds", "bandAxis", "metrics", "generatedById"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "standard": { "$ref": "#/$defs/iri" },
+        "standardEdition": { "type": "string", "minLength": 1 },
+        "method": { "type": "string", "minLength": 1 },
+        "subjectIds": { "$ref": "#/$defs/uniqueIdentifiers" },
+        "inputIds": { "$ref": "#/$defs/uniqueIdentifiers" },
+        "bandAxis": { "$ref": "#/$defs/bandAxis" },
+        "metrics": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/metricValue" } },
+        "generatedById": { "$ref": "#/$defs/identifier" },
+        "qualityFlags": { "type": "array", "uniqueItems": true, "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "audioBinding": {
+      "type": "object",
+      "required": ["id", "entityId", "mediaAssetId", "bindingType"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "entityId": { "$ref": "#/$defs/identifier" },
+        "mediaAssetId": { "$ref": "#/$defs/identifier" },
+        "bindingType": { "enum": ["channel", "object", "higher-order-ambisonics", "binaural", "response", "bed"] },
+        "channelIndices": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "integer", "minimum": 0 } },
+        "poseId": { "$ref": "#/$defs/identifier" },
+        "gainDB": { "type": "number" },
+        "directivityResponseSetId": { "$ref": "#/$defs/identifier" }
+      },
+      "additionalProperties": false
+    },
+    "audioScene": {
+      "type": "object",
+      "required": ["id", "sceneEntityId", "representationType", "coordinateFrameId", "mediaAssetIds", "bindings"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "sceneEntityId": { "$ref": "#/$defs/identifier" },
+        "representationType": { "enum": ["ITU-ADM-BW64", "MPEG-I-immersive-audio", "MPEG-H-3D-audio", "channel-bed", "object-audio", "higher-order-ambisonics", "binaural", "hybrid"] },
+        "standard": { "$ref": "#/$defs/iri" },
+        "coordinateFrameId": { "$ref": "#/$defs/identifier" },
+        "mediaAssetIds": { "$ref": "#/$defs/uniqueIdentifiers" },
+        "metadataAssetId": { "$ref": "#/$defs/identifier" },
+        "bindings": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/audioBinding" } },
+        "contentTimebase": { "type": "string", "minLength": 1 },
+        "generatedById": { "$ref": "#/$defs/identifier" }
+      },
+      "additionalProperties": false
+    },
+    "listenerBinding": {
+      "type": "object",
+      "required": ["mode", "receiverId", "coordinateFrameId"],
+      "properties": {
+        "mode": { "enum": ["fixed", "tracked-3dof", "tracked-6dof", "trajectory"] },
+        "receiverId": { "$ref": "#/$defs/identifier" },
+        "coordinateFrameId": { "$ref": "#/$defs/identifier" },
+        "poseId": { "$ref": "#/$defs/identifier" },
+        "trajectoryAssetId": { "$ref": "#/$defs/identifier" },
+        "personalizationAssetId": { "$ref": "#/$defs/identifier" },
+        "headphoneCompensationAssetId": { "$ref": "#/$defs/identifier" }
+      },
+      "additionalProperties": false
+    },
+    "runtimeFeature": {
+      "type": "object",
+      "required": ["feature", "mode"],
+      "properties": {
+        "feature": { "enum": ["distance", "directivity", "occlusion", "diffraction", "early-reflections", "late-reverberation", "doppler", "portals", "listener-room-adaptation", "source-tracking"] },
+        "mode": { "enum": ["disabled", "metadata", "response-field", "geometry", "renderer-defined"] },
+        "inputIds": { "$ref": "#/$defs/identifierList" }
+      },
+      "additionalProperties": false
+    },
+    "renderConfiguration": {
+      "type": "object",
+      "required": ["id", "sceneId", "strategy", "coordinateFrameId", "inputIds", "listener", "features", "outsideDomainPolicy", "fallbackIds"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "sceneId": { "$ref": "#/$defs/identifier" },
+        "strategy": { "enum": ["static-playback", "tracked-convolution", "response-interpolation", "geometry-acoustics", "MPEG-I-6DoF", "learned-field", "hybrid"] },
+        "coordinateFrameId": { "$ref": "#/$defs/identifier" },
+        "inputIds": { "$ref": "#/$defs/uniqueIdentifiers" },
+        "listener": { "$ref": "#/$defs/listenerBinding" },
+        "features": { "type": "array", "items": { "$ref": "#/$defs/runtimeFeature" } },
+        "validDomainId": { "$ref": "#/$defs/identifier" },
+        "outsideDomainPolicy": { "enum": ["reject", "nearest", "clamp", "fade-to-dry", "fallback"] },
+        "fallbackIds": { "$ref": "#/$defs/identifierList" },
+        "transitionSeconds": { "type": "number", "minimum": 0 },
+        "latencyBudgetMilliseconds": { "type": "number", "minimum": 0 },
+        "levelsOfDetail": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["level", "inputIds"],
+            "properties": {
+              "level": { "type": "integer", "minimum": 0 },
+              "inputIds": { "$ref": "#/$defs/uniqueIdentifiers" },
+              "maximumDistanceMeters": { "type": "number", "minimum": 0 },
+              "maximumCPUPercent": { "type": "number", "minimum": 0, "maximum": 100 }
+            },
+            "additionalProperties": false
+          }
+        },
+        "rendererRequirements": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/iri" } }
+      },
+      "additionalProperties": false
+    },
+    "acoustics": {
+      "type": "object",
+      "required": ["coordinateFrames", "poses", "geometryBindings", "materialModels", "measurements", "responseSets", "metricSets", "audioScenes", "renderConfigurations"],
+      "properties": {
+        "coordinateFrames": { "type": "array", "items": { "$ref": "#/$defs/coordinateFrame" } },
+        "poses": { "type": "array", "items": { "$ref": "#/$defs/pose" } },
+        "geometryBindings": { "type": "array", "items": { "$ref": "#/$defs/geometryBinding" } },
+        "materialModels": { "type": "array", "items": { "$ref": "#/$defs/materialModel" } },
+        "measurements": { "type": "array", "items": { "$ref": "#/$defs/responseMeasurement" } },
+        "responseSets": { "type": "array", "items": { "$ref": "#/$defs/responseSet" } },
+        "metricSets": { "type": "array", "items": { "$ref": "#/$defs/metricSet" } },
+        "audioScenes": { "type": "array", "items": { "$ref": "#/$defs/audioScene" } },
+        "renderConfigurations": { "type": "array", "items": { "$ref": "#/$defs/renderConfiguration" } }
+      },
+      "additionalProperties": false
+    },
+    "distribution": {
+      "oneOf": [ { "$ref": "#/$defs/repositoryDistribution" }, { "$ref": "#/$defs/packMemberDistribution" } ]
+    },
+    "repositoryDistribution": {
+      "type": "object",
+      "required": ["id", "kind", "repositoryBindingId", "persistentIdentifier", "recordIdentifier", "fileIdentifier", "access"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" }, "kind": { "const": "repository" },
+        "repositoryBindingId": { "$ref": "#/$defs/identifier" }, "persistentIdentifier": { "$ref": "#/$defs/iri" },
+        "conceptIdentifier": { "$ref": "#/$defs/iri" }, "recordIdentifier": { "type": "string", "minLength": 1 },
+        "fileIdentifier": { "type": "string", "minLength": 1 },
+        "access": { "enum": ["public", "restricted", "embargoed", "metadata-only"] },
+        "transportChecksums": { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } }
+      },
+      "additionalProperties": false
+    },
+    "packMemberDistribution": {
+      "type": "object",
+      "required": ["id", "kind", "packRealizationId", "memberPath", "packManifestSHA256"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" }, "kind": { "const": "pack-member" },
+        "packRealizationId": { "$ref": "#/$defs/identifier" }, "memberPath": { "$ref": "#/$defs/safeMemberPath" },
+        "packManifestSHA256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "repositoryBinding": {
+      "type": "object",
+      "required": ["id", "repositoryType", "instance", "apiProfile", "resolutionPolicy"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" }, "repositoryType": { "$ref": "#/$defs/iri" },
+        "instance": { "$ref": "#/$defs/iri" }, "apiProfile": { "$ref": "#/$defs/iri" },
+        "resolutionPolicy": { "const": "version-pid-record-file" }
+      },
+      "additionalProperties": false
+    },
+    "assetGroup": {
+      "type": "object",
+      "required": ["id", "type", "labels", "selectionSetId", "qualityTier", "availability", "selectionPolicy", "realizationIds", "dependsOnGroupIds", "totalByteSize", "requiredCapabilities", "materializesProfileIds", "cachePolicy"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" }, "type": { "const": "AssetGroup" },
+        "labels": { "$ref": "#/$defs/localizedText" }, "selectionSetId": { "type": "string", "minLength": 1 },
+        "qualityTier": { "enum": ["bootstrap", "mobile", "production", "production-spatial", "preservation", "custom"] },
+        "availability": { "enum": ["offline-required", "remote-optional", "remote-required", "remote-restricted"] },
+        "selectionPolicy": { "enum": ["independent", "exactly-one", "at-most-one"] },
+        "realizationIds": { "$ref": "#/$defs/uniqueIdentifiers" }, "dependsOnGroupIds": { "$ref": "#/$defs/identifierList" },
+        "fallbackGroupId": { "$ref": "#/$defs/identifier" }, "totalByteSize": { "type": "integer", "minimum": 0 },
+        "requiredCapabilities": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/iri" } },
+        "materializesProfileIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/iri" } },
+        "cachePolicy": {
+          "type": "object", "required": ["evictable", "priority"],
+          "properties": { "evictable": { "type": "boolean" }, "priority": { "type": "integer", "minimum": 0, "maximum": 100 } },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "rights": {
+      "type": "object",
+      "required": ["id", "appliesToIds", "statement", "access"],
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" }, "appliesToIds": { "$ref": "#/$defs/uniqueIdentifiers" },
+        "license": { "$ref": "#/$defs/iri" }, "statement": { "$ref": "#/$defs/localizedText" },
+        "access": { "enum": ["open", "restricted", "embargoed", "unknown"] },
+        "attribution": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "integrity": {
+      "type": "object", "required": ["algorithm", "manifestDigestLocation", "carrierDescriptor"],
+      "properties": {
+        "algorithm": { "const": "sha256" },
+        "manifestDigestLocation": { "const": "external-release-and-carrier-descriptors" },
+        "carrierDescriptor": { "const": "META-INF/vao-carrier.json" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

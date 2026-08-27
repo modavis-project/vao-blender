@@ -1,0 +1,57 @@
+@prefix vao: <https://w3id.org/modavis/vao/ontology#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://w3id.org/modavis/vao/0.3/vocabulary> a owl:Ontology ;
+  dcterms:title "Virtual Acoustic Object 0.3 delivery and acoustic-scene vocabulary"@en ;
+  owl:versionInfo "0.3.2" .
+
+vao:LogicalAsset a owl:Class ; rdfs:label "logical asset"@en .
+vao:Realization a owl:Class ; rdfs:label "byte realization"@en .
+vao:Distribution a owl:Class ; rdfs:label "distribution"@en .
+vao:RepositoryBinding a owl:Class ; rdfs:label "repository binding"@en .
+vao:AssetGroup a owl:Class ; rdfs:label "asset group"@en .
+vao:VAOCarrier a owl:Class ; rdfs:label "VAO carrier"@en .
+vao:VAORelease a owl:Class ; rdfs:label "VAO release descriptor"@en .
+vao:PublicationRecord a owl:Class ; rdfs:label "publication record"@en .
+vao:RecordFamilyMember a owl:Class ; rdfs:label "record family member"@en .
+vao:ZenodoMetadataProjection a owl:Class ; rdfs:label "Zenodo metadata projection"@en .
+vao:VAOPackManifest a owl:Class ; rdfs:label "VAO pack manifest"@en .
+vao:VAOMaterializationReceipt a owl:Class ; rdfs:label "VAO materialization receipt"@en .
+vao:CoordinateFrame a owl:Class ; rdfs:label "coordinate frame"@en .
+vao:Pose a owl:Class ; rdfs:label "pose"@en .
+vao:GeometryBinding a owl:Class ; rdfs:label "geometry binding"@en .
+vao:ResponseMeasurement a owl:Class ; rdfs:label "source-receiver response measurement"@en .
+vao:AcousticResponseSet a owl:Class ; rdfs:label "acoustic response set"@en .
+vao:AudioScene a owl:Class ; rdfs:label "audio scene"@en .
+vao:RenderConfiguration a owl:Class ; rdfs:label "render configuration"@en .
+
+vao:hasRealization a owl:ObjectProperty ; rdfs:domain vao:LogicalAsset ; rdfs:range vao:Realization .
+vao:realizesAsset a owl:ObjectProperty ; rdfs:domain vao:Realization ; rdfs:range vao:LogicalAsset .
+vao:hasDistribution a owl:ObjectProperty ; rdfs:domain vao:Realization ; rdfs:range vao:Distribution .
+vao:repositoryBinding a owl:ObjectProperty ; rdfs:domain vao:Distribution ; rdfs:range vao:RepositoryBinding .
+vao:dependsOnGroup a owl:ObjectProperty ; rdfs:domain vao:AssetGroup ; rdfs:range vao:AssetGroup .
+vao:fallbackGroup a owl:ObjectProperty ; rdfs:domain vao:AssetGroup ; rdfs:range vao:AssetGroup .
+vao:publicationRoot a owl:ObjectProperty ; rdfs:domain vao:VAORelease ; rdfs:range vao:PublicationRecord .
+vao:familyMember a owl:ObjectProperty ; rdfs:domain vao:VAORelease ; rdfs:range vao:RecordFamilyMember .
+vao:publicationTopology a owl:DatatypeProperty ; rdfs:domain vao:VAORelease .
+vao:relationFromRoot a owl:DatatypeProperty ; rdfs:domain vao:RecordFamilyMember .
+vao:versionPersistentIdentifier a owl:DatatypeProperty ; rdfs:domain vao:PublicationRecord .
+vao:conceptPersistentIdentifier a owl:DatatypeProperty ; rdfs:domain vao:PublicationRecord .
+vao:logicalAsset a owl:ObjectProperty ; rdfs:range vao:LogicalAsset .
+vao:coordinateFrame a owl:ObjectProperty ; rdfs:range vao:CoordinateFrame .
+vao:parentFrame a owl:ObjectProperty ; rdfs:domain vao:CoordinateFrame ; rdfs:range vao:CoordinateFrame .
+vao:subject a owl:ObjectProperty .
+vao:source a owl:ObjectProperty .
+vao:receiver a owl:ObjectProperty .
+vao:sourcePose a owl:ObjectProperty ; rdfs:range vao:Pose .
+vao:receiverPose a owl:ObjectProperty ; rdfs:range vao:Pose .
+vao:measurement a owl:ObjectProperty ; rdfs:range vao:ResponseMeasurement .
+vao:responseSet a owl:ObjectProperty ; rdfs:range vao:AcousticResponseSet .
+vao:mediaAsset a owl:ObjectProperty ; rdfs:range vao:LogicalAsset .
+vao:scene a owl:ObjectProperty ; rdfs:range vao:AudioScene .
+
+<https://w3id.org/modavis/vao/vocab/capability/simulated-impulse-response> a vao:Capability ; rdfs:label "simulated impulse response"@en .
+<https://w3id.org/modavis/vao/vocab/capability/position-registered-acoustic-scene> a vao:Capability ; rdfs:label "position-registered acoustic scene"@en .
+<https://w3id.org/modavis/vao/vocab/capability/visual-acoustic-scene> a vao:Capability ; rdfs:label "visual-acoustic scene"@en .

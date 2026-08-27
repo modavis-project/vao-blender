@@ -1,0 +1,350 @@
+{
+  "$schema": "https://w3id.org/modavis/vao/0.4.0/schema/manifest.json",
+  "@context": [
+    "https://w3id.org/modavis/vao/0.4.0/context.jsonld"
+  ],
+  "assetGroups": [
+    {
+      "availability": "offline-required",
+      "cachePolicy": {
+        "evictable": false,
+        "priority": 100
+      },
+      "dependsOnGroupIds": [],
+      "id": "urn:uuid:03000000-0000-4000-8000-000000000030",
+      "labels": {
+        "en": "Embedded bootstrap"
+      },
+      "materializesProfileIds": [],
+      "qualityTier": "bootstrap",
+      "realizationIds": [
+        "urn:uuid:03000000-0000-4000-8000-000000000021"
+      ],
+      "requiredCapabilities": [],
+      "selectionPolicy": "independent",
+      "selectionSetId": "bootstrap",
+      "totalByteSize": 69,
+      "type": "AssetGroup"
+    }
+  ],
+  "conformsTo": [
+    "https://w3id.org/modavis/vao/profile/core/0.4.0",
+    "https://w3id.org/modavis/vao/profile/dynamic-delivery/0.4.0",
+    "https://w3id.org/modavis/vao/profile/scientific/0.4.0"
+  ],
+  "createdAt": "2026-08-24T00:00:00Z",
+  "description": {
+    "en": "A fully embedded carrier with no repository, DOI, network, or Zenodo dependency."
+  },
+  "discovery": {
+    "contributorAgentIds": [],
+    "creatorAgentIds": [
+      "urn:vao:agent:vao04-migrator"
+    ],
+    "fundingReferences": [],
+    "relatedIdentifiers": [],
+    "resourceType": "Dataset",
+    "subjects": []
+  },
+  "distributions": [],
+  "entities": [
+    {
+      "id": "urn:uuid:03000000-0000-4000-8000-000000000010",
+      "kind": "instrument",
+      "labels": {
+        "en": "Example instrument"
+      },
+      "properties": {},
+      "types": [
+        "https://w3id.org/modavis/ontology/instrument#MusicalInstrument"
+      ]
+    }
+  ],
+  "focusEntityIds": [
+    "urn:uuid:03000000-0000-4000-8000-000000000010"
+  ],
+  "formatVersion": "0.4.0",
+  "id": "https://example.org/vao/fixture/embedded-private",
+  "integrity": {
+    "algorithm": "sha256",
+    "carrierDescriptor": "META-INF/vao-carrier.json",
+    "manifestDigestLocation": "external-release-and-carrier-descriptors"
+  },
+  "logicalAssets": [
+    {
+      "aboutEntityIds": [
+        "urn:uuid:03000000-0000-4000-8000-000000000010"
+      ],
+      "id": "urn:uuid:03000000-0000-4000-8000-000000000020",
+      "labels": {
+        "en": "Source evidence note"
+      },
+      "properties": {},
+      "realizationIds": [
+        "urn:uuid:03000000-0000-4000-8000-000000000021"
+      ],
+      "roles": [
+        "https://w3id.org/modavis/vao/vocab/asset-role/source-evidence"
+      ],
+      "type": "LogicalAsset"
+    }
+  ],
+  "materializableProfiles": [],
+  "modavisBinding": {
+    "mappingIRI": "https://w3id.org/modavis/vao/0.4.0/modavis-mapping",
+    "mappingVersion": "0.4.0",
+    "notes": "Final co-release binding to the immutable MODAVIS Ontology Network 0.1.0 contract.",
+    "ontologyIRI": "https://w3id.org/modavis/ontology",
+    "ontologyStatus": "released",
+    "ontologyVersion": "0.1.0",
+    "ontologyVersionIRI": "https://w3id.org/modavis/ontology/0.1.0"
+  },
+  "modifiedAt": "2026-08-24T00:00:00Z",
+  "multimodal": {
+    "annotations": [],
+    "synchronizationMappings": [],
+    "timebases": [],
+    "tracks": []
+  },
+  "physicalSystem": {
+    "actuators": [],
+    "components": [],
+    "connections": [],
+    "ports": [],
+    "sensors": [],
+    "stateBindings": []
+  },
+  "primaryEntityId": "urn:uuid:03000000-0000-4000-8000-000000000010",
+  "profiles": [
+    {
+      "id": "https://w3id.org/modavis/vao/profile/core/0.4.0",
+      "requiredCapabilities": [
+        "https://w3id.org/modavis/vao/vocab/capability/core-graph",
+        "https://w3id.org/modavis/vao/vocab/capability/fixity"
+      ],
+      "version": "0.4.0"
+    },
+    {
+      "id": "https://w3id.org/modavis/vao/profile/dynamic-delivery/0.4.0",
+      "requiredCapabilities": [
+        "https://w3id.org/modavis/vao/vocab/capability/immutable-release",
+        "https://w3id.org/modavis/vao/vocab/capability/carrier-mapping"
+      ],
+      "version": "0.4.0"
+    },
+    {
+      "id": "https://w3id.org/modavis/vao/profile/scientific/0.4.0",
+      "requiredCapabilities": [
+        "https://w3id.org/modavis/vao/vocab/capability/typed-scientific-provenance"
+      ],
+      "version": "0.4.0"
+    }
+  ],
+  "realizations": [
+    {
+      "assetId": "urn:uuid:03000000-0000-4000-8000-000000000020",
+      "byteSize": 69,
+      "contentDigests": [
+        {
+          "algorithm": "sha256",
+          "value": "167b48baa46a4d2c665c7ee655e255e817e32f2fee84275bd7067971b1593f17"
+        }
+      ],
+      "distributionIds": [],
+      "extensions": {
+        "https://w3id.org/modavis/vao/ontology#sourceRepresentationStatus": "https://w3id.org/modavis/vao/vocab/representation-status/authored"
+      },
+      "id": "urn:uuid:03000000-0000-4000-8000-000000000021",
+      "mediaType": "text/plain",
+      "provenanceIds": [
+        "urn:vao:activity:migrate:f69323e852697f7f0bb8bdaa040d8114acd3cfd1b10183b7eddb67b6f9173134"
+      ],
+      "qualityTier": "bootstrap",
+      "representationStatus": "https://w3id.org/modavis/vao/vocab/representation-status/undetermined",
+      "rightsIds": [
+        "urn:uuid:03000000-0000-4000-8000-000000000040"
+      ],
+      "sha256": "167b48baa46a4d2c665c7ee655e255e817e32f2fee84275bd7067971b1593f17",
+      "technicalMetadata": {
+        "kind": "document"
+      },
+      "type": "Realization",
+      "variantSetId": "source-evidence-note"
+    }
+  ],
+  "relations": [],
+  "release": {
+    "contentVersion": "1.0.0",
+    "id": "urn:uuid:03000000-0000-4000-8000-000000000001",
+    "migratedFromManifestSHA256": "f69323e852697f7f0bb8bdaa040d8114acd3cfd1b10183b7eddb67b6f9173134",
+    "revision": 1
+  },
+  "repositoryBindings": [],
+  "rights": [
+    {
+      "access": "open",
+      "appliesToIds": [
+        "https://example.org/vao/fixture/embedded-private",
+        "urn:uuid:03000000-0000-4000-8000-000000000020",
+        "urn:uuid:03000000-0000-4000-8000-000000000021"
+      ],
+      "id": "urn:uuid:03000000-0000-4000-8000-000000000040",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "statement": {
+        "en": "CC0 test fixture."
+      }
+    }
+  ],
+  "runtime": {
+    "conformanceTraces": [],
+    "executionSemantics": {
+      "actionExecution": "execution-group-then-array-order",
+      "lateEventPolicy": "reject",
+      "maximumMicrosteps": 10000,
+      "maximumVoices": 1024,
+      "reentrancyPolicy": "queue",
+      "runToCompletion": true,
+      "simultaneousEventOrder": "priority-then-event-id",
+      "timeResolution": {
+        "unit": "http://qudt.org/vocab/unit/MilliSEC",
+        "value": 1
+      },
+      "timestampOrder": "ascending",
+      "transitionEvaluation": "snapshot",
+      "voiceAllocation": "lowest-free-then-oldest"
+    },
+    "randomSources": [],
+    "renderers": []
+  },
+  "scientific": {
+    "activities": [
+      {
+        "activityKind": "migration",
+        "agentIds": [
+          "urn:vao:agent:vao04-migrator"
+        ],
+        "endedAt": "2026-08-24T00:00:00Z",
+        "id": "urn:vao:activity:migrate:f69323e852697f7f0bb8bdaa040d8114acd3cfd1b10183b7eddb67b6f9173134",
+        "inputIds": [
+          "https://example.org/vao/fixture/embedded-private"
+        ],
+        "outputIds": [
+          "urn:uuid:03000000-0000-4000-8000-000000000001",
+          "urn:uuid:03000000-0000-4000-8000-000000000021"
+        ],
+        "parameterValues": {
+          "https://w3id.org/modavis/vao/ontology#legacyAnalyses": [],
+          "https://w3id.org/modavis/vao/ontology#legacyParadata": []
+        },
+        "protocolId": "urn:vao:protocol:vao033-to-vao040",
+        "softwareEnvironmentId": "urn:vao:software:vao04-reference",
+        "startedAt": "2026-08-24T00:00:00Z"
+      }
+    ],
+    "agents": [
+      {
+        "agentKind": "software-agent",
+        "id": "urn:vao:agent:vao04-migrator",
+        "labels": {
+          "en": "VAO 0.4 reference migrator"
+        }
+      }
+    ],
+    "analyses": [],
+    "calibrations": [],
+    "claims": [],
+    "consents": [],
+    "observations": [],
+    "protocols": [
+      {
+        "id": "urn:vao:protocol:vao033-to-vao040",
+        "labels": {
+          "en": "VAO 0.3.3 to 0.4.0 semantic migration"
+        },
+        "procedure": "Preserve exact realization identities and project closed 0.3 registries into 0.4; retain legacy open records as namespaced migration parameters.",
+        "version": "0.4.0"
+      }
+    ],
+    "reviews": [],
+    "softwareEnvironments": [
+      {
+        "id": "urn:vao:software:vao04-reference",
+        "name": "VAO 0.4 reference validator and migrator",
+        "version": "0.4.0",
+        "identity": {
+          "algorithm": "sha256",
+          "value": "15e4e01c5904579cfa20b6a15b4ee71bece7340e5103c3180597b67d3948d095"
+        },
+        "identityScope": "source-file",
+        "identityDescription": "SHA-256 of the exact Tools/vao04.py entry-point source; imported behavioural sources and the normative artifact-bundle declaration are pinned separately in dependencies, together with the source checkout's Python dependency lock.",
+        "dependencies": [
+          {
+            "name": "Tools/vao03.py",
+            "dependencyRole": "source",
+            "identity": {
+              "algorithm": "sha256",
+              "value": "ff22f72bdf691e87f0101c682238cd2da933643dca86e82d318e3b75f87211ac"
+            },
+            "identityScope": "source-file",
+            "identityDescription": "SHA-256 of the exact distributed file Tools/vao03.py."
+          },
+          {
+            "name": "Tools/vaom.py",
+            "dependencyRole": "source",
+            "identity": {
+              "algorithm": "sha256",
+              "value": "e52d11ccd5c6305345b6aac4f33949e4f1a1074e2c7374d031b6f35a36644eb0"
+            },
+            "identityScope": "source-file",
+            "identityDescription": "SHA-256 of the exact distributed file Tools/vaom.py."
+          },
+          {
+            "name": "Tools/vao04_runtime.py",
+            "dependencyRole": "source",
+            "identity": {
+              "algorithm": "sha256",
+              "value": "546d1b6b207b7359974541d80e00fae53a2aa53695db31ebd4d6e535a9a081dd"
+            },
+            "identityScope": "source-file",
+            "identityDescription": "SHA-256 of the exact distributed file Tools/vao04_runtime.py."
+          },
+          {
+            "name": "Tools/vao_resources.py",
+            "dependencyRole": "source",
+            "identity": {
+              "algorithm": "sha256",
+              "value": "4af739d85c5d31ec6f87cf6074372904a27eec06a3d8543eb7123bcdf34297b1"
+            },
+            "identityScope": "source-file",
+            "identityDescription": "SHA-256 of the exact distributed file Tools/vao_resources.py."
+          },
+          {
+            "name": "Schemas/vao-release-bundle-0.4.0.json",
+            "dependencyRole": "normative-artifact",
+            "identity": {
+              "algorithm": "sha256",
+              "value": "3ad51fac72ee71497bb82dbfb878fbf454c49d81e8a7ef879fdf8d28e9240e36"
+            },
+            "identityScope": "declaration",
+            "identityDescription": "SHA-256 of the exact distributed file Schemas/vao-release-bundle-0.4.0.json."
+          },
+          {
+            "name": "requirements-lock.txt",
+            "dependencyRole": "environment-lock",
+            "identity": {
+              "algorithm": "sha256",
+              "value": "cfc21919a7f6c3eda016e2d2b37c75298bf7760469bb6938833dd60255feb30b"
+            },
+            "identityScope": "environment-lock",
+            "identityDescription": "SHA-256 of the exact distributed file requirements-lock.txt."
+          }
+        ],
+        "runtimeDescription": "CPython >=3.11; release gate exercised on CPython 3.11 and 3.14; OS and architecture are not part of this source identity."
+      }
+    ]
+  },
+  "title": {
+    "en": "VAO 0.3 embedded private-sharing fixture"
+  },
+  "type": "VirtualAcousticObject"
+}

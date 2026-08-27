@@ -1,0 +1,44 @@
+schema_version = "1.0.0"
+id = "vao_blender"
+version = "0.3.0"
+name = "VAO Blender"
+tagline = "Safely inspect and use Virtual Acoustic Object packages"
+maintainer = "VAO-Blender contributors"
+type = "add-on"
+website = "https://github.com/modavis-project/vao-blender"
+tags = ["Import-Export", "3D View", "User Interface"]
+blender_version_min = "5.1.0"
+platforms = ["windows-x64", "macos-x64", "macos-arm64", "linux-x64"]
+license = ["SPDX:GPL-3.0-or-later"]
+copyright = ["2026 VAO-Blender contributors"]
+
+wheels = [
+  "./wheels/attrs-26.1.0-py3-none-any.whl",
+  "./wheels/jsonschema-4.26.0-py3-none-any.whl",
+  "./wheels/jsonschema_specifications-2025.9.1-py3-none-any.whl",
+  "./wheels/referencing-0.37.0-py3-none-any.whl",
+  "./wheels/rfc3339_validator-0.1.4-py2.py3-none-any.whl",
+  "./wheels/rfc3987-1.3.8-py2.py3-none-any.whl",
+  "./wheels/rfc8785-0.1.4-py3-none-any.whl",
+  "./wheels/six-1.17.0-py2.py3-none-any.whl",
+  "./wheels/rpds_py-2026.6.3-cp313-cp313-macosx_10_12_x86_64.whl",
+  "./wheels/rpds_py-2026.6.3-cp313-cp313-macosx_11_0_arm64.whl",
+  "./wheels/rpds_py-2026.6.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+  "./wheels/rpds_py-2026.6.3-cp313-cp313-win_amd64.whl",
+]
+
+[permissions]
+files = "Read VAO packages and maintain a verified local media cache"
+
+[build]
+paths_exclude_pattern = [
+  "__pycache__/",
+  ".*",
+  "build/",
+  "dist/",
+  "docs/",
+  "scripts/",
+  "tests/",
+  "*.blend",
+  "*.vao",
+]

@@ -1,0 +1,443 @@
+{
+  "checks": {
+    "acousticRoomsFixture": {
+      "carrierMode": "preservation-closure",
+      "distributionCount": 0,
+      "embeddedRealizationCount": 8,
+      "errors": [],
+      "formatVersion": "0.3.2",
+      "groupCount": 1,
+      "id": "urn:vao:fixture:acousticrooms:bathrooms-idx-0",
+      "logicalAssetCount": 7,
+      "manifestSHA256": "8bf67a8240db327d481bcc23f532ba2c198c8a886f5659efcab909a9273ab652",
+      "realizationCount": 8,
+      "releaseId": "urn:vao:fixture:acousticrooms:bathrooms-idx-0:release:1",
+      "valid": true,
+      "verifiedBytes": 1722650,
+      "warnings": []
+    },
+    "conformance": {
+      "caseCount": 51,
+      "failed": 0,
+      "passed": 51
+    },
+    "descriptors": {
+      "pack": {
+        "errors": [],
+        "valid": true,
+        "warnings": []
+      },
+      "receipt": {
+        "errors": [],
+        "valid": true,
+        "warnings": []
+      },
+      "recordFamily": {
+        "errors": [],
+        "valid": true,
+        "warnings": []
+      },
+      "singleRecord": {
+        "errors": [],
+        "valid": true,
+        "warnings": []
+      }
+    },
+    "privateFixture": {
+      "carrierMode": "bootstrap",
+      "distributionCount": 0,
+      "embeddedRealizationCount": 1,
+      "errors": [],
+      "formatVersion": "0.3.2",
+      "groupCount": 1,
+      "id": "https://example.org/vao/fixture/embedded-private",
+      "logicalAssetCount": 1,
+      "manifestSHA256": "8cbf3f170de30783b60e05ec7229a05f3210542acf2a7a3e80aad2af0960eb4e",
+      "realizationCount": 1,
+      "releaseId": "urn:uuid:03000000-0000-4000-8000-000000000001",
+      "valid": true,
+      "verifiedBytes": 69,
+      "warnings": []
+    },
+    "sandboxFixture": {
+      "carrierMode": "bootstrap",
+      "distributionCount": 1,
+      "embeddedRealizationCount": 1,
+      "errors": [],
+      "formatVersion": "0.3.2",
+      "groupCount": 2,
+      "id": "https://example.org/vao/fixture/zenodo-sandbox",
+      "logicalAssetCount": 2,
+      "manifestSHA256": "752f67dfbce5bdf748e8adc84f8ccabae9be305b2d2d24fb83204aa2a228edda",
+      "realizationCount": 2,
+      "releaseId": "urn:uuid:03000000-0000-4000-8000-000000000102",
+      "valid": true,
+      "verifiedBytes": 69,
+      "warnings": []
+    },
+    "swiftVAO03": {
+      "caseCount": 14,
+      "failed": 0,
+      "passed": 14
+    }
+  },
+  "files": [
+    {
+      "byteSize": 23338,
+      "path": "CHANGELOG.md",
+      "sha256": "26a10e577353431c04afe8b3c8d2350a7364ba7af852840b0045953fa5b5aa5d"
+    },
+    {
+      "byteSize": 23063,
+      "path": "Docs/VAO_STANDARD_0.3.md",
+      "sha256": "e6f64933ca2e17f664e1f91ff39e9e351584c2053ccc2cb2ef0ed3eb3cba3abb"
+    },
+    {
+      "byteSize": 7748,
+      "path": "Docs/VAO_CONFORMANCE_0.3.md",
+      "sha256": "014a9fdfcaaf68d3e1447abe17b8838d355e64f24c27d29549f8e404d7d4ef29"
+    },
+    {
+      "byteSize": 8111,
+      "path": "Docs/VAO_ZENODO_PROFILE_0.3.md",
+      "sha256": "c82e7cc7995eef5d5edc1e432b24dc14175213e79745360fcf85e9ba839cc481"
+    },
+    {
+      "byteSize": 1717,
+      "path": "Docs/VAO_0.2_TO_0.3_MIGRATION.md",
+      "sha256": "a39562a19002c97d3a32306a5157769abc2de6267780e9766608a6e3a00324e7"
+    },
+    {
+      "byteSize": 35135,
+      "path": "Docs/VAO_0.3_IMPLEMENTATION_REPORT.md",
+      "sha256": "d93de8e9aeeb457552000d7e3f3ca38886761f7aaed963fded2221d96bacc1a5"
+    },
+    {
+      "byteSize": 4363,
+      "path": "Docs/VAO_0.3.1_CHANGELOG.md",
+      "sha256": "7e0a27eed5a54126d325264ee635db81ca5f87f99be38a4bb59527167c67ce0f"
+    },
+    {
+      "byteSize": 4348,
+      "path": "Docs/VAO_0.3.2_CHANGELOG.md",
+      "sha256": "b2db5e0b13c3ae6b0dd826412432639983615eca6dcdcc2e7b7283ebebd9b1bc"
+    },
+    {
+      "byteSize": 5036,
+      "path": "Docs/VAO_ACOUSTIC_SCENES_0.3.md",
+      "sha256": "e15d372bb1f334875a4aa3c1fbda18331d27e214ff8f74414acaefdbf3833647"
+    },
+    {
+      "byteSize": 4072,
+      "path": "Docs/ORGREC_VAO_0.3.2_COMPATIBILITY.md",
+      "sha256": "b81a455399cbac2a72a63945cefa347a3e1db1c1bf248ff2d62cca6eb89d3ca7"
+    },
+    {
+      "byteSize": 3056,
+      "path": "Docs/VAO_RELEASE_CHECKLIST_0.3.md",
+      "sha256": "6700524ba1feb5c5934106ee02eb64d5b894121c61437d08cf47db9cf448e219"
+    },
+    {
+      "byteSize": 9489,
+      "path": "Docs/VAO_GOVERNANCE.md",
+      "sha256": "16cb5609d5840eed0d23053081b8857e865bd460a3901621a86a334eb2382309"
+    },
+    {
+      "byteSize": 1312,
+      "path": "Schemas/README.md",
+      "sha256": "1da1400cd9a18e2c7fb08c9a68dbc377424dee2ddda11f53288a18eef1adf24d"
+    },
+    {
+      "byteSize": 35260,
+      "path": "Schemas/vao-manifest-0.3.schema.json",
+      "sha256": "651cfe6b060cf2a4eb735c4b73446cbb84073095fde0995977c4d86293023fdd"
+    },
+    {
+      "byteSize": 1400,
+      "path": "Schemas/vao-carrier-0.3.schema.json",
+      "sha256": "b4bcc49aec153182885f67694f7031ef585bf997b5cf3ee12e08387e0211443e"
+    },
+    {
+      "byteSize": 4951,
+      "path": "Schemas/vao-release-0.3.schema.json",
+      "sha256": "278ccc299329f61a8e2d5e01cbbed7431b3ebb8d7abb8e54c2144f0c0b721e01"
+    },
+    {
+      "byteSize": 1359,
+      "path": "Schemas/vao-pack-manifest-0.3.schema.json",
+      "sha256": "d4b04e54042d69b894a398cddcfd38af3eaaf94062c532dce5e8c03ac6578075"
+    },
+    {
+      "byteSize": 2008,
+      "path": "Schemas/vao-materialization-receipt-0.3.schema.json",
+      "sha256": "ed612de779dd415bbc2b1707e16f06e8ed05d8ecef6ab889eb3aed0438247c70"
+    },
+    {
+      "byteSize": 6315,
+      "path": "Schemas/vao-zenodo-metadata-0.3.schema.json",
+      "sha256": "6bb6a11d89a5baff71d0461a1bd6c29a51092e40580e5ab9f38be2faccbc81ea"
+    },
+    {
+      "byteSize": 2681,
+      "path": "Schemas/vao-context-0.3.jsonld",
+      "sha256": "60e579c175149d06f967b76d5f880dc3fe6d7bb7325ed5225be108b6b72c45fb"
+    },
+    {
+      "byteSize": 4087,
+      "path": "Schemas/vao-vocabulary-0.3.ttl",
+      "sha256": "9afa8371a8df3dc9f6d1d7a5e48227627ef8d9209956ef592cec05576442b73e"
+    },
+    {
+      "byteSize": 36724,
+      "path": "Schemas/vao-manifest.schema.json",
+      "sha256": "c7a2cde4a68edca0a87068abfff88325a791b6c06fbe5d9025115046e27f7c3b"
+    },
+    {
+      "byteSize": 185354,
+      "path": "Tools/vaom.py",
+      "sha256": "fb0c27e5f5efa0fe1689fa01789a7f2985d8380669d558804e5bb90f498b024c"
+    },
+    {
+      "byteSize": 72687,
+      "path": "Tools/vao03.py",
+      "sha256": "383ddd889386a32fe50200eb06862191356f6a607c4e405c0d2a2aacbda4f37b"
+    },
+    {
+      "byteSize": 10406,
+      "path": "Tools/vao03_zenodo.py",
+      "sha256": "b86bfaa7ca2326ecfaef4c3106aa73bce90fdf31260c7e97ef5e4a50927106f5"
+    },
+    {
+      "byteSize": 16839,
+      "path": "Tools/test_vao03_conformance.py",
+      "sha256": "db6c2f69d2b1f34a7f6ea18f6b73d77706e3a54fb5618083f8081ab1836363eb"
+    },
+    {
+      "byteSize": 10360,
+      "path": "Tools/build_vao03_release.py",
+      "sha256": "fb8924f9f153f3e64a1f8a8fd8705113986f265ee0f4599b449464ade6d57580"
+    },
+    {
+      "byteSize": 14902,
+      "path": "Sources/OrgRecCore/VAO03Models.swift",
+      "sha256": "a18509f8f0352e85136707dd0b660e0abef139340287fd374671d5326cea2087"
+    },
+    {
+      "byteSize": 23259,
+      "path": "Sources/OrgRecCore/VAO03Validation.swift",
+      "sha256": "8ffc5244cc61d14feba59fcac345fadbd74abbf40b14ec125bf5da8b4f2ee475"
+    },
+    {
+      "byteSize": 18681,
+      "path": "Sources/OrgRecCore/VAO03AcousticsValidation.swift",
+      "sha256": "a759dd4065668c8b6cd979a84e3e55524fb9c24f7848fd8d90662286cec5d8ca"
+    },
+    {
+      "byteSize": 15627,
+      "path": "Sources/OrgRecCore/VAO03PackageAccess.swift",
+      "sha256": "4a32f89161e7040e8e4c158a954fd17502c513a0fc9b91ddcccf74fd375500dd"
+    },
+    {
+      "byteSize": 4866,
+      "path": "Sources/OrgRecCore/VAO03Materialization.swift",
+      "sha256": "fcaba392507f2dbe8161a176bd942f15cfadb0d8484bd5d44669e9669530eefd"
+    },
+    {
+      "byteSize": 14309,
+      "path": "Tests/OrgRecCoreTests/VAO03Tests.swift",
+      "sha256": "dffcabd99fbf0eafcfe5870651e45070194cab5e644cc640ecbc24fc70ca971f"
+    },
+    {
+      "byteSize": 31,
+      "path": "Fixtures/VAO03/valid/embedded-private/mimetype",
+      "sha256": "052b712ddb073db2dcbdb4bc9f975f6d421e30fe0d96036fbfa232603004f4e2"
+    },
+    {
+      "byteSize": 4754,
+      "path": "Fixtures/VAO03/valid/embedded-private/vao-manifest.json",
+      "sha256": "8cbf3f170de30783b60e05ec7229a05f3210542acf2a7a3e80aad2af0960eb4e"
+    },
+    {
+      "byteSize": 576,
+      "path": "Fixtures/VAO03/valid/embedded-private/META-INF/vao-carrier.json",
+      "sha256": "6fad853adb67520bb56c6af9576d711bb1df163f19309a9b0ee1c0a4043cc596"
+    },
+    {
+      "byteSize": 69,
+      "path": "Fixtures/VAO03/valid/embedded-private/payload/evidence/source.txt",
+      "sha256": "9ffee40a062ef9850d571f22e0138d05984ee90cd4c1cc6e71c7dbfb1e05eb99"
+    },
+    {
+      "byteSize": 31,
+      "path": "Fixtures/VAO03/valid/zenodo-sandbox/mimetype",
+      "sha256": "052b712ddb073db2dcbdb4bc9f975f6d421e30fe0d96036fbfa232603004f4e2"
+    },
+    {
+      "byteSize": 7648,
+      "path": "Fixtures/VAO03/valid/zenodo-sandbox/vao-manifest.json",
+      "sha256": "752f67dfbce5bdf748e8adc84f8ccabae9be305b2d2d24fb83204aa2a228edda"
+    },
+    {
+      "byteSize": 568,
+      "path": "Fixtures/VAO03/valid/zenodo-sandbox/META-INF/vao-carrier.json",
+      "sha256": "c147039054e5f73eb58630396e61e86c76e1b1ba18b98ec7c9fb774da85fa2c5"
+    },
+    {
+      "byteSize": 69,
+      "path": "Fixtures/VAO03/valid/zenodo-sandbox/payload/evidence/source.txt",
+      "sha256": "9ffee40a062ef9850d571f22e0138d05984ee90cd4c1cc6e71c7dbfb1e05eb99"
+    },
+    {
+      "byteSize": 31,
+      "path": "Fixtures/VAO03/valid/acousticrooms-scene/mimetype",
+      "sha256": "052b712ddb073db2dcbdb4bc9f975f6d421e30fe0d96036fbfa232603004f4e2"
+    },
+    {
+      "byteSize": 28804,
+      "path": "Fixtures/VAO03/valid/acousticrooms-scene/vao-manifest.json",
+      "sha256": "8bf67a8240db327d481bcc23f532ba2c198c8a886f5659efcab909a9273ab652"
+    },
+    {
+      "byteSize": 1658,
+      "path": "Fixtures/VAO03/valid/acousticrooms-scene/META-INF/vao-carrier.json",
+      "sha256": "f3704464962f6adf4fa37f99f5cc3be1755b3dac49d494a27c55091591309620"
+    },
+    {
+      "byteSize": 23772,
+      "path": "Fixtures/VAO03/valid/acousticrooms-scene/payload/acoustics/S000_R0011_hybrid_IR.wav",
+      "sha256": "acfa34ce1f465e78337da0ac7032b92e2913dfa4203c077acd1e5cbe6dd446b6"
+    },
+    {
+      "byteSize": 1112265,
+      "path": "Fixtures/VAO03/valid/acousticrooms-scene/payload/geometry/Bathrooms_idx_0.obj",
+      "sha256": "b86f60267314fe314d0ebacd716c1770dd029a8c5ad851a56b1162ac4975b6ff"
+    },
+    {
+      "byteSize": 549736,
+      "path": "Fixtures/VAO03/valid/acousticrooms-scene/payload/geometry/Bathrooms_idx_0.glb",
+      "sha256": "03e1bb41f2db881da22212184baa765a71ae9e3248ef610237f67322b039798a"
+    },
+    {
+      "byteSize": 18103,
+      "path": "Fixtures/VAO03/valid/acousticrooms-scene/payload/evidence/ACOUSTICROOMS_LICENSE.txt",
+      "sha256": "77bb3ec108e522894a2333e6ef0f20007bed136285166b46b852010ee78ec31f"
+    },
+    {
+      "byteSize": 4585,
+      "path": "Fixtures/VAO03/valid/acousticrooms-scene/payload/evidence/ACOUSTICROOMS_README.md",
+      "sha256": "986dd099f8276e53a5dc63d86aac03f97a57387dac8a29edab79251eaea0ec79"
+    },
+    {
+      "byteSize": 211,
+      "path": "Fixtures/VAO03/valid/acousticrooms-scene/payload/evidence/S000_R0011.json",
+      "sha256": "66b0fcd2990cb9bd2719e01f8f2a3d00aaeb6a0dc01cf5c2d977515468582b36"
+    },
+    {
+      "byteSize": 12099,
+      "path": "Fixtures/VAO03/valid/acousticrooms-scene/payload/evidence/simulation.json",
+      "sha256": "d691f91969ed3a640733929eadbc9292a0dfd20639ec00be518911e1f6add3f3"
+    },
+    {
+      "byteSize": 1879,
+      "path": "Fixtures/VAO03/valid/acousticrooms-scene/payload/evidence/fixture-provenance.json",
+      "sha256": "eb1ee01d91c1f44e125cf70090d845a4d09a3f2335784abc1031748936162114"
+    },
+    {
+      "byteSize": 580,
+      "path": "Fixtures/VAO03/descriptors/pack-manifest.example.json",
+      "sha256": "18898d0fa5776f725de0e9152df753b76721bf00f2a907d42852d011a84bb360"
+    },
+    {
+      "byteSize": 1301,
+      "path": "Fixtures/VAO03/descriptors/materialization-receipt.example.json",
+      "sha256": "bdd63eb3c5b51d38c782c099049d65a48c6fbcae876167ef9056e207d6ff65da"
+    },
+    {
+      "byteSize": 2042,
+      "path": "Fixtures/VAO03/descriptors/release-single-record.example.json",
+      "sha256": "0720a9a707d95c9478ab4b801b7b43b1e1657a59b0c77749b8e89a8778c423d8"
+    },
+    {
+      "byteSize": 1808,
+      "path": "Fixtures/VAO03/descriptors/zenodo-metadata-single-record.example.json",
+      "sha256": "ebca85d04353e6744a81c044bd281bebf87ad213def6d94541a443e8cbfd2de9"
+    },
+    {
+      "byteSize": 4298,
+      "path": "Fixtures/VAO03/descriptors/release-record-family.example.json",
+      "sha256": "6400243b53edba5e649b32b5d214c847a0df3a1173c1e2d542eea48e827d8cd4"
+    },
+    {
+      "byteSize": 1498,
+      "path": "Fixtures/VAO03/descriptors/zenodo-metadata-family-root.example.json",
+      "sha256": "bc29ead87204c1c3c86b0ecf1e89ecd7003e1d446d94517021a37215b20893c7"
+    },
+    {
+      "byteSize": 998,
+      "path": "Fixtures/VAO03/descriptors/zenodo-metadata-family-model.example.json",
+      "sha256": "3452289c0ca8d5b60c4482794ea89e029e99c740c6efc41b0988d6f9bdd9870e"
+    },
+    {
+      "byteSize": 1029,
+      "path": "Fixtures/VAO03/descriptors/zenodo-metadata-family-audio.example.json",
+      "sha256": "2d8ad84fddad59ae7d250a70fb2b9342df3ced8a2aeb1aff827ca95e3e83df38"
+    },
+    {
+      "byteSize": 31,
+      "path": "Fixtures/VAO/valid/minimal-playable-string-instrument/mimetype",
+      "sha256": "052b712ddb073db2dcbdb4bc9f975f6d421e30fe0d96036fbfa232603004f4e2"
+    },
+    {
+      "byteSize": 5740,
+      "path": "Fixtures/VAO/valid/minimal-playable-string-instrument/vao-manifest.json",
+      "sha256": "02b2939ea56686f7bfcb77b8e5fc40d18be6027bf09eb7bb0e82629477419c0b"
+    },
+    {
+      "byteSize": 63,
+      "path": "Fixtures/VAO/valid/minimal-playable-string-instrument/payload/evidence/source.txt",
+      "sha256": "362ae56681822adc862396e3c51c838ef16d4ea791fd3d0e30cb25e446e947e4"
+    },
+    {
+      "byteSize": 31,
+      "path": "Fixtures/VAO/valid/minimal-acoustic-room/mimetype",
+      "sha256": "052b712ddb073db2dcbdb4bc9f975f6d421e30fe0d96036fbfa232603004f4e2"
+    },
+    {
+      "byteSize": 15006,
+      "path": "Fixtures/VAO/valid/minimal-acoustic-room/vao-manifest.json",
+      "sha256": "a9a16a809b8decc67fd66bee759b5259c90312a66a8ca0d2ed791ec729b6f51a"
+    },
+    {
+      "byteSize": 156,
+      "path": "Fixtures/VAO/valid/minimal-acoustic-room/payload/evidence/measurement-protocol.txt",
+      "sha256": "f27efaa5b71f4bbedb241f24ce84794dff8f9a6c1edb382a957260362b298cda"
+    },
+    {
+      "byteSize": 153,
+      "path": "Fixtures/VAO/valid/minimal-acoustic-room/payload/acoustics/room.sofa",
+      "sha256": "55841620742519de4719582a46900b2dcf2d3367a2d4f5ccb27caddd14d084c7"
+    },
+    {
+      "byteSize": 125,
+      "path": "Fixtures/VAO/valid/minimal-acoustic-room/payload/models/room.ifc",
+      "sha256": "26a1eb03cd40d2220e43e47593fa474cabba2c71da4235fab45960b7fbbaa0ec"
+    }
+  ],
+  "formatVersion": "0.3.2",
+  "publicationBlockers": [
+    "governance approval and public W3ID ownership are not complete",
+    "MODAVIS dependencies are development bindings rather than released checksum pins",
+    "media-type registration and production repository publication are not complete"
+  ],
+  "publicationReady": false,
+  "sandboxEvidence": {
+    "conceptDOI": "10.5072/zenodo.590944",
+    "historicalFormatVersion": "0.3.0",
+    "mutatedFor032": false,
+    "optionalAdapter": true,
+    "recordId": "590947",
+    "versionDOI": "10.5072/zenodo.590947"
+  },
+  "status": "implemented-editor-draft",
+  "type": "VAOEditorDraftReleaseBundle"
+}

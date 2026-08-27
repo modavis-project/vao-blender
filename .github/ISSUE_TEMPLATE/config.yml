@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/modavis-project/vao-blender/security/advisories/new
+    about: Report a vulnerability privately
+  - name: VAO Standard
+    url: https://github.com/modavis-project/vao-standard
+    about: Specification questions and standard issues

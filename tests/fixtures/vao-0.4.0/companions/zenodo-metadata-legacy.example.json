@@ -1,0 +1,31 @@
+{
+  "$schema": "https://w3id.org/modavis/vao/0.4.0/schema/zenodo-metadata.json",
+  "type": "VAOZenodoMetadata",
+  "formatVersion": "0.4.0",
+  "targetAPIProfile": "https://developers.zenodo.org/#deposition-metadata",
+  "releaseId": "urn:uuid:03000000-0000-4000-8000-000000000001",
+  "publicationRecordId": "urn:vao:publication-record:example:root",
+  "recordRole": "monolithic-root",
+  "metadata": {
+    "upload_type": "dataset",
+    "title": "Synthetic VAO companion-contract example",
+    "description": "Non-scientific conformance data for the VAO 0.4.0 companion descriptor contracts.",
+    "creators": [
+      {
+        "name": "Ukolov, Dominik",
+        "affiliation": "Friedrich Schiller University Jena",
+        "orcid": "0000-0002-7904-3892"
+      }
+    ],
+    "publication_date": "2026-08-27",
+    "version": "1.0.0",
+    "access_right": "open",
+    "license": "other-open",
+    "keywords": [
+      "Virtual Acoustic Object",
+      "VAO 0.4",
+      "metadata standard"
+    ],
+    "related_identifiers": []
+  }
+}

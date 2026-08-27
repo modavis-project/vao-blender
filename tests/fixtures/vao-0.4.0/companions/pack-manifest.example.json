@@ -1,0 +1,17 @@
+{
+  "$schema": "https://w3id.org/modavis/vao/0.4.0/schema/pack-manifest.json",
+  "type": "VAOPackManifest",
+  "formatVersion": "0.4.0",
+  "id": "urn:vao:pack-manifest:example:companion-contracts",
+  "releaseId": "urn:uuid:03000000-0000-4000-8000-000000000001",
+  "members": [
+    {
+      "realizationId": "urn:uuid:03000000-0000-4000-8000-000000000021",
+      "path": "payload/evidence/source.txt",
+      "mediaType": "text/plain",
+      "byteSize": 69,
+      "sha256": "167b48baa46a4d2c665c7ee655e255e817e32f2fee84275bd7067971b1593f17"
+    }
+  ],
+  "rejectUnlistedMembers": true
+}

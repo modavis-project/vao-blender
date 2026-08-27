@@ -1,0 +1,1 @@
+Minimal embedded evidence for the VAO 0.3.3 private-sharing fixture.
