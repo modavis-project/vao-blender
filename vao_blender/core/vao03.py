@@ -1,4 +1,4 @@
-"""VAO 0.3/0.4 record conversion and coordinate utilities.
+"""VAO 0.3–0.5 record conversion and coordinate utilities.
 
 Contract and carrier validation are intentionally delegated to the exact pinned
 reference validator for the dispatched VAO version. This module only converts

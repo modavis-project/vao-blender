@@ -1,0 +1,181 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix vao: <https://w3id.org/modavis/vao/ontology#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/modavis/vao/0.5.0/shapes> a owl:Ontology ;
+  dcterms:title "VAO 0.5.0 semantic-projection SHACL shapes"@en ;
+  dcterms:creator <https://orcid.org/0000-0002-7904-3892> ;
+  dcterms:license <https://creativecommons.org/licenses/by/4.0/> .
+
+vao:VAOShape a sh:NodeShape ;
+  sh:targetClass vao:VirtualAcousticObject ;
+  sh:property [ sh:path vao:scientific ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path vao:multimodal ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path vao:physicalSystem ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path vao:runtime ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path vao:acoustics ; sh:maxCount 1 ; sh:class vao:AcousticModelSet ] ;
+  sh:property [ sh:path vao:playable ; sh:maxCount 1 ; sh:class vao:PlayableModel ] ;
+  sh:property [ sh:path vao:interactionModel ; sh:maxCount 1 ; sh:class vao:InteractionModel ] ;
+  sh:property [ sh:path vao:captureDocumentation ; sh:maxCount 1 ; sh:class vao:CaptureDocumentation ] ;
+  sh:property [ sh:path vao:logicalAsset ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:realization ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path dcterms:conformsTo ; sh:minCount 2 ; sh:nodeKind sh:IRI ] .
+
+vao:ActivityShape a sh:NodeShape ;
+  sh:targetClass prov:Activity ;
+  sh:property [ sh:path prov:wasAssociatedWith ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path prov:used ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path prov:generated ; sh:nodeKind sh:IRI ] .
+
+vao:ObservationShape a sh:NodeShape ;
+  sh:targetClass sosa:Observation ;
+  sh:property [ sh:path sosa:observedProperty ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path sosa:hasFeatureOfInterest ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path sosa:hasResult ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+vao:SoftwareEnvironmentShape a sh:NodeShape ;
+  sh:targetClass vao:SoftwareEnvironment ;
+  sh:property [ sh:path vao:name ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path vao:version ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path vao:identity ; sh:minCount 1 ; sh:maxCount 1 ; sh:node vao:ContentDigestShape ] ;
+  sh:property [ sh:path vao:identityScope ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ("executable" "source-file" "source-bundle" "environment-lock" "declaration" "other") ] ;
+  sh:property [ sh:path vao:identityDescription ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ; sh:minLength 1 ] ;
+  sh:property [ sh:path vao:runtimeDescription ; sh:maxCount 1 ; sh:datatype xsd:string ; sh:minLength 1 ] ;
+  sh:property [ sh:path vao:dependencies ; sh:node vao:SoftwareDependencyShape ] .
+
+vao:SoftwareDependencyShape a sh:NodeShape ;
+  sh:property [ sh:path vao:name ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path vao:dependencyRole ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ("source" "normative-artifact" "environment-lock" "library" "runtime" "model" "other") ] ;
+  sh:property [ sh:path vao:identity ; sh:minCount 1 ; sh:maxCount 1 ; sh:node vao:ContentDigestShape ] ;
+  sh:property [ sh:path vao:identityScope ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ("executable" "source-file" "source-bundle" "environment-lock" "declaration" "other") ] ;
+  sh:property [ sh:path vao:identityDescription ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ; sh:minLength 1 ] .
+
+vao:RealizationShape a sh:NodeShape ;
+  sh:targetClass vao:Realization ;
+  sh:property [ sh:path vao:realizesAsset ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:mediaType ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path vao:byteSize ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:integer ; sh:minInclusive 0 ] ;
+  sh:property [ sh:path vao:sha256 ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ; sh:pattern "^[0-9a-f]{64}$" ] .
+
+vao:TrackShape a sh:NodeShape ;
+  sh:targetClass vao:Track ;
+  sh:property [ sh:path vao:timebase ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:realization ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] .
+
+vao:TimebaseShape a sh:NodeShape ;
+  sh:targetClass vao:Timebase ;
+  sh:property [ sh:path qudt:unit ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:rate ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path vao:rateUnit ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:timeScale ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] .
+
+vao:SynchronizationMappingShape a sh:NodeShape ;
+  sh:targetClass vao:SynchronizationMapping ;
+  sh:property [ sh:path vao:sourceTimebase ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:targetTimebase ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] .
+
+vao:ConnectionShape a sh:NodeShape ;
+  sh:targetClass vao:Connection ;
+  sh:property [ sh:path vao:sourcePort ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:targetPort ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] .
+
+vao:AcousticModelSetShape a sh:NodeShape ;
+  sh:targetClass vao:AcousticModelSet ;
+  sh:property [ sh:path vao:coordinateFrame ; sh:minCount 1 ; sh:class vao:CoordinateFrame ] ;
+  sh:property [ sh:path vao:pose ; sh:class vao:Pose ] ;
+  sh:property [ sh:path vao:materialModel ; sh:class vao:MaterialModel ] ;
+  sh:property [ sh:path vao:measurement ; sh:class vao:ResponseMeasurement ] ;
+  sh:property [ sh:path vao:responseSet ; sh:class vao:ResponseSet ] ;
+  sh:property [ sh:path vao:metricSet ; sh:class vao:MetricSet ] ;
+  sh:property [ sh:path vao:audioScene ; sh:class vao:AudioScene ] ;
+  sh:property [ sh:path vao:renderConfiguration ; sh:class vao:RenderConfiguration ] .
+
+vao:CoordinateFrameShape a sh:NodeShape ;
+  sh:targetClass vao:CoordinateFrame ;
+  sh:property [ sh:path vao:dimension ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:integer ; sh:in (2 3) ] ;
+  sh:property [ sh:path vao:coordinateType ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ("cartesian" "geodetic" "projected" "screen" "parametric") ] ;
+  sh:property [ sh:path vao:handedness ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ("right" "left" "not-applicable") ] ;
+  sh:property [ sh:path vao:upAxis ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path vao:forwardAxis ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path vao:parentFrame ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] .
+
+vao:PoseShape a sh:NodeShape ;
+  sh:targetClass vao:Pose ;
+  sh:property [ sh:path vao:subject ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:frame ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:position ; sh:minCount 2 ; sh:maxCount 3 ] ;
+  sh:property [ sh:path vao:interpolation ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+vao:MaterialModelShape a sh:NodeShape ;
+  sh:targetClass vao:MaterialModel ;
+  sh:property [ sh:path vao:materialEntity ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:bandAxis ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path vao:absorption ; sh:minCount 1 ] ;
+  sh:property [ sh:path prov:wasGeneratedBy ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] .
+
+vao:ResponseMeasurementShape a sh:NodeShape ;
+  sh:targetClass vao:ResponseMeasurement ;
+  sh:property [ sh:path vao:source ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:receiver ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:sourcePose ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:receiverPose ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] .
+
+vao:ResponseSetShape a sh:NodeShape ;
+  sh:targetClass vao:ResponseSet ;
+  sh:property [ sh:path vao:responseEntity ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:logicalAsset ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:measurement ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path prov:wasGeneratedBy ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] .
+
+vao:MetricSetShape a sh:NodeShape ;
+  sh:targetClass vao:MetricSet ;
+  sh:property [ sh:path dcterms:conformsTo ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:subject ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path prov:used ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:bandAxis ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path vao:metrics ; sh:minCount 1 ] ;
+  sh:property [ sh:path prov:wasGeneratedBy ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] .
+
+vao:AudioSceneShape a sh:NodeShape ;
+  sh:targetClass vao:AudioScene ;
+  sh:property [ sh:path vao:sceneEntity ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:coordinateFrame ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:mediaAsset ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:bindings ; sh:minCount 1 ] .
+
+vao:RenderConfigurationShape a sh:NodeShape ;
+  sh:targetClass vao:RenderConfiguration ;
+  sh:property [ sh:path vao:scene ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:coordinateFrame ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path prov:used ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path vao:listener ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+vao:RandomSourceShape a sh:NodeShape ;
+  sh:targetClass vao:RandomSource ;
+  sh:property [ sh:path vao:algorithm ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path vao:seed ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+vao:RendererDescriptorShape a sh:NodeShape ;
+  sh:targetClass vao:RendererDescriptor ;
+  sh:property [ sh:path vao:softwareEnvironment ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ] .
+
+vao:ConformanceTraceShape a sh:NodeShape ;
+  sh:targetClass vao:ConformanceTrace ;
+  sh:property [ sh:path vao:digest ; sh:minCount 1 ; sh:maxCount 1 ; sh:node vao:SHA256DigestShape ] .
+
+vao:SHA256DigestShape a sh:NodeShape ;
+  sh:property [ sh:path vao:algorithm ; sh:minCount 1 ; sh:maxCount 1 ; sh:hasValue "sha256" ] ;
+  sh:property [ sh:path vao:value ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ; sh:pattern "^[0-9a-f]{64}$" ] .
+
+vao:ContentDigestShape a sh:NodeShape ;
+  sh:property [ sh:path vao:algorithm ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ("sha256" "sha512") ] ;
+  sh:property [ sh:path vao:value ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+  sh:or (
+    [ sh:property [ sh:path vao:algorithm ; sh:hasValue "sha256" ] ; sh:property [ sh:path vao:value ; sh:pattern "^[0-9a-f]{64}$" ] ]
+    [ sh:property [ sh:path vao:algorithm ; sh:hasValue "sha512" ] ; sh:property [ sh:path vao:value ; sh:pattern "^[0-9a-f]{128}$" ] ]
+  ) .

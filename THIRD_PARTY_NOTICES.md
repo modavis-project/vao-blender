@@ -15,6 +15,12 @@ Upstream documents, schemas, semantic artifacts, fixtures, and the OKF bundle ar
 CC BY 4.0. Reference software, tests, and automation are Apache-2.0. The complete
 license, notice, and local provenance are in `contract/vao-0.4.0/`.
 
+`contract/vao-0.5.0/` contains the VAO Standard 0.5.0 candidate at commit
+`d17b3f188fdf7fadd01ba025383e4feca8def935`. Its normative artifact-bundle
+SHA-256 is `82efb6ee31353e72c81671e2c6500c51dc223d7f21af4983705933ea6caa5c96`.
+It is commit-pinned candidate material, not a published-standard release. Exact
+provenance and the upstream licence/notice are retained in that directory.
+
 `contract/vao-0.2.2/` and `contract/vao-0.3.2/` preserve historical development
 contracts solely for compatibility with existing packages. Their exact hashes
 and available provenance records are kept beside the files. They are not claimed

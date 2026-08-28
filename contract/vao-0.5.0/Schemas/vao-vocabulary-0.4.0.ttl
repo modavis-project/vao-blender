@@ -1,0 +1,765 @@
+@prefix vao: <https://w3id.org/modavis/vao/ontology#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/modavis/vao/0.4.0/vocabulary> a owl:Ontology ;
+  dcterms:title "Virtual Acoustic Object (VAO) 0.4.0 vocabulary"@en ;
+  dcterms:description "Core RDF terms used by the semantic projection of VAO 0.4.0 manifests."@en ;
+  dcterms:creator <https://orcid.org/0000-0002-7904-3892> ;
+  dcterms:modified "2026-08-27"^^xsd:date ;
+  dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+  owl:versionIRI <https://w3id.org/modavis/vao/0.4.0/vocabulary> ;
+  owl:versionInfo "0.4.0" .
+
+<https://orcid.org/0000-0002-7904-3892> a prov:Person ; rdfs:label "Dominik Ukolov" .
+
+vao:VirtualAcousticObject a owl:Class ; rdfs:label "Virtual Acoustic Object"@en ;
+  rdfs:comment "An immutable semantic release describing an acoustic object and its exact digital realizations."@en .
+vao:LogicalAsset a owl:Class ; rdfs:label "logical asset"@en .
+vao:Realization a owl:Class ; rdfs:label "exact byte realization"@en .
+vao:Distribution a owl:Class ; rdfs:label "distribution"@en .
+vao:AssetGroup a owl:Class ; rdfs:label "asset group"@en .
+vao:Capability a owl:Class ; rdfs:label "VAO capability"@en .
+vao:ScientificRecordSet a owl:Class ; rdfs:label "scientific record set"@en .
+vao:SoftwareEnvironment a owl:Class ; rdfs:label "software environment"@en .
+vao:Analysis a owl:Class ; rdfs:label "analysis record"@en .
+vao:Calibration a owl:Class ; rdfs:label "calibration record"@en .
+vao:ScientificClaim a owl:Class ; rdfs:label "scientific claim"@en .
+vao:Review a owl:Class ; rdfs:label "review record"@en .
+vao:Consent a owl:Class ; rdfs:label "consent record"@en .
+vao:MultimodalTimeline a owl:Class ; rdfs:label "multimodal timeline"@en .
+vao:Timebase a owl:Class ; rdfs:label "timebase"@en .
+vao:Track a owl:Class ; rdfs:label "multimodal track"@en .
+vao:SynchronizationMapping a owl:Class ; rdfs:label "synchronization mapping"@en .
+vao:ClockSegment a owl:Class ; rdfs:label "clock-mapping segment"@en .
+vao:PhysicalSystem a owl:Class ; rdfs:label "physical system"@en .
+vao:PhysicalComponent a owl:Class ; rdfs:label "physical component"@en .
+vao:Port a owl:Class ; rdfs:label "system port"@en .
+vao:Connection a owl:Class ; rdfs:label "system connection"@en .
+vao:StateBinding a owl:Class ; rdfs:label "state binding"@en .
+vao:RuntimeContract a owl:Class ; rdfs:label "runtime contract"@en .
+vao:ExecutionSemantics a owl:Class ; rdfs:label "execution semantics"@en .
+vao:RandomSource a owl:Class ; rdfs:label "random source"@en .
+vao:RendererDescriptor a owl:Class ; rdfs:label "renderer descriptor"@en .
+vao:ConformanceTrace a owl:Class ; rdfs:label "conformance trace"@en .
+vao:InteractionModel a owl:Class ; rdfs:label "interaction model"@en .
+vao:ProtocolBinding a owl:Class ; rdfs:label "protocol binding"@en .
+vao:ProcessModel a owl:Class ; rdfs:label "process model"@en .
+vao:TransferFunction a owl:Class ; rdfs:label "transfer function"@en .
+vao:AcousticModelSet a owl:Class ; rdfs:label "spatial and acoustic model set"@en .
+vao:CoordinateFrame a owl:Class ; rdfs:label "coordinate frame"@en .
+vao:Pose a owl:Class ; rdfs:label "pose"@en .
+vao:GeometryBinding a owl:Class ; rdfs:label "geometry binding"@en .
+vao:MaterialModel a owl:Class ; rdfs:label "acoustic material model"@en .
+vao:ResponseMeasurement a owl:Class ; rdfs:label "acoustic response measurement"@en .
+vao:ResponseSet a owl:Class ; rdfs:label "acoustic response set"@en .
+vao:MetricSet a owl:Class ; rdfs:label "acoustic metric set"@en .
+vao:AudioScene a owl:Class ; rdfs:label "spatial audio scene"@en .
+vao:RenderConfiguration a owl:Class ; rdfs:label "render configuration"@en .
+vao:PlayableModel a owl:Class ; rdfs:label "playable model"@en .
+vao:CaptureDocumentation a owl:Class ; rdfs:label "capture documentation"@en .
+vao:SignalRegion a owl:Class ; rdfs:label "signal region"@en .
+vao:LoopPointSet a owl:Class ; rdfs:label "loop-point set"@en .
+vao:TuningMap a owl:Class ; rdfs:label "tuning map"@en .
+vao:PerspectiveGroup a owl:Class ; rdfs:label "perspective group"@en .
+vao:SampleVariant a owl:Class ; rdfs:label "sample variant"@en .
+vao:SampleMapping a owl:Class ; rdfs:label "sample mapping"@en .
+vao:InteractionControl a owl:Class ; rdfs:label "interaction control"@en .
+vao:InteractionEventType a owl:Class ; rdfs:label "interaction event type"@en .
+vao:StateVariable a owl:Class ; rdfs:label "state variable"@en .
+vao:InteractionTransition a owl:Class ; rdfs:label "interaction transition"@en .
+vao:RoutingRule a owl:Class ; rdfs:label "routing rule"@en .
+vao:TimingConstraint a owl:Class ; rdfs:label "timing constraint"@en .
+vao:RenderBinding a owl:Class ; rdfs:label "render binding"@en .
+vao:CaptureState a owl:Class ; rdfs:label "capture state"@en .
+vao:EventAlignment a owl:Class ; rdfs:label "event alignment"@en .
+vao:TakeSet a owl:Class ; rdfs:label "take set"@en .
+vao:DerivationMap a owl:Class ; rdfs:label "derivation map"@en .
+
+vao:scientific a owl:ObjectProperty ; rdfs:domain vao:VirtualAcousticObject ; rdfs:range vao:ScientificRecordSet .
+vao:multimodal a owl:ObjectProperty ; rdfs:domain vao:VirtualAcousticObject ; rdfs:range vao:MultimodalTimeline .
+vao:physicalSystem a owl:ObjectProperty ; rdfs:domain vao:VirtualAcousticObject ; rdfs:range vao:PhysicalSystem .
+vao:runtime a owl:ObjectProperty ; rdfs:domain vao:VirtualAcousticObject ; rdfs:range vao:RuntimeContract .
+vao:playable a owl:ObjectProperty ; rdfs:domain vao:VirtualAcousticObject ; rdfs:range vao:PlayableModel .
+vao:interactionModel a owl:ObjectProperty ; rdfs:domain vao:VirtualAcousticObject ; rdfs:range vao:InteractionModel .
+vao:captureDocumentation a owl:ObjectProperty ; rdfs:domain vao:VirtualAcousticObject ; rdfs:range vao:CaptureDocumentation .
+vao:logicalAsset a owl:ObjectProperty ; rdfs:range vao:LogicalAsset .
+vao:realization a owl:ObjectProperty ; rdfs:range vao:Realization .
+vao:distribution a owl:ObjectProperty ; rdfs:range vao:Distribution .
+vao:assetGroup a owl:ObjectProperty ; rdfs:range vao:AssetGroup .
+vao:observation a owl:ObjectProperty ; rdfs:range sosa:Observation .
+vao:analysis a owl:ObjectProperty ; rdfs:range vao:Analysis .
+vao:calibration a owl:ObjectProperty ; rdfs:range vao:Calibration .
+vao:protocol a owl:ObjectProperty ; rdfs:range sosa:Procedure .
+vao:softwareEnvironment a owl:ObjectProperty ; rdfs:range vao:SoftwareEnvironment .
+vao:claim a owl:ObjectProperty ; rdfs:range vao:ScientificClaim .
+vao:review a owl:ObjectProperty ; rdfs:range vao:Review .
+vao:consent a owl:ObjectProperty ; rdfs:range vao:Consent .
+vao:timebase a owl:ObjectProperty ; rdfs:range vao:Timebase .
+vao:track a owl:ObjectProperty ; rdfs:range vao:Track .
+vao:synchronizationMapping a owl:ObjectProperty ; rdfs:range vao:SynchronizationMapping .
+vao:annotation a owl:ObjectProperty .
+vao:component a owl:ObjectProperty ; rdfs:range vao:PhysicalComponent .
+vao:port a owl:ObjectProperty ; rdfs:range vao:Port .
+vao:connection a owl:ObjectProperty ; rdfs:range vao:Connection .
+vao:sensor a owl:ObjectProperty ; rdfs:range sosa:Sensor .
+vao:actuator a owl:ObjectProperty ; rdfs:range sosa:Actuator .
+vao:stateBinding a owl:ObjectProperty ; rdfs:range vao:StateBinding .
+vao:executionSemantics a owl:ObjectProperty ; rdfs:range vao:ExecutionSemantics .
+vao:randomSource a owl:ObjectProperty ; rdfs:range vao:RandomSource .
+vao:renderer a owl:ObjectProperty ; rdfs:range vao:RendererDescriptor .
+vao:conformanceTrace a owl:ObjectProperty ; rdfs:range vao:ConformanceTrace .
+vao:acoustics a owl:ObjectProperty ; rdfs:domain vao:VirtualAcousticObject ; rdfs:range vao:AcousticModelSet .
+vao:coordinateFrame a owl:ObjectProperty ; rdfs:range vao:CoordinateFrame .
+vao:pose a owl:ObjectProperty ; rdfs:range vao:Pose .
+vao:geometryBinding a owl:ObjectProperty ; rdfs:range vao:GeometryBinding .
+vao:materialModel a owl:ObjectProperty ; rdfs:range vao:MaterialModel .
+vao:measurement a owl:ObjectProperty ; rdfs:range vao:ResponseMeasurement .
+vao:responseSet a owl:ObjectProperty ; rdfs:range vao:ResponseSet .
+vao:metricSet a owl:ObjectProperty ; rdfs:range vao:MetricSet .
+vao:audioScene a owl:ObjectProperty ; rdfs:range vao:AudioScene .
+vao:renderConfiguration a owl:ObjectProperty ; rdfs:range vao:RenderConfiguration .
+vao:signalRegion a owl:ObjectProperty ; rdfs:range vao:SignalRegion .
+vao:loopPointSet a owl:ObjectProperty ; rdfs:range vao:LoopPointSet .
+vao:tuningMap a owl:ObjectProperty ; rdfs:range vao:TuningMap .
+vao:perspectiveGroup a owl:ObjectProperty ; rdfs:range vao:PerspectiveGroup .
+vao:sampleVariant a owl:ObjectProperty ; rdfs:range vao:SampleVariant .
+vao:sampleMapping a owl:ObjectProperty ; rdfs:range vao:SampleMapping .
+vao:control a owl:ObjectProperty ; rdfs:range vao:InteractionControl .
+vao:eventType a owl:ObjectProperty ; rdfs:range vao:InteractionEventType .
+vao:protocolBinding a owl:ObjectProperty ; rdfs:range vao:ProtocolBinding .
+vao:stateVariable a owl:ObjectProperty ; rdfs:range vao:StateVariable .
+vao:transition a owl:ObjectProperty ; rdfs:range vao:InteractionTransition .
+vao:routingRule a owl:ObjectProperty ; rdfs:range vao:RoutingRule .
+vao:processModel a owl:ObjectProperty ; rdfs:range vao:ProcessModel .
+vao:timingConstraint a owl:ObjectProperty ; rdfs:range vao:TimingConstraint .
+vao:transferFunction a owl:ObjectProperty ; rdfs:range vao:TransferFunction .
+vao:renderBinding a owl:ObjectProperty ; rdfs:range vao:RenderBinding .
+vao:captureState a owl:ObjectProperty ; rdfs:range vao:CaptureState .
+vao:eventAlignment a owl:ObjectProperty ; rdfs:range vao:EventAlignment .
+vao:takeSet a owl:ObjectProperty ; rdfs:range vao:TakeSet .
+vao:derivationMap a owl:ObjectProperty ; rdfs:range vao:DerivationMap .
+vao:sourceTimebase a owl:ObjectProperty ; rdfs:range vao:Timebase .
+vao:targetTimebase a owl:ObjectProperty ; rdfs:range vao:Timebase .
+vao:sourcePort a owl:ObjectProperty ; rdfs:range vao:Port .
+vao:targetPort a owl:ObjectProperty ; rdfs:range vao:Port .
+vao:jsonPointer a owl:DatatypeProperty ;
+  rdfs:comment "Pointer added by the annotated JSON-LD view; it does not assert preservation of JSON lexical form or array order in RDF."@en .
+
+# Terms below complete the projection vocabulary. Profile documents and the
+# normative JSON contract define their detailed domains, ranges, and cardinalities.
+vao:aboutEntity a owl:ObjectProperty ; rdfs:label "about entity"@en .
+vao:actedOnProperty a owl:ObjectProperty ; rdfs:label "acted on property"@en .
+vao:analysisKind a owl:ObjectProperty ; rdfs:label "analysis kind"@en .
+vao:apiProfile a owl:ObjectProperty ; rdfs:label "api profile"@en .
+vao:appliesTo a owl:ObjectProperty ; rdfs:label "applies to"@en .
+vao:audioRealization a owl:ObjectProperty ; rdfs:label "audio realization"@en .
+vao:authenticityEnvelopeRealization a owl:ObjectProperty ; rdfs:label "authenticity envelope realization"@en .
+vao:awardIRI a owl:ObjectProperty ; rdfs:label "award iri"@en .
+vao:axisUnit a owl:ObjectProperty ; rdfs:label "axis unit"@en .
+vao:cancellationControl a owl:ObjectProperty ; rdfs:label "cancellation control"@en .
+vao:capability a owl:ObjectProperty ; rdfs:label "capability"@en .
+vao:certificateRealization a owl:ObjectProperty ; rdfs:label "certificate realization"@en .
+vao:channelTopology a owl:ObjectProperty ; rdfs:label "channel topology"@en .
+vao:childProcess a owl:ObjectProperty ; rdfs:label "child process"@en .
+vao:classification a owl:ObjectProperty ; rdfs:label "classification"@en .
+vao:communityAuthority a owl:ObjectProperty ; rdfs:label "community authority"@en .
+vao:componentEntity a owl:ObjectProperty ; rdfs:label "component entity"@en .
+vao:componentKind a owl:ObjectProperty ; rdfs:label "component kind"@en .
+vao:conceptIdentifier a owl:ObjectProperty ; rdfs:label "concept identifier"@en .
+vao:configuration a owl:ObjectProperty ; rdfs:label "configuration"@en .
+vao:contentTimebase a owl:ObjectProperty ; rdfs:label "content timebase"@en .
+vao:coordinateUnit a owl:ObjectProperty ; rdfs:label "coordinate unit"@en .
+vao:createdByAgent a owl:ObjectProperty ; rdfs:label "created by agent"@en .
+vao:crs a owl:ObjectProperty ; rdfs:label "crs"@en .
+vao:datatype a owl:ObjectProperty ; rdfs:label "datatype"@en .
+vao:delayAsset a owl:ObjectProperty ; rdfs:label "delay asset"@en .
+vao:delayConstraint a owl:ObjectProperty ; rdfs:label "delay constraint"@en .
+vao:dependsOnGroup a owl:ObjectProperty ; rdfs:label "depends on group"@en .
+vao:derivedRealization a owl:ObjectProperty ; rdfs:label "derived realization"@en .
+vao:directivityResponseSet a owl:ObjectProperty ; rdfs:label "directivity response set"@en .
+vao:discovery a owl:ObjectProperty ; rdfs:label "discovery"@en .
+vao:documentRealization a owl:ObjectProperty ; rdfs:label "document realization"@en .
+vao:domain a owl:ObjectProperty ; rdfs:label "domain"@en .
+vao:durationConstraint a owl:ObjectProperty ; rdfs:label "duration constraint"@en .
+vao:entity a owl:ObjectProperty ; rdfs:label "entity"@en .
+vao:environmentObservation a owl:ObjectProperty ; rdfs:label "environment observation"@en .
+vao:environmentState a owl:ObjectProperty ; rdfs:label "environment state"@en .
+vao:eventLogRealization a owl:ObjectProperty ; rdfs:label "event log realization"@en .
+vao:evidence a owl:ObjectProperty ; rdfs:label "evidence"@en .
+vao:evidenceRealization a owl:ObjectProperty ; rdfs:label "evidence realization"@en .
+vao:externalIdentifier a owl:ObjectProperty ; rdfs:label "external identifier"@en .
+vao:facilityIdentifier a owl:ObjectProperty ; rdfs:label "facility identifier"@en .
+vao:fallback a owl:ObjectProperty ; rdfs:label "fallback"@en .
+vao:fallbackGroup a owl:ObjectProperty ; rdfs:label "fallback group"@en .
+vao:fallbackResponseSet a owl:ObjectProperty ; rdfs:label "fallback response set"@en .
+vao:focusEntity a owl:ObjectProperty ; rdfs:label "focus entity"@en .
+vao:frame a owl:ObjectProperty ; rdfs:label "frame"@en .
+vao:localFrame a owl:ObjectProperty ; rdfs:label "local frame"@en ;
+  rdfs:range vao:CoordinateFrame .
+vao:funderIdentifier a owl:DatatypeProperty ; rdfs:label "funder identifier"@en .
+vao:funderIdentifierType a owl:DatatypeProperty ; rdfs:label "funder identifier type"@en .
+vao:generatedBy a owl:ObjectProperty ; rdfs:label "generated by"@en .
+vao:grantedByAgent a owl:ObjectProperty ; rdfs:label "granted by agent"@en .
+vao:group a owl:ObjectProperty ; rdfs:label "group"@en .
+vao:hasDistribution a owl:ObjectProperty ; rdfs:label "has distribution"@en .
+vao:hasRealization a owl:ObjectProperty ; rdfs:label "has realization"@en .
+vao:headphoneCompensationAsset a owl:ObjectProperty ; rdfs:label "headphone compensation asset"@en .
+vao:identifier a owl:DatatypeProperty ; rdfs:label "identifier"@en .
+vao:identifierType a owl:DatatypeProperty ; rdfs:label "identifier type"@en .
+vao:identifierScheme a owl:DatatypeProperty ; rdfs:label "identifier scheme"@en .
+vao:identifierValue a owl:DatatypeProperty ; rdfs:label "identifier value"@en .
+vao:indexRealization a owl:ObjectProperty ; rdfs:label "index realization"@en .
+vao:inputPort a owl:ObjectProperty ; rdfs:label "input port"@en .
+vao:instance a owl:ObjectProperty ; rdfs:label "instance"@en .
+vao:instrumentEntity a owl:ObjectProperty ; rdfs:label "instrument entity"@en .
+vao:instrumentIdentifier a owl:ObjectProperty ; rdfs:label "instrument identifier"@en .
+vao:mappingIRI a owl:ObjectProperty ; rdfs:label "mapping iri"@en .
+vao:materialEntity a owl:ObjectProperty ; rdfs:label "material entity"@en .
+vao:materializableProfile a owl:ObjectProperty ; rdfs:label "materializable profile"@en .
+vao:materializesProfile a owl:ObjectProperty ; rdfs:label "materializes profile"@en .
+vao:mediaAsset a owl:ObjectProperty ; rdfs:label "media asset"@en .
+vao:metadataAsset a owl:ObjectProperty ; rdfs:label "metadata asset"@en .
+vao:midiCIProfileIRI a owl:ObjectProperty ; rdfs:label "midi ciprofile iri"@en .
+vao:modelAsset a owl:ObjectProperty ; rdfs:label "model asset"@en .
+vao:object a owl:ObjectProperty ; rdfs:label "object"@en .
+vao:ontologyIRI a owl:ObjectProperty ; rdfs:label "ontology iri"@en .
+vao:ontologyVersionIRI a owl:ObjectProperty ; rdfs:label "ontology version iri"@en .
+vao:schemeUri a owl:ObjectProperty ; rdfs:label "scheme URI"@en .
+vao:outputPort a owl:ObjectProperty ; rdfs:label "output port"@en .
+vao:packRealization a owl:ObjectProperty ; rdfs:label "pack realization"@en .
+vao:parentComponent a owl:ObjectProperty ; rdfs:label "parent component"@en .
+vao:parentFrame a owl:ObjectProperty ; rdfs:label "parent frame"@en .
+vao:performedByAgent a owl:ObjectProperty ; rdfs:label "performed by agent"@en .
+vao:performerAgent a owl:ObjectProperty ; rdfs:label "performer agent"@en .
+vao:persistentIdentifier a owl:ObjectProperty ; rdfs:label "persistent identifier"@en .
+vao:personalizationAsset a owl:ObjectProperty ; rdfs:label "personalization asset"@en .
+vao:predicate a owl:ObjectProperty ; rdfs:label "predicate"@en .
+vao:process a owl:ObjectProperty ; rdfs:label "process"@en .
+vao:processedResultRealization a owl:ObjectProperty ; rdfs:label "processed result realization"@en .
+vao:profile a owl:ObjectProperty ; rdfs:label "profile"@en .
+vao:property a owl:ObjectProperty ; rdfs:label "property"@en .
+vao:propertyExchangeResourceIRI a owl:ObjectProperty ; rdfs:label "property exchange resource iri"@en .
+vao:qualityMetricSet a owl:ObjectProperty ; rdfs:label "quality metric set"@en .
+vao:rankEntity a owl:ObjectProperty ; rdfs:label "rank entity"@en .
+vao:rateUnit a owl:ObjectProperty ; rdfs:label "rate unit"@en ; rdfs:range qudt:Unit .
+vao:timeScale a owl:ObjectProperty ; rdfs:label "time scale"@en .
+vao:identityScope a owl:DatatypeProperty ; rdfs:label "software identity scope"@en .
+vao:identityDescription a owl:DatatypeProperty ; rdfs:label "software identity description"@en .
+vao:dependencyRole a owl:DatatypeProperty ; rdfs:label "dependency role"@en .
+vao:runtimeDescription a owl:DatatypeProperty ; rdfs:label "software runtime description"@en .
+vao:rawResultRealization a owl:ObjectProperty ; rdfs:label "raw result realization"@en .
+vao:realizesAsset a owl:ObjectProperty ; rdfs:label "realizes asset"@en .
+vao:receiver a owl:ObjectProperty ; rdfs:label "receiver"@en .
+vao:receiverPose a owl:ObjectProperty ; rdfs:label "receiver pose"@en .
+vao:receivingSpace a owl:ObjectProperty ; rdfs:label "receiving space"@en .
+vao:redactionOfRealization a owl:ObjectProperty ; rdfs:label "redaction of realization"@en .
+vao:region a owl:ObjectProperty ; rdfs:label "region"@en .
+vao:relation a owl:ObjectProperty ; rdfs:label "relation"@en .
+vao:rendererRequirement a owl:ObjectProperty ; rdfs:label "renderer requirement"@en .
+vao:repositoryBinding a owl:ObjectProperty ; rdfs:label "repository binding"@en .
+vao:repositoryType a owl:ObjectProperty ; rdfs:label "repository type"@en .
+vao:representationStatus a owl:ObjectProperty ; rdfs:label "representation status"@en .
+vao:requiredCapability a owl:ObjectProperty ; rdfs:label "required capability"@en .
+vao:resolverIRI a owl:ObjectProperty ; rdfs:label "resolver iri"@en .
+vao:responseEntity a owl:ObjectProperty ; rdfs:label "response entity"@en .
+vao:reviewed a owl:ObjectProperty ; rdfs:label "reviewed"@en .
+vao:reviewedBy a owl:ObjectProperty ; rdfs:label "reviewed by"@en .
+vao:reviewerAgent a owl:ObjectProperty ; rdfs:label "reviewer agent"@en .
+vao:role a owl:ObjectProperty ; rdfs:label "role"@en .
+vao:route a owl:ObjectProperty ; rdfs:label "route"@en .
+vao:scene a owl:ObjectProperty ; rdfs:label "scene"@en .
+vao:sceneEntity a owl:ObjectProperty ; rdfs:label "scene entity"@en .
+vao:scheme a owl:ObjectProperty ; rdfs:label "scheme"@en .
+vao:separatingElement a owl:ObjectProperty ; rdfs:label "separating element"@en .
+vao:signatureEnvelopeRealization a owl:ObjectProperty ; rdfs:label "signature envelope realization"@en .
+vao:source a owl:ObjectProperty ; rdfs:label "source"@en .
+vao:sourceCodeIRI a owl:ObjectProperty ; rdfs:label "source code iri"@en .
+vao:sourceControl a owl:ObjectProperty ; rdfs:label "source control"@en .
+vao:sourceEntity a owl:ObjectProperty ; rdfs:label "source entity"@en .
+vao:sourcePose a owl:ObjectProperty ; rdfs:label "source pose"@en .
+vao:sourceRealization a owl:ObjectProperty ; rdfs:label "source realization"@en .
+vao:sourceSpace a owl:ObjectProperty ; rdfs:label "source space"@en .
+vao:sourceTransition a owl:ObjectProperty ; rdfs:label "source transition"@en .
+vao:space a owl:ObjectProperty ; rdfs:label "space"@en .
+vao:standardIRI a owl:ObjectProperty ; rdfs:label "standard iri"@en .
+vao:state a owl:ObjectProperty ; rdfs:label "state"@en .
+vao:streamingIndexRealization a owl:ObjectProperty ; rdfs:label "streaming index realization"@en .
+vao:subject a owl:ObjectProperty ; rdfs:label "subject"@en .
+vao:subjectEntity a owl:ObjectProperty ; rdfs:label "subject entity"@en .
+vao:supersedesRelease a owl:ObjectProperty ; rdfs:label "supersedes release"@en .
+vao:surfaceImpedanceAsset a owl:ObjectProperty ; rdfs:label "surface impedance asset"@en .
+vao:target a owl:ObjectProperty ; rdfs:label "target"@en .
+vao:targetEntity a owl:ObjectProperty ; rdfs:label "target entity"@en .
+vao:traditionalKnowledgeLabel a owl:ObjectProperty ; rdfs:label "traditional knowledge label"@en .
+vao:trainingInput a owl:ObjectProperty ; rdfs:label "training input"@en .
+vao:trajectoryRealization a owl:ObjectProperty ; rdfs:label "exact trajectory realization"@en ;
+  rdfs:range vao:Realization .
+vao:trajectoryTrack a owl:ObjectProperty ; rdfs:label "trajectory track"@en .
+vao:transmissionPath a owl:ObjectProperty ; rdfs:label "transmission path"@en .
+vao:validDomain a owl:ObjectProperty ; rdfs:label "valid domain"@en .
+vao:validation a owl:ObjectProperty ; rdfs:label "validation"@en .
+vao:validationInput a owl:ObjectProperty ; rdfs:label "validation input"@en .
+vao:valueIRI a owl:ObjectProperty ; rdfs:label "value iri"@en .
+vao:variant a owl:ObjectProperty ; rdfs:label "variant"@en .
+vao:vocabularyReleaseIRI a owl:ObjectProperty ; rdfs:label "vocabulary release iri"@en .
+
+<https://w3id.org/modavis/vao/vocab/unit/midi-tick> a qudt:Unit ;
+  rdfs:label "MIDI tick"@en ;
+  rdfs:comment "One discrete coordinate tick in a pulses-per-quarter-note musical timebase."@en .
+<https://w3id.org/modavis/vao/vocab/unit/midi-tick-per-quarter-note> a qudt:Unit ;
+  rdfs:label "MIDI ticks per quarter note"@en ;
+  rdfs:comment "The pulses-per-quarter-note resolution of a musical timebase; tempo conversion is supplied by synchronization mappings rather than this rate."@en .
+
+<https://w3id.org/modavis/vao/vocab/time-scale> a skos:ConceptScheme ;
+  skos:prefLabel "VAO time-scale identifiers"@en .
+<https://w3id.org/modavis/vao/vocab/time-scale/utc> a skos:Concept ;
+  skos:inScheme <https://w3id.org/modavis/vao/vocab/time-scale> ; skos:prefLabel "UTC"@en .
+<https://w3id.org/modavis/vao/vocab/time-scale/tai> a skos:Concept ;
+  skos:inScheme <https://w3id.org/modavis/vao/vocab/time-scale> ; skos:prefLabel "International Atomic Time (TAI)"@en .
+<https://w3id.org/modavis/vao/vocab/time-scale/gps> a skos:Concept ;
+  skos:inScheme <https://w3id.org/modavis/vao/vocab/time-scale> ; skos:prefLabel "GPS time"@en .
+<https://w3id.org/modavis/vao/vocab/time-scale/posix> a skos:Concept ;
+  skos:inScheme <https://w3id.org/modavis/vao/vocab/time-scale> ; skos:prefLabel "POSIX time"@en .
+<https://w3id.org/modavis/vao/vocab/time-scale/smpte-timecode> a skos:Concept ;
+  skos:inScheme <https://w3id.org/modavis/vao/vocab/time-scale> ; skos:prefLabel "SMPTE timecode"@en .
+
+# Every VAO IRI emitted by the protected JSON-LD context is declared here.
+# These generic property declarations intentionally avoid false global
+# domain/range claims; the normative JSON Schema and profiles provide the
+# closed, path-specific cardinality and datatype contract.
+<https://w3id.org/modavis/vao/ontology#absorption> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#access> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#actionExecution> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#actions> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#activationValue> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#activityKind> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#address> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#agentKind> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#algorithm> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#allowedValues> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#ambisonicsChannelOrder> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#ambisonicsDimensionality> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#ambisonicsNormalization> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#ambisonicsOrder> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#atomic> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#attribution> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#audioContainer> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#availability> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#awardNumber> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#awardTitle> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#bandAxis> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#bidirectional> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#bindingType> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#bindings> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#bitDepth> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#body> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#byteSize> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#cachePolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#capturedAt> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#carePrinciples> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#carrierDescriptor> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#censoring> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#centerFrequenciesHz> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#channel> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#channelCount> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#channelIndices> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#channelLabels> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#channelMap> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#channelNumberingBase> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#channelSelector> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#chunkSize> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#chunking> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#chunks> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#clockBasis> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#code> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#codec> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#colorSpace> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#conditions> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#confidence> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#confidenceLevel> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#conflictPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#connectionKind> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#contact> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#containerDigest> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#contentDigests> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#contentVersion> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#continuity> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#controlBehavior> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#controlKeyMeaning> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#convention> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#coordinateType> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#correctionCents> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#coverageFactor> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#crossfadeFrames> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#dataIRIndex> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#dataNumberingBase> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#dataResolutionBits> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#deactivationValue> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#decision> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#defaultValue> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#delaySamples> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#denominator> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#dependencies> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#determinism> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#deterministic> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#digest> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#dimension> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#direction> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#discontinuityAfter> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#driftPPM> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#durationSeconds> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#dynamicModel> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#embargoRationale> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#embargoUntil> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#emittedEvents> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#encoding> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#endExclusive> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#endFrameExclusive> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#endedAt> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#entries> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#epoch> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#eventEncoding> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#eventKind> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#eventLocator> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#eventMappings> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#evictable> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#executionGroup> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#exitPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#expected> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#extensions> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#extent> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#extrapolationPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#feature> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#features> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#fileIdentifier> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#fitResidual> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#fixedOutputKeys> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#footageLabel> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#formatVersion> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#forwardAxis> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#frameCount> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#frameRate> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#functionBlock> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#funderName> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#fundingReferences> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#gainDB> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#geometryStatus> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#handedness> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#harmonicNumber> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#harmonicRelation> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#height> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#hysteresis> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#identity> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#impulseResponse> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#incidence> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#index> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#initialState> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#input> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#inputEvents> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#inputKey> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#inputKeyMeaning> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#inputKind> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#inputKinds> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#inputRange> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#inputUnit> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#inputs> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#integrity> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#interpolation> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#jitter> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#jrTimestamp> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#jsonSchema> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#key> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#keyOffset> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#keyRange> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#keyTransform> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#kind> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#label> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#labels> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#language> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#lateEventPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#latencyBudgetMilliseconds> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#length> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#level> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#levelsOfDetail> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#listener> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#literal> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#lod> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#lowerEdgesHz> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#manifestDigestLocation> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#mappingVersion> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#maximum> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#maximumCPUPercent> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#maximumDistanceMeters> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#maximumIterations> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#maximumMicrosteps> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#maximumValue> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#maximumVoices> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#measurementMappings> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#mediaType> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#memberPath> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#merkleRoot> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#messageType> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#method> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#metrics> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#migratedFromManifestSHA256> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#minimum> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#minimumValue> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#modality> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#modavisBinding> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#mode> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#modelWeightDigest> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#monotonic> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#name> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#normalization> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#noteOffPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#notes> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#number> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#numerator> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#offset> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#ontologyStatus> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#ontologyVersion> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#operation> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#operations> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#operator> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#orcid> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#ordering> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#orientationRadians> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#orientationUncertainty> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#orientationXYZW> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#origin> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#originalPitch> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#outlierPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#output> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#outputKeyMeaning> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#outputKeys> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#outputKind> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#outputUnit> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#outsideDomainPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#packManifestSHA256> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#parameterValues> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#parameters> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#perNoteControllerIndex> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#performedAt> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#persistence> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#perspectiveType> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#pitchTuningCents> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#points> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#position> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#positionUncertainty> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#priority> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#privacyClassification> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#probabilityDistribution> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#procedure> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#processKind> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#properties> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#publicationYear> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#publisher> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#purposeLimitations> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#qualityFlags> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#qualityTier> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#rate> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#rationale> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#recordIdentifier> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#recordedAt> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#reentrancyPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#referenceMIDINote> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#referencePitchHz> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#registrationUncertainty> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#relatedIdentifiers> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#relationType> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#relationTypeInformation> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#release> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#representationType> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#reproducibility> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#residualUncertainty> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#resolutionPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#resourceType> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#responseKind> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#resultStatus> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#reviewedAt> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#revision> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#ror> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#roundRobinGroup> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#roundRobinIndex> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#routingBehavior> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#runToCompletion> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sampleCount> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sampleFormat> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sampleRate> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sampleRootKey> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sandboxPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#scale> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#scattering> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#schemaBundleDigest> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#scope> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#scoreElementId> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#scoreFormat> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#seed> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#segments> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#selectionPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#selectionSetId> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#selectionStatus> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#selectionWeight> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#selector> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#selectorType> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#semitoneOffset> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sensorEncoding> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sequence> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#setRole> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sha256> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sidedness> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#signalKind> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#signalRole> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#simultaneousEventOrder> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#softwareHeritageId> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#softwareName> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#softwareVersion> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#soundingKeyOffset> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sourceEndExclusive> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sourceFrameRange> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sourceFrequencyHz> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sourceLocator> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#sourceStart> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#spatialFragment> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#standardEdition> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#start> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#startFrame> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#startFrameInclusive> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#startedAt> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#stateAssignments> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#stateRole> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#statement> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#status> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#stepCount> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#strategy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#stream> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#subSelector> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#subjectScheme> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#subjects> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#svgSelector> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#targetFrequencyHz> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#technicalMetadata> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#temperamentLabel> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#terminationPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#textureMaxDimension> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#thicknessMeters> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#timeResolution> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#timeZeroPolicy> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#timestamp> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#timestampOrder> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#timingKind> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#totalByteSize> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#transformToParent> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#transitionEvaluation> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#transitionSeconds> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#transmissionLossDB> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#transportChecksums> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#triangleCount> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#trigger> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#types> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#typical> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#umpGroup> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#umpMessageType> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#uncertainties> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#uncertainty> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#upAxis> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#upperEdgesHz> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#validFrom> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#validUntil> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#value> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#valueDomain> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#valueType> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#values> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#variantSetId> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#velocityRange> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#velocitySensitivity> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#version> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#vertexCount> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#vocabularyManifestSHA256> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#voiceAllocation> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#weighting> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#width> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#wrapPeriod> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#absorptionUncertainty> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#scatteringUncertainty> a rdf:Property .
+<https://w3id.org/modavis/vao/ontology#transmissionLossUncertainty> a rdf:Property .
+
+<https://w3id.org/modavis/vao/vocab/representation-status> a skos:ConceptScheme ;
+  skos:prefLabel "VAO exact-realization representation status"@en .
+<https://w3id.org/modavis/vao/vocab/representation-status/captured> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "captured"@en .
+<https://w3id.org/modavis/vao/vocab/representation-status/authored> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "authored"@en .
+<https://w3id.org/modavis/vao/vocab/representation-status/converted> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "converted"@en .
+<https://w3id.org/modavis/vao/vocab/representation-status/derived> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "derived"@en .
+<https://w3id.org/modavis/vao/vocab/representation-status/simulated> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "simulated"@en .
+<https://w3id.org/modavis/vao/vocab/representation-status/inferred> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "inferred"@en .
+<https://w3id.org/modavis/vao/vocab/representation-status/reconstructed> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "reconstructed"@en .
+<https://w3id.org/modavis/vao/vocab/representation-status/redacted> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "redacted"@en .
+<https://w3id.org/modavis/vao/vocab/representation-status/hybrid> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "hybrid"@en .
+<https://w3id.org/modavis/vao/vocab/representation-status/undetermined> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/vocab/representation-status> ; skos:prefLabel "undetermined"@en .
+
+vao:measured a skos:Concept ; skos:prefLabel "measured acoustic representation"@en .
+vao:simulated a skos:Concept ; skos:prefLabel "simulated acoustic representation"@en .
+vao:inferred a skos:Concept ; skos:prefLabel "inferred acoustic representation"@en .
+vao:learned a skos:Concept ; skos:prefLabel "learned acoustic representation"@en .
+vao:authored a skos:Concept ; skos:prefLabel "authored acoustic representation"@en .
+vao:hybrid a skos:Concept ; skos:prefLabel "hybrid acoustic representation"@en .
+
+<https://w3id.org/modavis/vao/vocab/capability/typed-scientific-provenance> a vao:Capability ; skos:prefLabel "typed scientific provenance"@en .
+<https://w3id.org/modavis/vao/vocab/capability/multimodal-synchronization> a vao:Capability ; skos:prefLabel "multimodal synchronization"@en .
+<https://w3id.org/modavis/vao/vocab/capability/physical-system-topology> a vao:Capability ; skos:prefLabel "physical-system topology"@en .
+<https://w3id.org/modavis/vao/vocab/capability/deterministic-render-trace> a vao:Capability ; skos:prefLabel "deterministic render trace"@en .
+<https://w3id.org/modavis/vao/vocab/capability/midi-2-ump> a vao:Capability ; skos:prefLabel "MIDI 2.0 UMP"@en .
+<https://w3id.org/modavis/vao/vocab/capability/chunked-realization> a vao:Capability ; skos:prefLabel "chunked realization"@en .
+<https://w3id.org/modavis/vao/vocab/capability/community-governed-rights> a vao:Capability ; skos:prefLabel "community-governed rights"@en .
+<https://w3id.org/modavis/vao/vocab/capability/core-graph> a vao:Capability ; skos:prefLabel "core graph"@en .
+<https://w3id.org/modavis/vao/vocab/capability/fixity> a vao:Capability ; skos:prefLabel "exact-byte fixity"@en .
+<https://w3id.org/modavis/vao/vocab/capability/immutable-release> a vao:Capability ; skos:prefLabel "immutable release"@en .
+<https://w3id.org/modavis/vao/vocab/capability/carrier-mapping> a vao:Capability ; skos:prefLabel "carrier mapping"@en .
+<https://w3id.org/modavis/vao/vocab/capability/offline-asset-groups> a vao:Capability ; skos:prefLabel "offline asset groups"@en .
+<https://w3id.org/modavis/vao/vocab/capability/replaceable-performance-media> a vao:Capability ; skos:prefLabel "replaceable performance media"@en .
+<https://w3id.org/modavis/vao/vocab/capability/spatial> a vao:Capability ; skos:prefLabel "explicit spatial coordinates"@en .
+<https://w3id.org/modavis/vao/vocab/capability/semantic-building-model> a vao:Capability ; skos:prefLabel "semantic building model"@en .
+<https://w3id.org/modavis/vao/vocab/capability/measured-impulse-response> a vao:Capability ; skos:prefLabel "measured impulse response"@en .
+<https://w3id.org/modavis/vao/vocab/capability/simulated-impulse-response> a vao:Capability ; skos:prefLabel "simulated impulse response"@en .
+<https://w3id.org/modavis/vao/vocab/capability/position-registered-acoustic-scene> a vao:Capability ; skos:prefLabel "position-registered acoustic scene"@en .
+<https://w3id.org/modavis/vao/vocab/capability/visual-acoustic-scene> a vao:Capability ; skos:prefLabel "visual-acoustic scene"@en .
+<https://w3id.org/modavis/vao/vocab/capability/spatial-response-field> a vao:Capability ; skos:prefLabel "spatial response field"@en .
+<https://w3id.org/modavis/vao/vocab/capability/spatial-audio-scene> a vao:Capability ; skos:prefLabel "spatial audio scene"@en .
+<https://w3id.org/modavis/vao/vocab/capability/source-directivity> a vao:Capability ; skos:prefLabel "source directivity"@en .
+<https://w3id.org/modavis/vao/vocab/capability/room-acoustic-metrics> a vao:Capability ; skos:prefLabel "room-acoustic metrics"@en .
+<https://w3id.org/modavis/vao/vocab/capability/building-acoustic-performance> a vao:Capability ; skos:prefLabel "building-acoustic performance"@en .
+<https://w3id.org/modavis/vao/vocab/capability/tracked-listener-convolution> a vao:Capability ; skos:prefLabel "tracked-listener convolution"@en .
+<https://w3id.org/modavis/vao/vocab/capability/tracked-sources> a vao:Capability ; skos:prefLabel "tracked acoustic sources"@en .
+<https://w3id.org/modavis/vao/vocab/capability/geometry-acoustic-rendering> a vao:Capability ; skos:prefLabel "geometry-acoustic rendering"@en .
+<https://w3id.org/modavis/vao/vocab/capability/hybrid-acoustic-rendering> a vao:Capability ; skos:prefLabel "hybrid acoustic rendering"@en .
+<https://w3id.org/modavis/vao/vocab/capability/learned-acoustic-field> a vao:Capability ; skos:prefLabel "learned acoustic field"@en .
+<https://w3id.org/modavis/vao/vocab/capability/interaction> a vao:Capability ; skos:prefLabel "playable interaction"@en .
+<https://w3id.org/modavis/vao/vocab/capability/playable-interaction> a vao:Capability ; skos:prefLabel "playable interaction model"@en .
+<https://w3id.org/modavis/vao/vocab/capability/sampled-instrument-playback> a vao:Capability ; skos:prefLabel "sampled-instrument playback"@en .
+<https://w3id.org/modavis/vao/vocab/capability/sample-looping> a vao:Capability ; skos:prefLabel "sample looping"@en .
+<https://w3id.org/modavis/vao/vocab/capability/tuning-map> a vao:Capability ; skos:prefLabel "tuning map"@en .
+<https://w3id.org/modavis/vao/vocab/capability/multi-perspective-sampling> a vao:Capability ; skos:prefLabel "multi-perspective sampling"@en .
+<https://w3id.org/modavis/vao/vocab/capability/recorded-release> a vao:Capability ; skos:prefLabel "recorded release"@en .
+<https://w3id.org/modavis/vao/vocab/capability/source-sampler-semantics> a vao:Capability ; skos:prefLabel "source sampler semantics"@en .
+<https://w3id.org/modavis/vao/vocab/capability/stateful-interaction> a vao:Capability ; skos:prefLabel "stateful interaction"@en .
+<https://w3id.org/modavis/vao/vocab/capability/conditional-routing> a vao:Capability ; skos:prefLabel "conditional routing"@en .
+<https://w3id.org/modavis/vao/vocab/capability/composite-actuation> a vao:Capability ; skos:prefLabel "composite actuation"@en .
+<https://w3id.org/modavis/vao/vocab/capability/timed-process> a vao:Capability ; skos:prefLabel "timed process"@en .
+<https://w3id.org/modavis/vao/vocab/capability/actuator-transfer> a vao:Capability ; skos:prefLabel "actuator transfer"@en .
+<https://w3id.org/modavis/vao/vocab/capability/capture-event-alignment> a vao:Capability ; skos:prefLabel "capture/event alignment"@en .
+<https://w3id.org/modavis/vao/vocab/capability/acoustical-analysis> a vao:Capability ; skos:prefLabel "acoustical analysis"@en .
+<https://w3id.org/modavis/vao/vocab/capability/generic-model-viewing> a vao:Capability ; skos:prefLabel "generic model viewing"@en .
+<https://w3id.org/modavis/vao/vocab/capability/image-target-ar> a vao:Capability ; skos:prefLabel "image-target augmented reality"@en .
+<https://w3id.org/modavis/vao/vocab/capability/linked-animation> a vao:Capability ; skos:prefLabel "linked animation"@en .
+<https://w3id.org/modavis/vao/vocab/capability/source-segmentation> a vao:Capability ; skos:prefLabel "source segmentation"@en .
+<https://w3id.org/modavis/vao/vocab/capability/spatial-listening-map> a vao:Capability ; skos:prefLabel "spatial listening map"@en .
+<https://w3id.org/modavis/vao/vocab/capability/surface-placement-ar> a vao:Capability ; skos:prefLabel "surface-placement augmented reality"@en .
+<https://w3id.org/modavis/vao/vocab/capability/synchronized-media-animation> a vao:Capability ; skos:prefLabel "synchronized media animation"@en .

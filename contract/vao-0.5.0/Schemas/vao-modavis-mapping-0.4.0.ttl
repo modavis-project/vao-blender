@@ -1,0 +1,21 @@
+@prefix vao: <https://w3id.org/modavis/vao/ontology#> .
+@prefix modmedia: <https://w3id.org/modavis/ontology/media#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/modavis/vao/0.4.0/modavis-mapping> a owl:Ontology ;
+  dcterms:title "VAO 0.4.0 to MODAVIS Ontology Network 0.1.0 mapping"@en ;
+  dcterms:description "A conservative downstream mapping that binds VAO 0.4.0 container identities to the immutable MODAVIS 0.1.0 semantic release. VAO data uses MODAVIS instrument and organ term IRIs directly; this graph adds only universally valid container mappings."@en ;
+  dcterms:creator <https://orcid.org/0000-0002-7904-3892> ;
+  dcterms:issued "2026-08-27"^^xsd:date ;
+  dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+  owl:imports <https://w3id.org/modavis/vao/0.4.0/vocabulary>,
+              <https://w3id.org/modavis/ontology/0.1.0> ;
+  owl:versionIRI <https://w3id.org/modavis/vao/0.4.0/modavis-mapping> ;
+  owl:versionInfo "0.4.0" .
+
+vao:LogicalAsset rdfs:subClassOf modmedia:DigitalAsset .
+
+vao:Realization rdfs:subClassOf modmedia:Bitstream .

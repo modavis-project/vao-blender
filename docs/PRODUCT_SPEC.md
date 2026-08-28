@@ -1,7 +1,7 @@
 # Product and UX specification
 
 > Historical 0.2.0 product baseline. For the current 0.3.0 release scope and
-> exact VAO 0.4.0 capability matrix, see [COMPATIBILITY.md](COMPATIBILITY.md).
+> exact VAO 0.4.0/0.5.0 capability matrix, see [COMPATIBILITY.md](COMPATIBILITY.md).
 
 Status: proposed implementation baseline  
 Date: 2026-08-24  

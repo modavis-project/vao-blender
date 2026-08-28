@@ -2,7 +2,7 @@
 
 > Historical design record for the 0.2.0 implementation. The current 0.3.0
 > release architecture preserves these trust boundaries but adds independent
-> VAO 0.4.0 dispatch documented in [CONFORMANCE.md](CONFORMANCE.md); the
+> VAO 0.4.0/0.5.0 dispatch documented in [CONFORMANCE.md](CONFORMANCE.md); the
 > implemented tree differs from the early planned layout below.
 
 Status: historical implementation baseline

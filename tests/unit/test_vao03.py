@@ -90,7 +90,7 @@ class VAO03ContractTests(unittest.TestCase):
             )
             outcome = validate_package(path)
         self.assertEqual(outcome.state, OutcomeState.INVALID)
-        self.assertIn("exact pinned 0.2.2, 0.3.2, and 0.4.0", outcome.diagnostics[0].message)
+        self.assertIn("exact pinned 0.2.2, 0.3.2, 0.4.0, and 0.5.0", outcome.diagnostics[0].message)
         self.assertFalse(outcome.graph)
 
     def test_closed_manifest_rejects_unknown_root_property(self):

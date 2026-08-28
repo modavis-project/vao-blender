@@ -1,0 +1,122 @@
+{
+  "type": "VAOSpecificationBundle",
+  "formatVersion": "0.5.0",
+  "id": "https://w3id.org/modavis/vao/0.5.0/specification-bundle",
+  "artifacts": [
+    {
+      "path": "Schemas/vao-manifest-0.5.0.schema.json",
+      "byteSize": 183029,
+      "sha256": "b4ba4dd32c4424abcfe3d47f5eaf2995870a8ef908008b622f6450969dc3e715"
+    },
+    {
+      "path": "Schemas/vao-context-0.5.0.jsonld",
+      "byteSize": 26293,
+      "sha256": "90f9cf60fa83f02e22614c3c3470a8d8515e27da68820d43e2c1e3364c1b9dab"
+    },
+    {
+      "path": "Schemas/vao-vocabulary-0.5.0.ttl",
+      "byteSize": 58415,
+      "sha256": "3ce308f0659806d6b75ef14b0754ab1b435442a7191918cb4a7cc71965d7179d"
+    },
+    {
+      "path": "Schemas/vao-modavis-mapping-0.5.0.ttl",
+      "byteSize": 1245,
+      "sha256": "9ca18ed07e5e697916280d326889886c3ef5c6ea7aad895db5b3f263896d7a44"
+    },
+    {
+      "path": "Schemas/vao-shapes-0.5.0.ttl",
+      "byteSize": 11482,
+      "sha256": "4e766527615a1f26a6c82bd0511d60c9646cac396a9af5c6a4b60c48cc904d09"
+    },
+    {
+      "path": "Schemas/vao-carrier-0.5.0.schema.json",
+      "byteSize": 1876,
+      "sha256": "0d5e67ac025fdaf1194ae0b22f5752e4daa275d1e9f894ab3021953e4b0af3e5"
+    },
+    {
+      "path": "Schemas/vao-release-0.5.0.schema.json",
+      "byteSize": 8830,
+      "sha256": "ae9010304f8d1b7b3b3417b33d1654aada43c7f44289506494c836dc1ffe7bc7"
+    },
+    {
+      "path": "Schemas/vao-pack-manifest-0.5.0.schema.json",
+      "byteSize": 1769,
+      "sha256": "ce8bc210b78bcd47c89567516691df628abc42ba0c2afcf98ed19b21c5542dc5"
+    },
+    {
+      "path": "Schemas/vao-materialization-receipt-0.5.0.schema.json",
+      "byteSize": 8932,
+      "sha256": "64f3381395bfcdfa15fdf22cbdeb48be2a2701302137bc49ea26783ac4a360c7"
+    },
+    {
+      "path": "Schemas/vao-zenodo-metadata-0.5.0.schema.json",
+      "byteSize": 9786,
+      "sha256": "6e7b97da7727a49c64d52c4049c41925cbcc306dce484b23960e409215903835"
+    },
+    {
+      "path": "Docs/VAO_STANDARD_0.5.0.md",
+      "byteSize": 65814,
+      "sha256": "850ce9cb9ca0ba5981d8fa27b8c62f42b83d54fa80a9b341c95aa45e48ad27ca"
+    },
+    {
+      "path": "Docs/VAO_CONFORMANCE_0.5.0.md",
+      "byteSize": 13318,
+      "sha256": "4f32c5c7025d2098a0994fa893e7643cef7b700b13d436ef7bf46be65024676b"
+    },
+    {
+      "path": "Docs/SECURITY_CONSIDERATIONS.md",
+      "byteSize": 7221,
+      "sha256": "30f01ac95f2ba42d9b61038bb9dde2c42e60480ea76562ba5f082ff76a890fb1"
+    },
+    {
+      "path": "Docs/VAO_CORE_PROFILE_0.5.0.md",
+      "byteSize": 1611,
+      "sha256": "d9eb7b51139989695841663f9f25288c8b1e01107e78febcb7a7a4919a412667"
+    },
+    {
+      "path": "Docs/VAO_DYNAMIC_DELIVERY_PROFILE_0.5.0.md",
+      "byteSize": 4011,
+      "sha256": "c20acde60ddcf381846ae63d9e2c88b33b9c29fa6936a6de3f4c9c44a83d6b5f"
+    },
+    {
+      "path": "Docs/VAO_SCIENTIFIC_PROFILE_0.5.0.md",
+      "byteSize": 6027,
+      "sha256": "02f604df7a921b3d60d6449fcdccc1187612cef9555e41760cf0783f17216099"
+    },
+    {
+      "path": "Docs/VAO_MULTIMODAL_PROFILE_0.5.0.md",
+      "byteSize": 3016,
+      "sha256": "b573388bf194da007e369a0337109becb3099a103ba1d63cab9319bb616f0216"
+    },
+    {
+      "path": "Docs/VAO_PHYSICAL_INSTRUMENT_PROFILE_0.5.0.md",
+      "byteSize": 1512,
+      "sha256": "8cd19635ebf1e0917be72b5a0274d4211acbde04d64f1b1af652ad33a48dc5c5"
+    },
+    {
+      "path": "Docs/VAO_PLAYABLE_PROFILE_0.5.0.md",
+      "byteSize": 2560,
+      "sha256": "67ee31490a2dd4f7117ec4bd538da1a38893bce464393f2bff3bddb60cbc7a64"
+    },
+    {
+      "path": "Docs/VAO_DETERMINISTIC_RUNTIME_PROFILE_0.5.0.md",
+      "byteSize": 3518,
+      "sha256": "88ea9426615ec9f12df2be3be62d3bcf22e7e4d6ceb5cf3c17ca3ce0f40305fa"
+    },
+    {
+      "path": "Docs/VAO_SPATIAL_PROFILE_0.5.0.md",
+      "byteSize": 5346,
+      "sha256": "89588293e77497fcebbdb6f28a0b595418295b04c7a6ec94044980b80b3bd1f9"
+    },
+    {
+      "path": "Docs/VAO_ACOUSTICS_PROFILE_0.5.0.md",
+      "byteSize": 5398,
+      "sha256": "562243476e14763f759ece7a5c49356ae8e43f4b26ae72261540706a2a27a02a"
+    },
+    {
+      "path": "Docs/VAO_ZENODO_PROFILE_0.5.0.md",
+      "byteSize": 5368,
+      "sha256": "cfe5b21dc3c61e7eed373a416269665e1f54c38eef2f5a0c1cac51ac142b7637"
+    }
+  ]
+}

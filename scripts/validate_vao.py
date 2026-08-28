@@ -45,6 +45,7 @@ def main() -> int:
     if arguments.show_progress:
         print(file=sys.stderr)
     report = outcome.report(redact_paths=not arguments.include_paths)
+    report["valid"] = outcome.is_valid
     rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     if arguments.output:
         arguments.output.write_text(rendered, encoding="utf-8")

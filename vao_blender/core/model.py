@@ -268,7 +268,7 @@ class ValidationOutcome:
             source = Path(source).name
         manifest = self.manifest or {}
         return {
-            "reader": "VAO-Blender/0.3.0",
+            "reader": "VAO-Blender/0.4.0",
             "contract": {
                 "line": self.contract_line,
                 "releaseBundleSHA256": self.contract_sha256
@@ -277,9 +277,13 @@ class ValidationOutcome:
                     "published-standard"
                     if self.contract_line == "0.4.0"
                     else (
-                        "implemented-editor-draft"
-                        if self.contract_line == "0.3.2"
-                        else "private-development-release-candidate"
+                        "commit-pinned-standard-candidate"
+                        if self.contract_line == "0.5.0"
+                        else (
+                            "implemented-editor-draft"
+                            if self.contract_line == "0.3.2"
+                            else "private-development-release-candidate"
+                        )
                     )
                 ),
             },

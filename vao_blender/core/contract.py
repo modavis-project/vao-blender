@@ -84,9 +84,26 @@ FILE_04_SHA256 = {
     "requirements-lock.txt": ("cfc21919a7f6c3eda016e2d2b37c75298bf7760469bb6938833dd60255feb30b"),
 }
 
+STANDARD_05_COMMIT = "d17b3f188fdf7fadd01ba025383e4feca8def935"
+RELEASE_BUNDLE_05_SHA256 = "82efb6ee31353e72c81671e2c6500c51dc223d7f21af4983705933ea6caa5c96"
+CONTRACT_05_ROOT = Path(__file__).resolve().parents[2] / "contract" / "vao-0.5.0"
+FILE_05_SHA256 = {
+    "Schemas/vao-release-bundle-0.5.0.json": RELEASE_BUNDLE_05_SHA256,
+    "Schemas/vao-manifest-0.4.0.schema.json": (
+        "3b8fba703654b8f5e42101e2ecc9fca769bf19115d01ae13d044a36c10fcbc83"
+    ),
+    "Tools/vao03.py": "ff22f72bdf691e87f0101c682238cd2da933643dca86e82d318e3b75f87211ac",
+    "Tools/vao05.py": "5b83a33ae27259c6ef5c8d5bce44920743033e15e458cea368757baa17066513",
+    "Tools/vao05_runtime.py": ("46fabdac8534f7c93b4e39f07bb2bdc6995637591384d3ad30c9b53c335d7847"),
+    "Tools/vao_resources.py": ("4af739d85c5d31ec6f87cf6074372904a27eec06a3d8543eb7123bcdf34297b1"),
+    "Tools/vaom.py": "e52d11ccd5c6305345b6aac4f33949e4f1a1074e2c7374d031b6f35a36644eb0",
+    "requirements-lock.txt": "cfc21919a7f6c3eda016e2d2b37c75298bf7760469bb6938833dd60255feb30b",
+}
+
 _REFERENCE_LOCK = threading.Lock()
 _REFERENCE_03: ModuleType | None = None
 _REFERENCE_04: ModuleType | None = None
+_REFERENCE_05: ModuleType | None = None
 
 
 class ContractIntegrityError(RuntimeError):
@@ -188,10 +205,56 @@ def verify_contract_04() -> None:
             )
 
 
+def verify_contract_05() -> None:
+    """Verify the commit-pinned VAO 0.5.0 candidate and normative bundle."""
+    try:
+        recorded = (CONTRACT_05_ROOT / "STANDARD_COMMIT").read_text(encoding="ascii").strip()
+    except OSError as exc:
+        raise ContractIntegrityError("VAO 0.5.0 contract commit pin is absent") from exc
+    if recorded != STANDARD_05_COMMIT:
+        raise ContractIntegrityError("VAO 0.5.0 contract commit pin does not match")
+    for name, expected in FILE_05_SHA256.items():
+        path = CONTRACT_05_ROOT / name
+        try:
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        except OSError as exc:
+            raise ContractIntegrityError(
+                f"vendored VAO 0.5.0 contract file is unavailable: {name}"
+            ) from exc
+        if actual != expected:
+            raise ContractIntegrityError(
+                f"vendored VAO 0.5.0 contract file failed integrity: {name}"
+            )
+
+    bundle_path = CONTRACT_05_ROOT / "Schemas" / "vao-release-bundle-0.5.0.json"
+    try:
+        bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
+        artifacts = bundle["artifacts"]
+    except (OSError, UnicodeError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        raise ContractIntegrityError("VAO 0.5.0 normative artifact bundle is unreadable") from exc
+    if bundle.get("formatVersion") != "0.5.0" or not isinstance(artifacts, list):
+        raise ContractIntegrityError("VAO 0.5.0 normative artifact bundle has an invalid identity")
+    for artifact in artifacts:
+        try:
+            name = str(artifact["path"])
+            expected_size = int(artifact["byteSize"])
+            expected_digest = str(artifact["sha256"])
+            data = (CONTRACT_05_ROOT / name).read_bytes()
+        except (OSError, KeyError, TypeError, ValueError) as exc:
+            raise ContractIntegrityError(
+                "VAO 0.5.0 normative artifact inventory is incomplete"
+            ) from exc
+        if len(data) != expected_size or hashlib.sha256(data).hexdigest() != expected_digest:
+            raise ContractIntegrityError(
+                f"vendored VAO 0.5.0 normative artifact failed integrity: {name}"
+            )
+
+
 def verify_contracts() -> None:
     verify_contract()
     verify_contract_03()
     verify_contract_04()
+    verify_contract_05()
 
 
 def reference_validator_03() -> ModuleType:
@@ -288,4 +351,46 @@ def reference_validator_04() -> ModuleType:
         if getattr(reference, "FORMAT_VERSION", None) != "0.4.0":
             raise ContractIntegrityError("pinned VAO validator has an unexpected format version")
         _REFERENCE_04 = reference
+        return reference
+
+
+def reference_validator_05() -> ModuleType:
+    """Load the commit-pinned VAO 0.5.0 candidate validator fully offline."""
+    global _REFERENCE_05
+    if _REFERENCE_05 is not None:
+        return _REFERENCE_05
+    with _REFERENCE_LOCK:
+        if _REFERENCE_05 is not None:
+            return _REFERENCE_05
+        verify_contract_05()
+        tools = CONTRACT_05_ROOT / "Tools"
+        aliases = ("vao_resources", "vaom", "vao03", "vao05_runtime")
+        previous = {name: sys.modules.get(name) for name in aliases}
+        try:
+            resources = _module_from_path(
+                "_vao_blender_pinned_050_resources", tools / "vao_resources.py"
+            )
+            sys.modules["vao_resources"] = resources
+            vaom = _module_from_path("_vao_blender_pinned_050_vaom", tools / "vaom.py")
+            sys.modules["vaom"] = vaom
+            vao03 = _module_from_path("_vao_blender_pinned_050_vao03", tools / "vao03.py")
+            sys.modules["vao03"] = vao03
+            runtime = _module_from_path(
+                "_vao_blender_pinned_050_runtime", tools / "vao05_runtime.py"
+            )
+            sys.modules["vao05_runtime"] = runtime
+            reference = _module_from_path("_vao_blender_pinned_050_reference", tools / "vao05.py")
+        except ModuleNotFoundError as exc:
+            raise ContractIntegrityError(
+                "VAO 0.5.0 validation dependencies are unavailable; install the bundled wheels"
+            ) from exc
+        finally:
+            for name, module in previous.items():
+                if module is None:
+                    sys.modules.pop(name, None)
+                else:
+                    sys.modules[name] = module
+        if getattr(reference, "FORMAT_VERSION", None) != "0.5.0":
+            raise ContractIntegrityError("pinned VAO validator has an unexpected format version")
+        _REFERENCE_05 = reference
         return reference

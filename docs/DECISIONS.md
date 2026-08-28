@@ -1,7 +1,7 @@
 # Architecture decision record
 
 > Historical decisions through the 0.2.0/0.3.2 development period. Current
-> public VAO 0.4.0 support and release policy are documented in
+> public VAO 0.4.0 and candidate VAO 0.5.0 support and release policy are documented in
 > [COMPATIBILITY.md](COMPATIBILITY.md) and [RELEASE.md](RELEASE.md).
 
 Status: proposed baseline decisions  

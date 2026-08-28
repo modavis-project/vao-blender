@@ -44,3 +44,13 @@ references:
     doi: "10.5281/zenodo.22122774"
     url: "https://github.com/modavis-project/vao-standard/releases/tag/v0.4.0"
     license: CC-BY-4.0
+  - type: standard
+    title: "Virtual Acoustic Object (VAO) Standard 0.5.0 candidate"
+    authors:
+      - family-names: "Ukolov"
+        given-names: "Dominik"
+        orcid: "https://orcid.org/0000-0002-7904-3892"
+    version: 0.5.0
+    date-released: 2026-08-28
+    url: "https://github.com/modavis-project/vao-standard/tree/d17b3f188fdf7fadd01ba025383e4feca8def935"
+    license: CC-BY-4.0

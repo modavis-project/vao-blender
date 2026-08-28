@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/modavis/vao/0.4.0/schema/pack-manifest.json",
+  "title": "VAO 0.4.0 asset-pack manifest",
+  "type": "object",
+  "required": [
+    "$schema",
+    "type",
+    "formatVersion",
+    "id",
+    "releaseId",
+    "members",
+    "rejectUnlistedMembers"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://w3id.org/modavis/vao/0.4.0/schema/pack-manifest.json"
+    },
+    "type": {
+      "const": "VAOPackManifest"
+    },
+    "formatVersion": {
+      "const": "0.4.0"
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "releaseId": {
+      "$ref": "#/$defs/id"
+    },
+    "members": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/member"
+      }
+    },
+    "rejectUnlistedMembers": {
+      "const": true
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^(urn:|https?:)[^\\s]+$"
+    },
+    "member": {
+      "type": "object",
+      "required": [
+        "realizationId",
+        "path",
+        "mediaType",
+        "byteSize",
+        "sha256"
+      ],
+      "properties": {
+        "realizationId": {
+          "$ref": "#/$defs/id"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\x00-\\x1F\\x7F]+$"
+        },
+        "mediaType": {
+          "type": "string",
+          "pattern": "^[^/\\s]+/[^\\s]+$"
+        },
+        "byteSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

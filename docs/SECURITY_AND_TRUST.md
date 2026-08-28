@@ -49,17 +49,20 @@ realizations never reach the program-audio engine. Their measurement layout,
 encoding, fixity, rights, and provenance are inspectable metadata; convolution,
 simulation, interpolation, and acoustic rendering remain unsupported.
 
-### VAO 0.4.0 boundary
+### VAO 0.4.0 and 0.5.0 boundaries
 
-The exact 0.4.0 reader verifies the signed published release pin and its
-machine-readable normative artifact inventory before loading the vendored
-reference validator. It applies the upstream closed carrier/manifest schemas,
-immutable context and release identities, carrier closure, exact embedded
-realization mapping, and streamed size/SHA-256 checks. ASCII control characters
-and archive paths with more than 128 segments are rejected during preflight.
+The exact 0.4.0 reader verifies the signed published release pin. The 0.5.0
+candidate reader verifies the recorded upstream commit and normative-bundle
+digest. Both verify the machine-readable artifact inventory before loading the
+vendored reference validator. They apply the upstream closed carrier/manifest
+schemas, immutable context and release identities, carrier closure, exact
+embedded realization mapping, and streamed size/SHA-256 checks. ASCII control
+characters and archive paths with more than 128 segments are rejected during
+preflight.
 
 Only verified embedded runtime-visual GLB realizations reach Blender. VAO 0.4.0
-runtime/interaction declarations and acoustic payloads remain inspection data;
+and 0.5.0 runtime/interaction declarations, scientific observations, protocol
+bindings, physical components, and acoustic payloads remain inspection data;
 the extension does not execute them or perform convolution, simulation, or
 interpolation. Rights acknowledgement is tracked independently of the headline
 validation state so a limited/unsupported capability result cannot bypass the
@@ -97,7 +100,7 @@ guidance and produce a resource-limited result, not contract invalidity:
 | --- | --- |
 | Entries | 20,000 |
 | Manifest expanded bytes | 32 MiB |
-| VAO 0.3.2/0.4.0 carrier descriptor | 16 MiB |
+| VAO 0.3.2/0.4.0/0.5.0 carrier descriptor | 16 MiB |
 | One entry expanded bytes | 8 GiB |
 | Total expanded package | 64 GiB |
 

@@ -1,18 +1,18 @@
 # VAO Blender: A Blender Extension for Virtual Acoustic Objects
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22134389.svg)](https://doi.org/10.5281/zenodo.22134389)
-[![VAO 0.4.0 persistent identifier](https://img.shields.io/badge/W3ID-VAO%200.4.0-2C5F73.svg)](https://w3id.org/modavis/vao/0.4.0/)
+[![VAO 0.5.0 candidate](https://img.shields.io/badge/VAO-0.5.0%20candidate-2C5F73.svg)](https://github.com/modavis-project/vao-standard/tree/d17b3f188fdf7fadd01ba025383e4feca8def935)
 
 VAO Blender lets you open a Virtual Acoustic Object (`.vao`) in Blender, verify
 that the package is internally consistent, inspect its metadata, and import a
 supported 3D scene. The extension works offline and treats every VAO as untrusted
 input.
 
-This repository is prepared for the `v0.3.0-rc.1` prerelease. The extension
-implements the published
-[VAO Standard 0.4.0](https://github.com/modavis-project/vao-standard/tree/v0.4.0)
-and keeps separate compatibility readers for two older formats. The standard's
-source repository is [modavis-project/vao-standard](https://github.com/modavis-project/vao-standard).
+The main branch is the 0.4.0 development line. It adds exact, commit-pinned
+support for the VAO 0.5.0 candidate used by the Kinoorgel release, retains the
+published [VAO Standard 0.4.0](https://github.com/modavis-project/vao-standard/tree/v0.4.0),
+and keeps separate compatibility readers for two older formats. The 0.5 candidate
+is pinned to standard commit `d17b3f1`; it is not described as a published standard.
 
 ## What it does
 
@@ -33,14 +33,15 @@ rejected instead of being passed to a similar reader.
 
 | VAO format | Status | Available behavior |
 | --- | --- | --- |
+| 0.5.0 | Commit-pinned standard candidate | Strict carrier validation, bootstrap/preservation metadata inspection, and exact embedded visual-realization import |
 | 0.4.0 | Published standard | Strict validation, metadata inspection, and exact embedded visual-realization import |
 | 0.3.2 | Historical editor draft | Pinned compatibility validation, visual-acoustic inspection, and exact embedded visual-realization import |
 | 0.2.2 | Historical development format | Pinned compatibility validation, visual import, supported instrument-interaction compilation, and bounded audio preview |
 
-VAO 0.4.0 interaction/runtime programs and acoustic rendering are not supported.
+VAO 0.5.0 and 0.4.0 interaction/runtime programs and acoustic rendering are not supported.
 The extension does not run package code, convolve impulse responses, simulate
 acoustics, or invent fallback behavior. See the full
-[compatibility matrix](docs/COMPATIBILITY.md) and [0.4.0 conformance statement](docs/CONFORMANCE.md).
+[compatibility matrix](docs/COMPATIBILITY.md) and [modern conformance statement](docs/CONFORMANCE.md).
 
 ## Install
 
@@ -84,7 +85,7 @@ pose provenance so they can be traced back to the VAO.
 
 - [Installation and updates](docs/INSTALLATION.md)
 - [Compatibility](docs/COMPATIBILITY.md)
-- [VAO 0.4.0 conformance](docs/CONFORMANCE.md)
+- [VAO 0.4.0/0.5.0 conformance](docs/CONFORMANCE.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Security model](docs/SECURITY_AND_TRUST.md) and [security reporting](SECURITY.md)
 - [Privacy and local data](docs/PRIVACY.md)

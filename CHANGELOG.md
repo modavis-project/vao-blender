@@ -4,6 +4,17 @@ All notable changes are documented here. The project follows semantic versioning
 for the Blender extension; supported VAO format versions remain exact contract
 identities.
 
+## Unreleased
+
+- Added exact offline validation for the VAO 0.5.0 candidate at standard commit
+  `d17b3f188fdf7fadd01ba025383e4feca8def935`.
+- Added bootstrap and preservation-closure carrier inspection, including
+  cross-carrier distribution metadata without claiming network retrieval.
+- Added a Kinoorgel-compatible metadata path for scientific measurements,
+  physical MIDI-interface topology, playable mappings, rights, and provenance
+  when no 3D realization is present.
+- Retained exact 0.2.2, 0.3.2, and published 0.4.0 readers unchanged.
+
 ## 0.3.0-rc.1 — 2026-08-27
 
 - Added exact support for the published VAO Standard 0.4.0 and pinned the signed

@@ -40,11 +40,24 @@ class VAO_PT_overview(VAO_PT_base, bpy.types.Panel):
         box.label(text=runtime.title or runtime.source_name, icon="PACKAGE")
         box.label(text=f"Format {runtime.format_version} · revision {runtime.revision}")
         box.label(text=f"Entities {runtime.entity_count} · relations {runtime.relation_count}")
-        if runtime.format_version in {"0.3.2", "0.4.0"}:
+        if runtime.format_version in {"0.3.2", "0.4.0", "0.5.0"}:
             box.label(
                 text=f"Logical assets {runtime.logical_asset_count} · realizations {runtime.realization_count}"
             )
             box.label(text=f"Carrier {runtime.carrier_mode} · verified {runtime.verified_assets}")
+            if runtime.format_version == "0.5.0":
+                box.label(
+                    text=(
+                        f"Observations {runtime.scientific_observation_count} · "
+                        f"protocol bindings {runtime.protocol_binding_count}"
+                    )
+                )
+                box.label(
+                    text=(
+                        f"Physical components {runtime.physical_component_count} · "
+                        f"distributions {runtime.distribution_count}"
+                    )
+                )
         else:
             box.label(text=f"Assets {runtime.asset_count} · verified {runtime.verified_assets}")
         session = active_session(context.scene)
@@ -98,7 +111,7 @@ class VAO_PT_explore(VAO_PT_base, bpy.types.Panel):
             op.entity_id = item.id
             row.label(text=item.kind)
         layout.separator()
-        if session.outcome.contract_line in {"0.3.2", "0.4.0"}:
+        if session.outcome.contract_line in {"0.3.2", "0.4.0", "0.5.0"}:
             logical_assets = [
                 item
                 for item in session.outcome.logical_assets.values()
@@ -226,7 +239,7 @@ class VAO_PT_play(VAO_PT_base, bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         session = active_session(context.scene)
-        if session and session.outcome.contract_line in {"0.3.2", "0.4.0"}:
+        if session and session.outcome.contract_line in {"0.3.2", "0.4.0", "0.5.0"}:
             layout.label(text="Impulse responses are metadata/filter-kernel records", icon="INFO")
             layout.label(text="Program-audio playback and convolution are not implemented")
             return
@@ -279,6 +292,8 @@ class VAO_PT_diagnostics(VAO_PT_base, bpy.types.Panel):
             layout.label(text="Pinned private VAO 0.3.2 implemented editor draft", icon="INFO")
         elif outcome.contract_line == "0.4.0":
             layout.label(text="Pinned published VAO 0.4.0 standard", icon="INFO")
+        elif outcome.contract_line == "0.5.0":
+            layout.label(text="Pinned VAO 0.5.0 standard candidate", icon="INFO")
         else:
             layout.label(text="Pinned private VAO 0.2.2 development snapshot", icon="INFO")
         for diagnostic in outcome.diagnostics[:12]:

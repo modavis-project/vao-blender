@@ -1,7 +1,7 @@
 # Test strategy
 
 > This document records the broad 0.2.0 test program and historical Cuntz golden
-> package plan. The executable 0.3.0 release commands and exact VAO 0.4.0 gate are
+> package plan. The executable release commands and exact VAO 0.4.0/0.5.0 gates are
 > maintained in [RELEASE.md](RELEASE.md) and [CONFORMANCE.md](CONFORMANCE.md).
 
 Status: historical strategy with current principles

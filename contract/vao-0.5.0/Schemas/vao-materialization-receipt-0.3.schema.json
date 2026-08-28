@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/modavis/vao/0.3/schema/materialization-receipt.json",
+  "title": "VAO 0.3 runtime materialization receipt",
+  "type": "object",
+  "required": ["$schema", "type", "formatVersion", "releaseId", "manifestSHA256", "instanceId", "createdAt", "selectedGroupIds", "acquisitions", "profileStates"],
+  "properties": {
+    "$schema": { "const": "https://w3id.org/modavis/vao/0.3/schema/materialization-receipt.json" }, "type": { "const": "VAOMaterializationReceipt" },
+    "formatVersion": { "const": "0.3.3" }, "releaseId": { "$ref": "#/$defs/id" },
+    "manifestSHA256": { "$ref": "#/$defs/sha" }, "instanceId": { "$ref": "#/$defs/id" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "selectedGroupIds": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/id" } },
+    "acquisitions": { "type": "array", "items": {
+      "type": "object", "required": ["realizationId", "distributionId", "byteSize", "sha256", "status", "verifiedAt"],
+      "properties": { "realizationId": { "$ref": "#/$defs/id" }, "distributionId": { "$ref": "#/$defs/id" }, "byteSize": { "type": "integer", "minimum": 0 }, "sha256": { "$ref": "#/$defs/sha" }, "status": { "enum": ["verified", "integrity-failed", "unavailable", "authentication-required", "policy-blocked"] }, "verifiedAt": { "type": "string", "format": "date-time" } },
+      "additionalProperties": false
+    } },
+    "profileStates": { "type": "array", "items": {
+      "type": "object", "required": ["profileId", "state"],
+      "properties": { "profileId": { "type": "string", "format": "uri" }, "state": { "enum": ["embedded-valid", "materialized-valid", "incomplete", "unavailable", "integrity-failed", "policy-blocked"] } },
+      "additionalProperties": false
+    } }
+  },
+  "additionalProperties": false,
+  "$defs": { "id": { "type": "string", "pattern": "^(urn:|https?:)[^\\s]+$" }, "sha": { "type": "string", "pattern": "^[0-9a-f]{64}$" } }
+}

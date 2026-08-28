@@ -41,11 +41,11 @@ class Session:
         )
 
     def ensure_audio(self):
-        if self.outcome.contract_line in {"0.3.2", "0.4.0"}:
+        if self.outcome.contract_line in {"0.3.2", "0.4.0", "0.5.0"}:
             raise RuntimeError(
                 f"VAO {self.outcome.contract_line} impulse responses are metadata/filter-kernel "
-                "records; 0.4 Playable execution, ordinary playback, and convolution are not "
-                "implemented"
+                f"records; VAO {self.outcome.contract_line} Playable execution, ordinary playback, "
+                "and convolution are not implemented"
             )
         if self.audio_engine is None:
             from .audio_engine import AudioEngine
@@ -117,6 +117,13 @@ def install_outcome(scene: bpy.types.Scene, outcome: ValidationOutcome) -> Sessi
     runtime.asset_count = 0
     runtime.logical_asset_count = len(outcome.logical_assets)
     runtime.realization_count = len(outcome.realizations)
+    scientific = manifest.get("scientific", {})
+    interaction = manifest.get("interactionModel", {})
+    physical = manifest.get("physicalSystem", {})
+    runtime.scientific_observation_count = len(scientific.get("observations", ()))
+    runtime.protocol_binding_count = len(interaction.get("protocolBindings", ()))
+    runtime.physical_component_count = len(physical.get("components", ()))
+    runtime.distribution_count = len(manifest.get("distributions", ()))
     runtime.frame_count = 0
     runtime.pose_count = 0
     runtime.measurement_count = 0

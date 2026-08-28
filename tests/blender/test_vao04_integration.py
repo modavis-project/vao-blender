@@ -64,7 +64,7 @@ with tempfile.TemporaryDirectory() as directory:
         session.ensure_audio()
         raise AssertionError("VAO 0.4 Playable/RIR content was exposed to the legacy audio engine")
     except RuntimeError as exc:
-        assert "0.4 Playable" in str(exc)
+        assert "VAO 0.4.0 Playable" in str(exc)
 
     close_all()
     remove_materialization(session)

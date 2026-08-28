@@ -75,7 +75,7 @@ def ensure_root(session, scene: bpy.types.Scene) -> bpy.types.Collection:
     if hasattr(release, "get"):
         root[TRACE_KEYS["release"]] = release.get("id", "")
     root["vao_source_name"] = Path(session.source_path).name
-    root["vao_materialization_version"] = "0.3.0"
+    root["vao_materialization_version"] = "0.4.0"
     for name in ("Representations", "Controls", "Spatial", "Diagnostics"):
         child = _link_child(root, name)
         child[TRACE_KEYS["package"]] = manifest.get("id", "")
@@ -111,7 +111,7 @@ def _rollback(before: dict[str, set]) -> None:
 def import_visual(
     session, scene: bpy.types.Scene, asset_id: str
 ) -> tuple[bpy.types.Collection, int]:
-    is_modern = session.outcome.contract_line in {"0.3.2", "0.4.0"}
+    is_modern = session.outcome.contract_line in {"0.3.2", "0.4.0", "0.5.0"}
     graph = session.outcome.graph
     if is_modern:
         acoustic_scene = session.outcome.acoustic_scene

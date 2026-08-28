@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "vao-blender-core"
-version = "0.3.0"
+version = "0.4.0"
 description = "Blender-neutral validation core for the VAO-Blender extension"
 requires-python = ">=3.11"
 license = {text = "GPL-3.0-or-later"}

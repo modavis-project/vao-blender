@@ -9,9 +9,10 @@ check Blender's system console for the first Python import error. A failure nami
 
 ## “Unsupported VAO format version”
 
-Only exact VAO 0.2.2, 0.3.2, and 0.4.0 packages are accepted. Do not edit the
-version field to force a match: schemas, carrier rules, contexts, and semantics
-may differ. Migrate the source with tools appropriate to its actual format.
+Only exact VAO 0.2.2, 0.3.2, 0.4.0, and the pinned 0.5.0 candidate packages are
+accepted. Do not edit the version field to force a match: schemas, carrier
+rules, contexts, and semantics may differ. Migrate the source with tools
+appropriate to its actual format.
 
 ## Validation fails
 
@@ -19,7 +20,7 @@ Open **VAO → Diagnostics** and record the first diagnostic code. Common causes
 an unsafe archive path, invalid strict JSON, schema failure, carrier/manifest
 mismatch, undeclared payload, missing payload, wrong byte size, or wrong SHA-256.
 Validation never repairs the source. Re-export from the authoring system or verify
-the package with the VAO 0.4.0 reference tools.
+the package with the reference tools matching its declared contract.
 
 ## Media remains blocked after validation
 
@@ -37,7 +38,7 @@ not downloaded.
 
 ## RIR audio does not play
 
-For VAO 0.3.2/0.4.0, RIRs are inspected as metadata/filter-kernel records only.
+For VAO 0.3.2/0.4.0/0.5.0, RIRs are inspected as metadata/filter-kernel records only.
 Convolution, simulation, interpolation, and program-audio playback are explicitly
 out of scope for this release.
 

@@ -1,0 +1,396 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3id.org/modavis/vao/0.5.0/schema/release.json",
+  "title": "VAO 0.5.0 publication release descriptor",
+  "description": "Repository-neutral publication topology for one modular record or an explicitly related record family.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "type",
+    "formatVersion",
+    "vaoId",
+    "releaseId",
+    "revision",
+    "contentVersion",
+    "publication"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://w3id.org/modavis/vao/0.5.0/schema/release.json"
+    },
+    "type": {
+      "const": "VAORelease"
+    },
+    "formatVersion": {
+      "const": "0.5.0"
+    },
+    "vaoId": {
+      "$ref": "#/$defs/id"
+    },
+    "releaseId": {
+      "$ref": "#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "contentVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publication": {
+      "$ref": "#/$defs/publication"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^(urn:|https?:)[^\\s]+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "recordFile": {
+      "type": "object",
+      "required": [
+        "fileIdentifier",
+        "role",
+        "byteSize",
+        "sha256"
+      ],
+      "properties": {
+        "fileIdentifier": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\)[^\\x00-\\x1F\\x7F]+$"
+        },
+        "role": {
+          "enum": [
+            "manifest",
+            "carrier",
+            "realization",
+            "pack",
+            "pack-manifest",
+            "checksum",
+            "documentation",
+            "metadata",
+            "preview",
+            "other"
+          ]
+        },
+        "byteSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "realizationIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "carrierId": {
+          "$ref": "#/$defs/id"
+        },
+        "carrierMode": {
+          "enum": [
+            "bootstrap",
+            "preservation-closure",
+            "custom"
+          ]
+        },
+        "manifestSHA256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "manifestByteSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "carrierDescriptorSHA256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "carrierDescriptorByteSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "completeGroupIds": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "role": {
+                "enum": [
+                  "realization",
+                  "pack"
+                ]
+              }
+            },
+            "required": [
+              "role"
+            ]
+          },
+          "then": {
+            "required": [
+              "realizationIds"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "role": {
+                "const": "carrier"
+              }
+            },
+            "required": [
+              "role"
+            ]
+          },
+          "then": {
+            "required": [
+              "carrierId",
+              "carrierMode",
+              "manifestSHA256",
+              "manifestByteSize",
+              "carrierDescriptorSHA256",
+              "carrierDescriptorByteSize",
+              "completeGroupIds"
+            ]
+          }
+        }
+      ]
+    },
+    "record": {
+      "type": "object",
+      "required": [
+        "id",
+        "repositoryType",
+        "instance",
+        "versionPersistentIdentifier",
+        "recordIdentifier",
+        "files"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "repositoryType": {
+          "type": "string",
+          "format": "uri"
+        },
+        "instance": {
+          "type": "string",
+          "format": "uri"
+        },
+        "versionPersistentIdentifier": {
+          "type": "string",
+          "format": "uri"
+        },
+        "conceptPersistentIdentifier": {
+          "type": "string",
+          "format": "uri"
+        },
+        "recordIdentifier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/recordFile"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "familyMember": {
+      "type": "object",
+      "required": [
+        "recordRole",
+        "membership",
+        "relationFromRoot",
+        "record"
+      ],
+      "properties": {
+        "recordRole": {
+          "enum": [
+            "asset-pack",
+            "rights-partition",
+            "access-partition",
+            "preservation",
+            "documentation",
+            "mirror",
+            "other"
+          ]
+        },
+        "membership": {
+          "enum": [
+            "exclusive",
+            "shared"
+          ]
+        },
+        "relationFromRoot": {
+          "enum": [
+            "hasPart",
+            "requires",
+            "references",
+            "isSupplementedBy",
+            "isDocumentedBy",
+            "isDerivedFrom"
+          ]
+        },
+        "inverseRelationFromMember": {
+          "enum": [
+            "isPartOf",
+            "isRequiredBy",
+            "isReferencedBy",
+            "isSupplementTo",
+            "documents",
+            "isSourceOf"
+          ]
+        },
+        "record": {
+          "$ref": "#/$defs/record"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "membership": {
+                "const": "exclusive"
+              }
+            },
+            "required": [
+              "membership"
+            ]
+          },
+          "then": {
+            "properties": {
+              "relationFromRoot": {
+                "const": "hasPart"
+              },
+              "inverseRelationFromMember": {
+                "const": "isPartOf"
+              }
+            },
+            "required": [
+              "inverseRelationFromMember"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "membership": {
+                "const": "shared"
+              }
+            },
+            "required": [
+              "membership"
+            ]
+          },
+          "then": {
+            "properties": {
+              "relationFromRoot": {
+                "enum": [
+                  "requires",
+                  "references",
+                  "isSupplementedBy",
+                  "isDocumentedBy",
+                  "isDerivedFrom"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "publication": {
+      "type": "object",
+      "required": [
+        "topology",
+        "rootRecord",
+        "familyMembers"
+      ],
+      "properties": {
+        "topology": {
+          "enum": [
+            "single-record",
+            "record-family"
+          ]
+        },
+        "rootRecord": {
+          "$ref": "#/$defs/record"
+        },
+        "familyMembers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/familyMember"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "topology": {
+                "const": "single-record"
+              }
+            },
+            "required": [
+              "topology"
+            ]
+          },
+          "then": {
+            "properties": {
+              "familyMembers": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "topology": {
+                "const": "record-family"
+              }
+            },
+            "required": [
+              "topology"
+            ]
+          },
+          "then": {
+            "properties": {
+              "familyMembers": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

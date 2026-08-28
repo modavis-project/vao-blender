@@ -17,9 +17,11 @@ from .capability import negotiate
 from .contract import (
     RELEASE_BUNDLE_03_SHA256,
     RELEASE_BUNDLE_04_SHA256,
+    RELEASE_BUNDLE_05_SHA256,
     ContractIntegrityError,
     reference_validator_03,
     reference_validator_04,
+    reference_validator_05,
 )
 from .diagnostics import Diagnostic, Severity, Stage, ordered
 from .graph import build_graph
@@ -42,7 +44,7 @@ CONTRACT_SHA256 = "76b55f33b09c94ad90aac79e8a599d007841e2c11288664f9c67987b4e68f
 CHUNK_SIZE = 4 * 1024 * 1024
 VAO03_CARRIER_PATH = "META-INF/vao-carrier.json"
 VAO03_MAX_CARRIER_BYTES = 16 * 1024 * 1024
-MODERN_VERSIONS = {"0.3.2", "0.4.0"}
+MODERN_VERSIONS = {"0.3.2", "0.4.0", "0.5.0"}
 
 
 @dataclass(frozen=True, slots=True)
@@ -210,7 +212,7 @@ def _check_version_entries(
         return
     if version not in MODERN_VERSIONS:
         return
-    prefix = "VAO04" if version == "0.4.0" else "VAO03"
+    prefix = {"0.3.2": "VAO03", "0.4.0": "VAO04", "0.5.0": "VAO05"}[version]
     descriptor = entries.get(VAO03_CARRIER_PATH)
     if descriptor is None:
         raise PackageInvalid(
@@ -564,11 +566,11 @@ def _validate_03_reference(
     )
 
 
-def _capabilities_04(
+def _capabilities_modern(
     manifest: dict,
     visual_support: tuple[bool, str],
 ) -> tuple[CapabilityResult, ...]:
-    """Describe the exact VAO 0.4 reader boundary without runtime overclaims."""
+    """Describe the exact modern-reader boundary without runtime overclaims."""
     base = "https://w3id.org/modavis/vao/vocab/capability/"
     validated_metadata = {
         base + name
@@ -640,7 +642,7 @@ def _capabilities_04(
     return tuple(results)
 
 
-def _validate_04_reference(
+def _validate_modern_reference(
     source: Path,
     zf: zipfile.ZipFile,
     entries: dict[str, zipfile.ZipInfo],
@@ -651,8 +653,17 @@ def _validate_04_reference(
     token: CancellationToken,
     progress: ProgressCallback | None,
     verify_payload: bool,
+    version: str,
 ) -> ValidationOutcome:
-    """Validate exact VAO 0.4.0 schema, semantics, carrier closure, chunks, and fixity."""
+    """Validate a pinned modern schema, carrier closure, chunks, and fixity."""
+    if version == "0.5.0":
+        prefix = "VAO05"
+        contract_sha = RELEASE_BUNDLE_05_SHA256
+        reference = reference_validator_05()
+    else:
+        prefix = "VAO04"
+        contract_sha = RELEASE_BUNDLE_04_SHA256
+        reference = reference_validator_04()
     diagnostics: list[Diagnostic] = []
     verified: dict[str, VerificationRecord] = {}
     verified_bytes = 0
@@ -661,13 +672,13 @@ def _validate_04_reference(
         carrier_document = loads(raw_carrier)
     except StrictJSONError as exc:
         raise PackageInvalid(
-            "VAO04-CNT-006",
+            f"{prefix}-CNT-006",
             f"carrier descriptor JSON is not strict: {exc}",
             path=VAO03_CARRIER_PATH,
         ) from exc
     if not isinstance(carrier_document, dict):
         raise PackageInvalid(
-            "VAO04-CNT-007",
+            f"{prefix}-CNT-007",
             "carrier descriptor root must be an object",
             path=VAO03_CARRIER_PATH,
         )
@@ -692,7 +703,6 @@ def _validate_04_reference(
     completed = 0
     streamed_bytes = 0
     chunk_errors: list[str] = []
-    reference = reference_validator_04()
 
     def reader(path: str, expected_size: int) -> tuple[str, int]:
         nonlocal completed, streamed_bytes, verified_bytes
@@ -765,7 +775,7 @@ def _validate_04_reference(
     report.setdefault("errors", []).extend(chunk_errors)
     report["errors"] = sorted(set(report["errors"]))
     report["valid"] = not report["errors"]
-    diagnostics.extend(_reference_diagnostics(report, "VAO04"))
+    diagnostics.extend(_reference_diagnostics(report, prefix))
     if _has_errors(diagnostics):
         return _outcome(
             OutcomeState.INVALID,
@@ -776,8 +786,8 @@ def _validate_04_reference(
             manifest=freeze(manifest),
             verified_assets=MappingProxyType(verified),
             verified_payload_bytes=verified_bytes,
-            contract_line="0.4.0",
-            contract_sha256=RELEASE_BUNDLE_04_SHA256,
+            contract_line=version,
+            contract_sha256=contract_sha,
         )
 
     embedded_paths = MappingProxyType(
@@ -788,7 +798,7 @@ def _validate_04_reference(
     )
     logical_assets, realizations, acoustic_scene = build_records_03(manifest, embedded_paths)
     graph = build_graph_03(manifest)
-    capabilities = _capabilities_04(manifest, _visual_support_03(acoustic_scene))
+    capabilities = _capabilities_modern(manifest, _visual_support_03(acoustic_scene))
     for capability in capabilities:
         if not capability.supported:
             diagnostics.append(
@@ -826,8 +836,8 @@ def _validate_04_reference(
         verified_assets=MappingProxyType(verified),
         capabilities=capabilities,
         verified_payload_bytes=verified_bytes,
-        contract_line="0.4.0",
-        contract_sha256=RELEASE_BUNDLE_04_SHA256,
+        contract_line=version,
+        contract_sha256=contract_sha,
         carrier=carrier,
         logical_assets=logical_assets,
         realizations=realizations,
@@ -898,7 +908,7 @@ def validate_package(
                     verify_payload,
                 )
             if version == "0.4.0":
-                return _validate_04_reference(
+                return _validate_modern_reference(
                     source,
                     zf,
                     entries,
@@ -909,6 +919,21 @@ def validate_package(
                     token,
                     progress,
                     verify_payload,
+                    "0.4.0",
+                )
+            if version == "0.5.0":
+                return _validate_modern_reference(
+                    source,
+                    zf,
+                    entries,
+                    raw_manifest,
+                    manifest,
+                    manifest_sha,
+                    archive_sha,
+                    token,
+                    progress,
+                    verify_payload,
+                    "0.5.0",
                 )
             if version != "0.2.2":
                 diagnostics.append(
@@ -918,7 +943,7 @@ def validate_package(
                         stage=Stage.SCHEMA,
                         message=(
                             f"unsupported VAO formatVersion {version!r}; VAO-Blender supports "
-                            "only the exact pinned 0.2.2, 0.3.2, and 0.4.0 contracts"
+                            "only the exact pinned 0.2.2, 0.3.2, 0.4.0, and 0.5.0 contracts"
                         ),
                         pointer="/formatVersion",
                     )

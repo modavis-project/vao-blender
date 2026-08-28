@@ -1,0 +1,1170 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@protected": true,
+    "@vocab": "https://w3id.org/modavis/vao/ontology#",
+    "vao": "https://w3id.org/modavis/vao/ontology#",
+    "$schema": {
+      "@id": "vao:jsonSchema",
+      "@type": "@id"
+    },
+    "dcterms": "http://purl.org/dc/terms/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "sosa": "http://www.w3.org/ns/sosa/",
+    "ssn": "http://www.w3.org/ns/ssn/",
+    "schema": "https://schema.org/",
+    "oa": "http://www.w3.org/ns/oa#",
+    "qudt": "http://qudt.org/schema/qudt/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "id": "@id",
+    "type": "@type",
+    "title": "dcterms:title",
+    "description": "dcterms:description",
+    "createdAt": {
+      "@id": "dcterms:created",
+      "@type": "xsd:dateTime"
+    },
+    "modifiedAt": {
+      "@id": "dcterms:modified",
+      "@type": "xsd:dateTime"
+    },
+    "conformsTo": {
+      "@id": "dcterms:conformsTo",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "primaryEntityId": {
+      "@id": "schema:mainEntity",
+      "@type": "@id"
+    },
+    "focusEntityIds": {
+      "@id": "vao:focusEntity",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "profiles": {
+      "@id": "vao:profile",
+      "@container": "@set"
+    },
+    "materializableProfiles": {
+      "@id": "vao:materializableProfile",
+      "@container": "@set"
+    },
+    "entities": {
+      "@id": "vao:entity",
+      "@container": "@set"
+    },
+    "relations": {
+      "@id": "vao:relation",
+      "@container": "@set"
+    },
+    "classifications": {
+      "@id": "vao:classification",
+      "@container": "@set",
+      "@context": {
+        "scheme": {
+          "@id": "vao:scheme",
+          "@type": "@id"
+        }
+      }
+    },
+    "externalIdentifiers": {
+      "@id": "vao:externalIdentifier",
+      "@container": "@set",
+      "@context": {
+        "scheme": "vao:identifierScheme",
+        "value": "vao:identifierValue",
+        "resolverIRI": {
+          "@id": "vao:resolverIRI",
+          "@type": "@id"
+        }
+      }
+    },
+    "scientific": "vao:scientific",
+    "agents": {
+      "@id": "prov:agent",
+      "@container": "@set"
+    },
+    "activities": {
+      "@id": "prov:activity",
+      "@container": "@set"
+    },
+    "observations": {
+      "@id": "vao:observation",
+      "@container": "@set"
+    },
+    "analyses": {
+      "@id": "vao:analysis",
+      "@container": "@set"
+    },
+    "calibrations": {
+      "@id": "vao:calibration",
+      "@container": "@set"
+    },
+    "protocols": {
+      "@id": "vao:protocol",
+      "@container": "@set"
+    },
+    "softwareEnvironments": {
+      "@id": "vao:softwareEnvironment",
+      "@container": "@set"
+    },
+    "claims": {
+      "@id": "vao:claim",
+      "@container": "@set"
+    },
+    "reviews": {
+      "@id": "vao:review",
+      "@container": "@set"
+    },
+    "consents": {
+      "@id": "vao:consent",
+      "@container": "@set"
+    },
+    "multimodal": "vao:multimodal",
+    "timebases": {
+      "@id": "vao:timebase",
+      "@container": "@set"
+    },
+    "tracks": {
+      "@id": "vao:track",
+      "@container": "@set"
+    },
+    "synchronizationMappings": {
+      "@id": "vao:synchronizationMapping",
+      "@container": "@set"
+    },
+    "annotations": {
+      "@id": "vao:annotation",
+      "@container": "@set"
+    },
+    "physicalSystem": "vao:physicalSystem",
+    "components": {
+      "@id": "vao:component",
+      "@container": "@set"
+    },
+    "ports": {
+      "@id": "vao:port",
+      "@container": "@set"
+    },
+    "connections": {
+      "@id": "vao:connection",
+      "@container": "@set"
+    },
+    "sensors": {
+      "@id": "vao:sensor",
+      "@container": "@set"
+    },
+    "actuators": {
+      "@id": "vao:actuator",
+      "@container": "@set"
+    },
+    "stateBindings": {
+      "@id": "vao:stateBinding",
+      "@container": "@set"
+    },
+    "runtime": "vao:runtime",
+    "executionSemantics": "vao:executionSemantics",
+    "randomSources": {
+      "@id": "vao:randomSource",
+      "@container": "@set"
+    },
+    "renderers": {
+      "@id": "vao:renderer",
+      "@container": "@set"
+    },
+    "conformanceTraces": {
+      "@id": "vao:conformanceTrace",
+      "@container": "@set"
+    },
+    "discovery": "vao:discovery",
+    "acoustics": "vao:acoustics",
+    "coordinateFrames": {
+      "@id": "vao:coordinateFrame",
+      "@container": "@set"
+    },
+    "poses": {
+      "@id": "vao:pose",
+      "@container": "@set"
+    },
+    "geometryBindings": {
+      "@id": "vao:geometryBinding",
+      "@container": "@set"
+    },
+    "materialModels": {
+      "@id": "vao:materialModel",
+      "@container": "@set"
+    },
+    "measurements": {
+      "@id": "vao:measurement",
+      "@container": "@set"
+    },
+    "responseSets": {
+      "@id": "vao:responseSet",
+      "@container": "@set"
+    },
+    "metricSets": {
+      "@id": "vao:metricSet",
+      "@container": "@set"
+    },
+    "audioScenes": {
+      "@id": "vao:audioScene",
+      "@container": "@set"
+    },
+    "renderConfigurations": {
+      "@id": "vao:renderConfiguration",
+      "@container": "@set"
+    },
+    "playable": "vao:playable",
+    "signalRegions": {
+      "@id": "vao:signalRegion",
+      "@container": "@set"
+    },
+    "loopPointSets": {
+      "@id": "vao:loopPointSet",
+      "@container": "@set"
+    },
+    "tuningMaps": {
+      "@id": "vao:tuningMap",
+      "@container": "@set"
+    },
+    "perspectiveGroups": {
+      "@id": "vao:perspectiveGroup",
+      "@container": "@set"
+    },
+    "sampleVariants": {
+      "@id": "vao:sampleVariant",
+      "@container": "@set"
+    },
+    "sampleMappings": {
+      "@id": "vao:sampleMapping",
+      "@container": "@set"
+    },
+    "interactionModel": "vao:interactionModel",
+    "controls": {
+      "@id": "vao:control",
+      "@container": "@set"
+    },
+    "eventTypes": {
+      "@id": "vao:eventType",
+      "@container": "@set"
+    },
+    "protocolBindings": {
+      "@id": "vao:protocolBinding",
+      "@container": "@set"
+    },
+    "stateVariables": {
+      "@id": "vao:stateVariable",
+      "@container": "@set"
+    },
+    "transitions": {
+      "@id": "vao:transition",
+      "@container": "@set"
+    },
+    "routingRules": {
+      "@id": "vao:routingRule",
+      "@container": "@set"
+    },
+    "processModels": {
+      "@id": "vao:processModel",
+      "@container": "@set"
+    },
+    "timingConstraints": {
+      "@id": "vao:timingConstraint",
+      "@container": "@set"
+    },
+    "transferFunctions": {
+      "@id": "vao:transferFunction",
+      "@container": "@set"
+    },
+    "renderBindings": {
+      "@id": "vao:renderBinding",
+      "@container": "@set"
+    },
+    "captureDocumentation": "vao:captureDocumentation",
+    "captureStates": {
+      "@id": "vao:captureState",
+      "@container": "@set"
+    },
+    "eventAlignments": {
+      "@id": "vao:eventAlignment",
+      "@container": "@set"
+    },
+    "takeSets": {
+      "@id": "vao:takeSet",
+      "@container": "@set"
+    },
+    "derivationMaps": {
+      "@id": "vao:derivationMap",
+      "@container": "@set"
+    },
+    "logicalAssets": {
+      "@id": "vao:logicalAsset",
+      "@container": "@set"
+    },
+    "realizations": {
+      "@id": "vao:realization",
+      "@container": "@set"
+    },
+    "distributions": {
+      "@id": "vao:distribution",
+      "@container": "@set"
+    },
+    "repositoryBindings": {
+      "@id": "vao:repositoryBinding",
+      "@container": "@set"
+    },
+    "assetGroups": {
+      "@id": "vao:assetGroup",
+      "@container": "@set"
+    },
+    "rights": {
+      "@id": "dcterms:rights",
+      "@container": "@set"
+    },
+    "assetId": {
+      "@id": "vao:realizesAsset",
+      "@type": "@id"
+    },
+    "realizationIds": {
+      "@id": "vao:hasRealization",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "distributionIds": {
+      "@id": "vao:hasDistribution",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "rightsIds": {
+      "@id": "dcterms:rights",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "provenanceIds": {
+      "@id": "prov:wasGeneratedBy",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "agentIds": {
+      "@id": "prov:wasAssociatedWith",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "inputIds": {
+      "@id": "prov:used",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "outputIds": {
+      "@id": "prov:generated",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "activityId": {
+      "@id": "prov:wasGeneratedBy",
+      "@type": "@id"
+    },
+    "protocolId": {
+      "@id": "sosa:usedProcedure",
+      "@type": "@id"
+    },
+    "featureOfInterestId": {
+      "@id": "sosa:hasFeatureOfInterest",
+      "@type": "@id"
+    },
+    "observedProperty": {
+      "@id": "sosa:observedProperty",
+      "@type": "@id"
+    },
+    "result": "sosa:hasResult",
+    "resultTime": {
+      "@id": "sosa:resultTime",
+      "@type": "xsd:dateTime"
+    },
+    "unit": {
+      "@id": "qudt:unit",
+      "@type": "@id"
+    },
+    "rateUnit": {
+      "@id": "vao:rateUnit",
+      "@type": "@id"
+    },
+    "timeScale": {
+      "@id": "vao:timeScale",
+      "@type": "@id"
+    },
+    "identityScope": "vao:identityScope",
+    "identityDescription": "vao:identityDescription",
+    "runtimeDescription": "vao:runtimeDescription",
+    "quantityKind": {
+      "@id": "qudt:hasQuantityKind",
+      "@type": "@id"
+    },
+    "timebaseId": {
+      "@id": "vao:timebase",
+      "@type": "@id"
+    },
+    "sourceTimebaseId": {
+      "@id": "vao:sourceTimebase",
+      "@type": "@id"
+    },
+    "targetTimebaseId": {
+      "@id": "vao:targetTimebase",
+      "@type": "@id"
+    },
+    "realizationId": {
+      "@id": "vao:realization",
+      "@type": "@id"
+    },
+    "coordinateFrameId": {
+      "@id": "vao:coordinateFrame",
+      "@type": "@id"
+    },
+    "componentId": {
+      "@id": "vao:component",
+      "@type": "@id"
+    },
+    "sourcePortId": {
+      "@id": "vao:sourcePort",
+      "@type": "@id"
+    },
+    "targetPortId": {
+      "@id": "vao:targetPort",
+      "@type": "@id"
+    },
+    "controlId": {
+      "@id": "vao:control",
+      "@type": "@id"
+    },
+    "eventTypeId": {
+      "@id": "vao:eventType",
+      "@type": "@id"
+    },
+    "stateVariableId": {
+      "@id": "vao:stateVariable",
+      "@type": "@id"
+    },
+    "processModelId": {
+      "@id": "vao:processModel",
+      "@type": "@id"
+    },
+    "generatedById": {
+      "@id": "prov:wasGeneratedBy",
+      "@type": "@id"
+    },
+    "reviewedById": {
+      "@id": "vao:reviewedBy",
+      "@type": "@id"
+    },
+    "audioRealizationId": {
+      "@id": "vao:audioRealization",
+      "@type": "@id"
+    },
+    "authenticityEnvelopeRealizationId": {
+      "@id": "vao:authenticityEnvelopeRealization",
+      "@type": "@id"
+    },
+    "calibrationId": {
+      "@id": "vao:calibration",
+      "@type": "@id"
+    },
+    "cancellationControlId": {
+      "@id": "vao:cancellationControl",
+      "@type": "@id"
+    },
+    "captureStateId": {
+      "@id": "vao:captureState",
+      "@type": "@id"
+    },
+    "certificateRealizationId": {
+      "@id": "vao:certificateRealization",
+      "@type": "@id"
+    },
+    "componentEntityId": {
+      "@id": "vao:componentEntity",
+      "@type": "@id"
+    },
+    "configurationId": {
+      "@id": "vao:configuration",
+      "@type": "@id"
+    },
+    "createdByAgentId": {
+      "@id": "vao:createdByAgent",
+      "@type": "@id"
+    },
+    "delayAssetId": {
+      "@id": "vao:delayAsset",
+      "@type": "@id"
+    },
+    "delayConstraintId": {
+      "@id": "vao:delayConstraint",
+      "@type": "@id"
+    },
+    "derivedRealizationId": {
+      "@id": "vao:derivedRealization",
+      "@type": "@id"
+    },
+    "directivityResponseSetId": {
+      "@id": "vao:directivityResponseSet",
+      "@type": "@id"
+    },
+    "documentRealizationId": {
+      "@id": "vao:documentRealization",
+      "@type": "@id"
+    },
+    "durationConstraintId": {
+      "@id": "vao:durationConstraint",
+      "@type": "@id"
+    },
+    "entityId": {
+      "@id": "vao:entity",
+      "@type": "@id"
+    },
+    "environmentStateId": {
+      "@id": "vao:environmentState",
+      "@type": "@id"
+    },
+    "eventLogRealizationId": {
+      "@id": "vao:eventLogRealization",
+      "@type": "@id"
+    },
+    "evidenceRealizationId": {
+      "@id": "vao:evidenceRealization",
+      "@type": "@id"
+    },
+    "fallbackGroupId": {
+      "@id": "vao:fallbackGroup",
+      "@type": "@id"
+    },
+    "fallbackResponseSetId": {
+      "@id": "vao:fallbackResponseSet",
+      "@type": "@id"
+    },
+    "frameId": {
+      "@id": "vao:frame",
+      "@type": "@id"
+    },
+    "localFrameId": {
+      "@id": "vao:localFrame",
+      "@type": "@id"
+    },
+    "grantedByAgentId": {
+      "@id": "vao:grantedByAgent",
+      "@type": "@id"
+    },
+    "headphoneCompensationAssetId": {
+      "@id": "vao:headphoneCompensationAsset",
+      "@type": "@id"
+    },
+    "indexRealizationId": {
+      "@id": "vao:indexRealization",
+      "@type": "@id"
+    },
+    "inputPortId": {
+      "@id": "vao:inputPort",
+      "@type": "@id"
+    },
+    "instrumentEntityId": {
+      "@id": "vao:instrumentEntity",
+      "@type": "@id"
+    },
+    "logicalAssetId": {
+      "@id": "vao:logicalAsset",
+      "@type": "@id"
+    },
+    "materialEntityId": {
+      "@id": "vao:materialEntity",
+      "@type": "@id"
+    },
+    "measurementId": {
+      "@id": "vao:measurement",
+      "@type": "@id"
+    },
+    "mediaAssetId": {
+      "@id": "vao:mediaAsset",
+      "@type": "@id"
+    },
+    "metadataAssetId": {
+      "@id": "vao:metadataAsset",
+      "@type": "@id"
+    },
+    "modelAssetId": {
+      "@id": "vao:modelAsset",
+      "@type": "@id"
+    },
+    "objectId": {
+      "@id": "vao:object",
+      "@type": "@id"
+    },
+    "observationId": {
+      "@id": "vao:observation",
+      "@type": "@id"
+    },
+    "outputPortId": {
+      "@id": "vao:outputPort",
+      "@type": "@id"
+    },
+    "packRealizationId": {
+      "@id": "vao:packRealization",
+      "@type": "@id"
+    },
+    "parentComponentId": {
+      "@id": "vao:parentComponent",
+      "@type": "@id"
+    },
+    "parentFrameId": {
+      "@id": "vao:parentFrame",
+      "@type": "@id"
+    },
+    "personalizationAssetId": {
+      "@id": "vao:personalizationAsset",
+      "@type": "@id"
+    },
+    "perspectiveGroupId": {
+      "@id": "vao:perspectiveGroup",
+      "@type": "@id"
+    },
+    "poseId": {
+      "@id": "vao:pose",
+      "@type": "@id"
+    },
+    "processId": {
+      "@id": "vao:process",
+      "@type": "@id"
+    },
+    "processedResultRealizationId": {
+      "@id": "vao:processedResultRealization",
+      "@type": "@id"
+    },
+    "qualityMetricSetId": {
+      "@id": "vao:qualityMetricSet",
+      "@type": "@id"
+    },
+    "randomSourceId": {
+      "@id": "vao:randomSource",
+      "@type": "@id"
+    },
+    "rankEntityId": {
+      "@id": "vao:rankEntity",
+      "@type": "@id"
+    },
+    "rawResultRealizationId": {
+      "@id": "vao:rawResultRealization",
+      "@type": "@id"
+    },
+    "receiverId": {
+      "@id": "vao:receiver",
+      "@type": "@id"
+    },
+    "receiverPoseId": {
+      "@id": "vao:receiverPose",
+      "@type": "@id"
+    },
+    "receivingSpaceId": {
+      "@id": "vao:receivingSpace",
+      "@type": "@id"
+    },
+    "renderBindingId": {
+      "@id": "vao:renderBinding",
+      "@type": "@id"
+    },
+    "repositoryBindingId": {
+      "@id": "vao:repositoryBinding",
+      "@type": "@id"
+    },
+    "carrierId": {
+      "@id": "vao:carrier",
+      "@type": "@id"
+    },
+    "responseEntityId": {
+      "@id": "vao:responseEntity",
+      "@type": "@id"
+    },
+    "responseSetId": {
+      "@id": "vao:responseSet",
+      "@type": "@id"
+    },
+    "reviewedId": {
+      "@id": "vao:reviewed",
+      "@type": "@id"
+    },
+    "reviewerAgentId": {
+      "@id": "vao:reviewerAgent",
+      "@type": "@id"
+    },
+    "routeId": {
+      "@id": "vao:route",
+      "@type": "@id"
+    },
+    "sceneEntityId": {
+      "@id": "vao:sceneEntity",
+      "@type": "@id"
+    },
+    "sceneId": {
+      "@id": "vao:scene",
+      "@type": "@id"
+    },
+    "sensorId": {
+      "@id": "vao:sensor",
+      "@type": "@id"
+    },
+    "separatingElementId": {
+      "@id": "vao:separatingElement",
+      "@type": "@id"
+    },
+    "signatureEnvelopeRealizationId": {
+      "@id": "vao:signatureEnvelopeRealization",
+      "@type": "@id"
+    },
+    "softwareEnvironmentId": {
+      "@id": "vao:softwareEnvironment",
+      "@type": "@id"
+    },
+    "sourceControlId": {
+      "@id": "vao:sourceControl",
+      "@type": "@id"
+    },
+    "sourceEntityId": {
+      "@id": "vao:sourceEntity",
+      "@type": "@id"
+    },
+    "sourceId": {
+      "@id": "vao:source",
+      "@type": "@id"
+    },
+    "sourcePoseId": {
+      "@id": "vao:sourcePose",
+      "@type": "@id"
+    },
+    "sourceRealizationId": {
+      "@id": "vao:sourceRealization",
+      "@type": "@id"
+    },
+    "sourceSpaceId": {
+      "@id": "vao:sourceSpace",
+      "@type": "@id"
+    },
+    "sourceTransitionId": {
+      "@id": "vao:sourceTransition",
+      "@type": "@id"
+    },
+    "spaceId": {
+      "@id": "vao:space",
+      "@type": "@id"
+    },
+    "stateId": {
+      "@id": "vao:state",
+      "@type": "@id"
+    },
+    "streamingIndexRealizationId": {
+      "@id": "vao:streamingIndexRealization",
+      "@type": "@id"
+    },
+    "subjectEntityId": {
+      "@id": "vao:subjectEntity",
+      "@type": "@id"
+    },
+    "subjectId": {
+      "@id": "vao:subject",
+      "@type": "@id"
+    },
+    "supersedesReleaseId": {
+      "@id": "vao:supersedesRelease",
+      "@type": "@id"
+    },
+    "surfaceImpedanceAssetId": {
+      "@id": "vao:surfaceImpedanceAsset",
+      "@type": "@id"
+    },
+    "targetEntityId": {
+      "@id": "vao:targetEntity",
+      "@type": "@id"
+    },
+    "targetId": {
+      "@id": "vao:target",
+      "@type": "@id"
+    },
+    "trackId": {
+      "@id": "vao:track",
+      "@type": "@id"
+    },
+    "trajectoryRealizationId": {
+      "@id": "vao:trajectoryRealization",
+      "@type": "@id"
+    },
+    "trajectoryTrackId": {
+      "@id": "vao:trajectoryTrack",
+      "@type": "@id"
+    },
+    "transferFunctionId": {
+      "@id": "vao:transferFunction",
+      "@type": "@id"
+    },
+    "tuningMapId": {
+      "@id": "vao:tuningMap",
+      "@type": "@id"
+    },
+    "validDomainId": {
+      "@id": "vao:validDomain",
+      "@type": "@id"
+    },
+    "aboutEntityIds": {
+      "@id": "vao:aboutEntity",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "appliesToIds": {
+      "@id": "vao:appliesTo",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "calibrationIds": {
+      "@id": "vao:calibration",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "childProcessIds": {
+      "@id": "vao:childProcess",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "communityAuthorityIds": {
+      "@id": "vao:communityAuthority",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "consentIds": {
+      "@id": "vao:consent",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "dependsOnGroupIds": {
+      "@id": "vao:dependsOnGroup",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "environmentObservationIds": {
+      "@id": "vao:environmentObservation",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "evidenceIds": {
+      "@id": "vao:evidence",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "fallbackIds": {
+      "@id": "vao:fallback",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "generatedByIds": {
+      "@id": "vao:generatedBy",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "groupIds": {
+      "@id": "vao:group",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "materializesProfileIds": {
+      "@id": "vao:materializesProfile",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "measurementIds": {
+      "@id": "vao:measurement",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "mediaAssetIds": {
+      "@id": "vao:mediaAsset",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "performedByAgentIds": {
+      "@id": "vao:performedByAgent",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "performerAgentIds": {
+      "@id": "vao:performerAgent",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "portIds": {
+      "@id": "vao:port",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "poseIds": {
+      "@id": "vao:pose",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "redactionOfRealizationIds": {
+      "@id": "vao:redactionOfRealization",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "regionIds": {
+      "@id": "vao:region",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "renderBindingIds": {
+      "@id": "vao:renderBinding",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "reviewIds": {
+      "@id": "vao:review",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "sampleMappingIds": {
+      "@id": "vao:sampleMapping",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "sampleVariantIds": {
+      "@id": "vao:sampleVariant",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "signalRegionIds": {
+      "@id": "vao:signalRegion",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "subjectIds": {
+      "@id": "vao:subject",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "timingConstraintIds": {
+      "@id": "vao:timingConstraint",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "trainingInputIds": {
+      "@id": "vao:trainingInput",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "transmissionPathIds": {
+      "@id": "vao:transmissionPath",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "validationIds": {
+      "@id": "vao:validation",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "validationInputIds": {
+      "@id": "vao:validationInput",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "variantIds": {
+      "@id": "vao:variant",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "contributorAgentIds": {
+      "@id": "dcterms:contributor",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "creatorAgentIds": {
+      "@id": "dcterms:creator",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "affiliationAgentIds": {
+      "@id": "schema:affiliation",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "loopPointSetIds": {
+      "@id": "vao:loopPointSet",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "axisUnits": {
+      "@id": "vao:axisUnit",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "property": {
+      "@id": "vao:property",
+      "@type": "@id"
+    },
+    "standard": {
+      "@id": "dcterms:conformsTo",
+      "@type": "@id"
+    },
+    "valueIRI": {
+      "@id": "vao:valueIRI",
+      "@type": "@id"
+    },
+    "contentTimebase": {
+      "@id": "vao:contentTimebase",
+      "@type": "@id"
+    },
+    "domain": {
+      "@id": "vao:domain",
+      "@type": "@id"
+    },
+    "actedOnProperty": {
+      "@id": "vao:actedOnProperty",
+      "@type": "@id"
+    },
+    "analysisKind": {
+      "@id": "vao:analysisKind",
+      "@type": "@id"
+    },
+    "apiProfile": {
+      "@id": "vao:apiProfile",
+      "@type": "@id"
+    },
+    "awardIRI": {
+      "@id": "vao:awardIRI",
+      "@type": "@id"
+    },
+    "capabilities": {
+      "@id": "vao:capability",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "channelTopology": {
+      "@id": "vao:channelTopology",
+      "@type": "@id"
+    },
+    "componentKind": {
+      "@id": "vao:componentKind",
+      "@type": "@id"
+    },
+    "conceptIdentifier": {
+      "@id": "vao:conceptIdentifier",
+      "@type": "@id"
+    },
+    "coordinateUnit": {
+      "@id": "vao:coordinateUnit",
+      "@type": "@id"
+    },
+    "crs": {
+      "@id": "vao:crs",
+      "@type": "@id"
+    },
+    "datatype": {
+      "@id": "vao:datatype",
+      "@type": "@id"
+    },
+    "facilityIdentifiers": {
+      "@id": "vao:facilityIdentifier",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "funderIdentifier": "vao:funderIdentifier",
+    "funderIdentifierType": "vao:funderIdentifierType",
+    "identifier": "vao:identifier",
+    "identifierType": "vao:identifierType",
+    "instance": {
+      "@id": "vao:instance",
+      "@type": "@id"
+    },
+    "instrumentIdentifiers": {
+      "@id": "vao:instrumentIdentifier",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "license": {
+      "@id": "dcterms:license",
+      "@type": "@id"
+    },
+    "mappingIRI": {
+      "@id": "vao:mappingIRI",
+      "@type": "@id"
+    },
+    "midiCIProfileIRI": {
+      "@id": "vao:midiCIProfileIRI",
+      "@type": "@id"
+    },
+    "motivation": {
+      "@id": "oa:motivatedBy",
+      "@type": "@id"
+    },
+    "ontologyIRI": {
+      "@id": "vao:ontologyIRI",
+      "@type": "@id"
+    },
+    "ontologyVersionIRI": {
+      "@id": "vao:ontologyVersionIRI",
+      "@type": "@id"
+    },
+    "persistentIdentifier": {
+      "@id": "vao:persistentIdentifier",
+      "@type": "@id"
+    },
+    "predicate": {
+      "@id": "vao:predicate",
+      "@type": "@id"
+    },
+    "propertyExchangeResourceIRI": {
+      "@id": "vao:propertyExchangeResourceIRI",
+      "@type": "@id"
+    },
+    "rendererRequirements": {
+      "@id": "vao:rendererRequirement",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "repositoryType": {
+      "@id": "vao:repositoryType",
+      "@type": "@id"
+    },
+    "representationStatus": {
+      "@id": "vao:representationStatus",
+      "@type": "@vocab"
+    },
+    "schemeUri": {
+      "@id": "vao:schemeUri",
+      "@type": "@id"
+    },
+    "requiredCapabilities": {
+      "@id": "vao:requiredCapability",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "resolverIRI": {
+      "@id": "vao:resolverIRI",
+      "@type": "@id"
+    },
+    "roles": {
+      "@id": "vao:role",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "sourceCodeIRI": {
+      "@id": "vao:sourceCodeIRI",
+      "@type": "@id"
+    },
+    "standardIRI": {
+      "@id": "vao:standardIRI",
+      "@type": "@id"
+    },
+    "traditionalKnowledgeLabelIRIs": {
+      "@id": "vao:traditionalKnowledgeLabel",
+      "@type": "@id",
+      "@container": "@set"
+    },
+    "vocabularyReleaseIRI": {
+      "@id": "vao:vocabularyReleaseIRI",
+      "@type": "@id"
+    }
+  }
+}

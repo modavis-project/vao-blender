@@ -9,6 +9,7 @@ __pycache__/
 .venv/
 build/
 dist/
+tmp/
 
 # Release dependencies are intentionally vendored as wheels.
 !wheels/
