@@ -1,5 +1,8 @@
 # VAO Blender: A Blender Extension for Virtual Acoustic Objects
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22134389.svg)](https://doi.org/10.5281/zenodo.22134389)
+[![VAO 0.4.0 persistent identifier](https://img.shields.io/badge/W3ID-VAO%200.4.0-2C5F73.svg)](https://w3id.org/modavis/vao/0.4.0/)
+
 VAO Blender lets you open a Virtual Acoustic Object (`.vao`) in Blender, verify
 that the package is internally consistent, inspect its metadata, and import a
 supported 3D scene. The extension works offline and treats every VAO as untrusted
@@ -118,6 +121,14 @@ python scripts/build_extension.py --overwrite
 
 The exact test, packaging, signing, GitHub, and Zenodo procedures are in
 [Release engineering](docs/RELEASE.md) and [Publication](docs/PUBLICATION.md).
+
+## Project context and acknowledgement
+
+This work was developed as part of the **MODAVIS** doctoral research project
+(2022–2026). Dominik Ukolov's doctoral research was supported by the German
+Academic Scholarship Foundation (*Studienstiftung des deutschen Volkes*).
+Funding and affiliations do not imply endorsement of the project's technical
+or scientific claims.
 
 ## License
 
