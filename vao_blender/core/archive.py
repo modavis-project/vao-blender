@@ -50,7 +50,7 @@ class ValidationLimits:
     max_entries: int = 20_000
     max_manifest_bytes: int = 32 * 1024 * 1024
     max_entry_bytes: int = 8 * 1024 * 1024 * 1024
-    max_total_expanded_bytes: int = 20 * 1024 * 1024 * 1024
+    max_total_expanded_bytes: int = 64 * 1024 * 1024 * 1024
     max_compression_ratio: float = 2_000.0
 
 

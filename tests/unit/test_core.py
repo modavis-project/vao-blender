@@ -7,7 +7,12 @@ import unittest
 import zipfile
 from pathlib import Path
 
-from vao_blender.core.archive import MIMETYPE, validate_archive_path, validate_package
+from vao_blender.core.archive import (
+    MIMETYPE,
+    ValidationLimits,
+    validate_archive_path,
+    validate_package,
+)
 from vao_blender.core.cache import AssetCache, CacheError
 from vao_blender.core.contract import verify_contract
 from vao_blender.core.gltf import GLTFError, inject_glb_node_indices
@@ -187,6 +192,12 @@ class ArchivePathTests(unittest.TestCase):
 
 
 class ValidationTests(unittest.TestCase):
+    def test_default_total_limit_covers_a_50_gb_repository_record(self):
+        self.assertGreaterEqual(
+            ValidationLimits().max_total_expanded_bytes,
+            50_000_000_000,
+        )
+
     def test_vendored_contract_integrity(self):
         verify_contract()
 

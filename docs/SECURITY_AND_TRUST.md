@@ -99,7 +99,7 @@ guidance and produce a resource-limited result, not contract invalidity:
 | Manifest expanded bytes | 32 MiB |
 | VAO 0.3.2/0.4.0 carrier descriptor | 16 MiB |
 | One entry expanded bytes | 8 GiB |
-| Total expanded package | 20 GiB |
+| Total expanded package | 64 GiB |
 
 Additional local safety controls:
 
@@ -112,9 +112,10 @@ Additional local safety controls:
   the first actionable errors;
 - no recursive media discovery or nested archive extraction.
 
-These values are preferences with clear consequences. A limit failure returns
-`resource-limited`. It does not state that the VAO is invalid. Raising a limit
-requires an explicit user action and affects only subsequent validation.
+The 64 GiB package ceiling admits a 50 GB repository record with room for its
+structural metadata while retaining a finite preflight bound. A limit failure
+returns `resource-limited`; it does not state that the VAO is invalid. Callers
+can supply stricter `ValidationLimits` for subsequent validations.
 
 ## 5. JSON, schema, and semantic defenses
 
