@@ -1,11 +1,12 @@
 # GitHub and Zenodo publication
 
-Current release state: **unreleased**.
+Current release state: **prerelease**. The Zenodo draft has reserved DOI
+`10.5281/zenodo.22210517` and intended publication date 2026-08-31.
 
 This checklist is intentionally manual. The prepared identity is
-`v0.4.0-rc.1`, but its status is `unreleased` and it has no DOI. Do not push,
-tag, create a remote release, reserve or publish a deposition, or change that
-status without the responsible maintainer's explicit approval.
+`v0.4.0-rc.1`; its GitHub release and Zenodo record remain unpublished. Do not
+push, create a remote release, upload release files, or publish the deposition
+without the responsible maintainer's explicit approval.
 
 The DOI `10.5281/zenodo.22134389` identifies the previous 0.3.0-rc.1 release.
 It must never be reused as the DOI for this code. The DOI
@@ -22,17 +23,15 @@ It must never be reused as the DOI for this code. The DOI
    a second Zenodo version. Stop if that state cannot be verified. Do not enable
    it again for this tag. See Zenodo's
    [integration behaviour](https://help.zenodo.org/docs/github/enable-repository/).
-3. From the existing VAO Blender Zenodo record, use **New version** to create a
-   draft. Do not publish it. In the DOI field answer **No** to “Do you already
-   have a DOI?” and choose **Get a DOI now!**. Record that newly reserved version
-   DOI. See Zenodo's
+3. The new-version draft has been created with reserved version DOI
+   `10.5281/zenodo.22210517`. Do not publish it. For future releases, use **New
+   version**, answer **No** to “Do you already have a DOI?”, and choose **Get a
+   DOI now!**. See Zenodo's
    [DOI reservation procedure](https://help.zenodo.org/docs/deposit/describe-records/reserve-doi/).
-4. Update `release_metadata.toml` to `status = "prerelease"` and set only that new
-   DOI as `release_doi`. Update the README badge/citation section,
-   `CITATION.cff`, `.zenodo.json`, and release notes consistently. Add the actual
-   intended publication date only after it is known. Keep the `.zenodo.json`
-   `doi` field absent: it means an existing externally assigned DOI, whereas the
-   Zenodo-generated value is the draft's reserved DOI.
+4. The coordinated source metadata records `status = "prerelease"`, reserved DOI
+   `10.5281/zenodo.22210517`, and intended publication date 2026-08-31. Keep the
+   `.zenodo.json` `doi` field absent: it means an existing externally assigned
+   DOI, whereas the Zenodo-generated value is the draft's reserved DOI.
 5. Rerun the release audit. It must reject the previous release DOI if it is
    presented as the current identifier.
 
@@ -58,9 +57,9 @@ describe the same release without conflating the software and standard records.
 
 ## Publication-state transition gate
 
-The unreleased claim is duplicated intentionally so a partial metadata edit is
-detectable. Before the tagged build, update every current-state surface in one
-reviewed commit:
+The release-state claim is duplicated intentionally so a partial metadata edit
+is detectable. Before the tagged build, update every current-state surface in
+one reviewed commit:
 
 - set `release_metadata.toml` to `status = "prerelease"` and add only the actual
   reserved DOI and intended publication date;

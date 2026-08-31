@@ -1,10 +1,11 @@
 # VAO Blender 0.4.0-rc.1
 
-Current release state: **unreleased**. These notes describe the source freeze
-prepared for a staged release candidate; no tag, canonical artifact set, DOI,
-GitHub release, or Zenodo publication has been created for it.
+Current release state: **prerelease**. These notes describe the source freeze for
+the candidate with reserved DOI `10.5281/zenodo.22210517` and intended publication
+date 2026-08-31. Its GitHub release and Zenodo record remain unpublished pending
+the exact native evidence matrix.
 
-Status: **unreleased**.
+Status: **prerelease**.
 
 VAO Blender 0.4.0-rc.1 is a major correctness, safety, lifecycle, and usability
 release. It supports the published
@@ -122,9 +123,10 @@ from Disk**. The package names begin `vao_blender-0.4.0-rc.1-`; see
 
 ## Citation and research record
 
-This candidate has no DOI yet. The prior release DOI
+This candidate has reserved DOI
+[10.5281/zenodo.22210517](https://doi.org/10.5281/zenodo.22210517) and intended
+publication date 2026-08-31. The prior release DOI
 [10.5281/zenodo.22134389](https://doi.org/10.5281/zenodo.22134389) does not
 identify 0.4.0-rc.1. The published VAO Standard 0.4.0 is separately archived as
-[10.5281/zenodo.22122774](https://doi.org/10.5281/zenodo.22122774). A new VAO
-Blender version DOI will be inserted only after a maintainer creates the correct
-new-version Zenodo draft.
+[10.5281/zenodo.22122774](https://doi.org/10.5281/zenodo.22122774). The reserved
+candidate DOI will resolve only after the reviewed Zenodo draft is published.

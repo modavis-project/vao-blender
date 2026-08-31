@@ -4,9 +4,9 @@
 extension_version = "0.4.0-rc.1"
 release_label = "0.4.0-rc.1"
 release_tag = "v0.4.0-rc.1"
-status = "unreleased"
-release_doi = ""
-release_date = ""
+status = "prerelease"
+release_doi = "10.5281/zenodo.22210517"
+release_date = "2026-08-31"
 repository = "https://github.com/modavis-project/vao-blender"
 
 [blender]

@@ -18,7 +18,8 @@
   ],
   "language": "eng",
   "license": "gpl-3.0-or-later",
-  "notes": "Unreleased release-candidate metadata. No DOI or publication date has been assigned to 0.4.0-rc.1. Publication remains a separate maintainer action after the full native-platform evidence matrix is complete.",
+  "notes": "Prerelease metadata for 0.4.0-rc.1. The Zenodo-generated reserved version DOI is maintained only in the manual draft and is intentionally absent here. Publication remains a separate maintainer action after the full native-platform evidence matrix is complete.",
+  "publication_date": "2026-08-31",
   "related_identifiers": [
     {
       "identifier": "https://github.com/modavis-project/vao-blender/releases/tag/v0.4.0-rc.1",

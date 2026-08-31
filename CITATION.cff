@@ -4,6 +4,8 @@
   "title": "VAO Blender: A Blender Extension for Virtual Acoustic Objects",
   "type": "software",
   "version": "0.4.0-rc.1",
+  "doi": "10.5281/zenodo.22210517",
+  "date-released": "2026-08-31",
   "license": "GPL-3.0-or-later",
   "abstract": "A security-conscious Blender extension for validating, inspecting, and importing supported Virtual Acoustic Object packages.",
   "keywords": [
@@ -34,6 +36,8 @@
       }
     ],
     "version": "0.4.0-rc.1",
+    "doi": "10.5281/zenodo.22210517",
+    "date-released": "2026-08-31",
     "repository-code": "https://github.com/modavis-project/vao-blender"
   },
   "references": [

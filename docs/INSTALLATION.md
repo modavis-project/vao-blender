@@ -1,7 +1,8 @@
 # Installation
 
-Current release state: **unreleased**. The filenames below describe the intended
-candidate; no current download or publication is claimed yet.
+Current release state: **prerelease**. The filenames below identify the frozen
+candidate. Public downloads remain unavailable until the exact native evidence
+matrix is complete and the GitHub prerelease is published.
 
 ## Release package
 
@@ -33,9 +34,10 @@ candidate; no current download or publication is claimed yet.
 5. Select the ZIP without unpacking it and enable **VAO Blender** if necessary.
 6. Open a 3D Viewport, press **N**, and select the **VAO** tab.
 
-The intended GitHub prerelease tag and Blender extension version are both
-`0.4.0-rc.1` (the tag adds the conventional `v` prefix). The candidate remains
-unreleased until the annotated tag and release records are created by a maintainer.
+The GitHub prerelease tag and Blender extension version are both `0.4.0-rc.1`
+(the tag adds the conventional `v` prefix). The candidate metadata carries the
+Zenodo-reserved version DOI and remains private until the release records are
+published by a maintainer.
 `SHA256SUMS` binds the immutable canonical build set.
 `NATIVE_TEST_EVIDENCE.json` binds six installed-extension test cells to those
 exact platform ZIP hashes, and `PUBLICATION_SHA256SUMS` binds the base inventory

@@ -3,8 +3,10 @@
 This runbook covers extension version `0.4.0-rc.1` and its intended tag
 `v0.4.0-rc.1`. `release_metadata.toml` is the canonical, machine-audited identity.
 
-Current release state: **unreleased**. No current-release DOI, publication date,
-Git tag, canonical artifact set, or public release is assumed to exist.
+Current release state: **prerelease**. The reserved version DOI is
+`10.5281/zenodo.22210517` and the intended publication date is 2026-08-31. The
+annotated Git tag and canonical artifact set are prepared locally; no public
+GitHub release or Zenodo publication is assumed to exist.
 
 ## Immutable inputs
 
@@ -134,9 +136,9 @@ relink, save/reopen, and uninstall. Repeat on each advertised native platform.
 
 ## Final tagged build
 
-After every pre-build gate passes, update `release_metadata.toml` from
-`unreleased` to `prerelease`, add the actual publication date and newly reserved
-DOI only where appropriate, rerun the full audit, commit, and create the exact
+The publication metadata transition records prerelease status, reserved DOI
+`10.5281/zenodo.22210517`, and intended publication date 2026-08-31. After every
+pre-build gate passes, rerun the full audit, commit, and create the exact
 annotated tag `v0.4.0-rc.1`. Detached native gates run against the resulting
 immutable ZIPs. Build them with:
 
