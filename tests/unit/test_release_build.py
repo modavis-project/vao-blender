@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import stat
 import tempfile
 import unittest
@@ -123,7 +124,8 @@ class ReproducibleReleaseTests(unittest.TestCase):
                 copied = destination / name
                 self.assertEqual(copied.read_bytes(), payload)
                 self.assertEqual(int(copied.stat().st_mtime), ZIP_SAFE_MTIME)
-            self.assertTrue((destination / "vao_blender" / "module.py").stat().st_mode & 0o111)
+            if os.name != "nt":
+                self.assertTrue((destination / "vao_blender" / "module.py").stat().st_mode & 0o111)
 
             second = Path(directory) / "second"
             second.mkdir()
@@ -538,6 +540,12 @@ class ArtifactContentTests(unittest.TestCase):
                         generated=True,
                         extras=(unsafe,),
                     )
+                    if os.name == "nt" and "\\" in unsafe:
+                        artifact.write_bytes(
+                            artifact.read_bytes().replace(
+                                unsafe.replace("\\", "/").encode(), unsafe.encode()
+                            )
+                        )
                     with self.assertRaisesRegex(RuntimeError, "unsafe or development-only"):
                         verify_artifact_contents(
                             artifact,

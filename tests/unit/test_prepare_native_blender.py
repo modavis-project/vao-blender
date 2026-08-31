@@ -248,18 +248,19 @@ class PrepareNativeBlenderTests(unittest.TestCase):
             ):
                 subject.extract_dmg(root / "Blender.dmg", root / "escape-output")
 
-            mount = root / "special-mount"
-            contents = mount / "Blender.app" / "Contents"
-            contents.mkdir(parents=True)
-            os.mkfifo(contents / "Pipe")
-            with (
-                mock.patch.object(subject.tempfile, "mkdtemp", return_value=str(mount)),
-                mock.patch.object(
-                    subject.subprocess, "run", side_effect=self._dmg_subprocess(mount)
-                ),
-                self.assertRaisesRegex(RuntimeError, "unsafe special file"),
-            ):
-                subject.extract_dmg(root / "Blender.dmg", root / "special-output")
+            if hasattr(os, "mkfifo"):
+                mount = root / "special-mount"
+                contents = mount / "Blender.app" / "Contents"
+                contents.mkdir(parents=True)
+                os.mkfifo(contents / "Pipe")
+                with (
+                    mock.patch.object(subject.tempfile, "mkdtemp", return_value=str(mount)),
+                    mock.patch.object(
+                        subject.subprocess, "run", side_effect=self._dmg_subprocess(mount)
+                    ),
+                    self.assertRaisesRegex(RuntimeError, "unsafe special file"),
+                ):
+                    subject.extract_dmg(root / "Blender.dmg", root / "special-output")
 
     def test_dmg_enforces_tree_limits_and_portable_collisions(self):
         cases = (
