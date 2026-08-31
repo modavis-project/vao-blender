@@ -10,7 +10,9 @@ from pathlib import Path
 from unittest import mock
 
 from scripts.build_extension import (
+    ZIP_SAFE_MTIME,
     inspect_output_directory,
+    materialize_build_source,
     normalize_archive,
     probe_builder,
     promote_release_directory,
@@ -78,6 +80,61 @@ def _artifact(
 
 
 class ReproducibleReleaseTests(unittest.TestCase):
+    def test_build_source_is_exact_tracked_and_has_zip_safe_mtimes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "source"
+            destination = Path(directory) / "build-source"
+            root.mkdir()
+            destination.mkdir()
+            members = {
+                "blender_manifest.toml": b'id = "fixture"\n',
+                "vao_blender/module.py": b"VALUE = 1\n",
+                "contract/snapshot/schema.json": b"{}\n",
+                "wheels/dependency.whl": b"wheel",
+                "wheels/WHEELS_SHA256": b"digest  dependency.whl\n",
+            }
+            for name, payload in members.items():
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(payload)
+                path.chmod(0o755 if name.endswith("module.py") else 0o644)
+                path.touch()
+            ignored = root / "vao_blender" / "__pycache__" / "ignored.pyc"
+            ignored.parent.mkdir()
+            ignored.write_bytes(b"ignored")
+
+            observed = materialize_build_source(
+                root,
+                destination,
+                declared_wheels={"wheels/dependency.whl"},
+                tracked_members=set(members),
+            )
+
+            self.assertEqual(observed, set(members))
+            self.assertEqual(
+                {
+                    path.relative_to(destination).as_posix()
+                    for path in destination.rglob("*")
+                    if path.is_file()
+                },
+                set(members),
+            )
+            for name, payload in members.items():
+                copied = destination / name
+                self.assertEqual(copied.read_bytes(), payload)
+                self.assertEqual(int(copied.stat().st_mtime), ZIP_SAFE_MTIME)
+            self.assertTrue((destination / "vao_blender" / "module.py").stat().st_mode & 0o111)
+
+            second = Path(directory) / "second"
+            second.mkdir()
+            with self.assertRaisesRegex(RuntimeError, "untracked/ignored"):
+                materialize_build_source(
+                    root,
+                    second,
+                    declared_wheels={"wheels/dependency.whl"},
+                    tracked_members=set(members) - {"contract/snapshot/schema.json"},
+                )
+
     def test_builder_probe_uses_numeric_version_not_lts_display_label(self):
         actual = {
             "blenderVersion": "5.2.1",

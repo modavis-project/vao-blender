@@ -20,6 +20,10 @@ import zipfile
 from pathlib import Path, PurePosixPath
 
 ZIP_EPOCH = (1980, 1, 1, 0, 0, 0)
+# One day after the ZIP epoch in UTC remains representable in every civil time
+# zone. Blender's builder reads filesystem mtimes before our canonical ZIP
+# normalization pass, so release input must not inherit older checkout mtimes.
+ZIP_SAFE_MTIME = 315_619_200
 PLATFORM_WHEEL_MARKERS = {
     "windows-x64": "win_amd64",
     "macos-arm64": "macosx_11_0_arm64",
@@ -37,6 +41,56 @@ PACKAGED_ROOT_FILES = {
     "__init__.py",
     "blender_manifest.toml",
 }
+
+
+def packaged_source_members(source_root: Path, declared_wheels: set[str]) -> set[str]:
+    """Return the exact source inventory Blender is permitted to package."""
+    expected_members = {name for name in PACKAGED_ROOT_FILES if (source_root / name).is_file()}
+    for top_level in ("contract", "vao_blender"):
+        for path in (source_root / top_level).rglob("*"):
+            if path.is_symlink():
+                raise RuntimeError(f"packaged source contains a symbolic link: {path}")
+            if path.is_file() and "__pycache__" not in path.parts:
+                expected_members.add(path.relative_to(source_root).as_posix())
+    expected_members.update(declared_wheels)
+    wheel_inventory = source_root / "wheels" / "WHEELS_SHA256"
+    if wheel_inventory.is_file():
+        expected_members.add("wheels/WHEELS_SHA256")
+    return expected_members
+
+
+def materialize_build_source(
+    source_root: Path,
+    destination: Path,
+    *,
+    declared_wheels: set[str],
+    tracked_members: set[str],
+) -> set[str]:
+    """Copy exact tracked package inputs with universally ZIP-safe mtimes."""
+    if destination.is_symlink() or not destination.is_dir() or any(destination.iterdir()):
+        raise RuntimeError("release build-source destination must be an empty regular directory")
+    expected_members = packaged_source_members(source_root, declared_wheels)
+    if not expected_members.issubset(tracked_members):
+        untracked = sorted(expected_members - tracked_members)
+        raise RuntimeError(
+            "artifact source inventory includes untracked/ignored files: " + ", ".join(untracked)
+        )
+    created_directories = {destination}
+    for name in sorted(expected_members):
+        source = source_root / name
+        if source.is_symlink() or not source.is_file():
+            raise RuntimeError(f"packaged source member is not a regular file: {name}")
+        target = destination / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        created_directories.update(target.parents)
+        shutil.copyfile(source, target)
+        target.chmod(source.stat().st_mode & 0o777)
+        os.utime(target, (ZIP_SAFE_MTIME, ZIP_SAFE_MTIME))
+    for directory in sorted(created_directories, key=lambda item: len(item.parts), reverse=True):
+        if directory == destination or destination in directory.parents:
+            directory.chmod(0o755)
+            os.utime(directory, (ZIP_SAFE_MTIME, ZIP_SAFE_MTIME))
+    return expected_members
 
 
 def run(*args: str) -> None:
@@ -261,19 +315,7 @@ def verify_artifact_contents(
         if declared_wheels != pure_wheels | expected_native:
             raise RuntimeError(f"platform-specific wheel selection mismatch in {artifact.name}")
         if source_root is not None:
-            expected_members = {
-                name for name in PACKAGED_ROOT_FILES if (source_root / name).is_file()
-            }
-            for top_level in ("contract", "vao_blender"):
-                for path in (source_root / top_level).rglob("*"):
-                    if path.is_symlink():
-                        raise RuntimeError(f"packaged source contains a symbolic link: {path}")
-                    if path.is_file() and "__pycache__" not in path.parts:
-                        expected_members.add(path.relative_to(source_root).as_posix())
-            expected_members.update(declared_wheels)
-            wheel_inventory = source_root / "wheels" / "WHEELS_SHA256"
-            if wheel_inventory.is_file():
-                expected_members.add("wheels/WHEELS_SHA256")
+            expected_members = packaged_source_members(source_root, declared_wheels)
             if tracked_members is not None and not expected_members.issubset(tracked_members):
                 untracked = sorted(expected_members - tracked_members)
                 raise RuntimeError(
@@ -606,18 +648,26 @@ def main() -> int:
         raise RuntimeError("release_metadata.toml is missing canonical [builder] metadata")
     builder_provenance = probe_builder(args.blender, builder)
     run(str(args.blender), "--command", "extension", "validate", str(root))
+    build_source_dir = Path(tempfile.mkdtemp(prefix=f".{extension_id}-build-source-"))
     staging_dir = Path(
         tempfile.mkdtemp(prefix=f".{output_dir.name}.staging-", dir=output_dir.parent)
     )
     promoted = False
     try:
+        materialize_build_source(
+            root,
+            build_source_dir,
+            declared_wheels=expected_wheels,
+            tracked_members=tracked_members,
+        )
+        run(str(args.blender), "--command", "extension", "validate", str(build_source_dir))
         build_command = [
             str(args.blender),
             "--command",
             "extension",
             "build",
             "--source-dir",
-            str(root),
+            str(build_source_dir),
             "--output-dir",
             str(staging_dir),
         ]
@@ -721,6 +771,8 @@ def main() -> int:
     finally:
         if not promoted and staging_dir.exists():
             shutil.rmtree(staging_dir)
+        if build_source_dir.exists():
+            shutil.rmtree(build_source_dir)
 
     print(f"Validated {len(artifact_names)} release artifact(s) in {output_dir}")
     print((output_dir / "SHA256SUMS").read_text(encoding="ascii"), end="")
