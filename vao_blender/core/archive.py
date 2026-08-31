@@ -183,6 +183,14 @@ def _stable_source(
             current = os.fstat(stream.fileno())
             if _stat_fingerprint(current) != initial_fingerprint:
                 return True
+            if os.name == "nt":
+                # CreateFileW opened this file without FILE_SHARE_WRITE or
+                # FILE_SHARE_DELETE. Windows therefore rejects in-place writes,
+                # replacement, and deletion for the handle lifetime. Comparing
+                # a separate pathname stat with the descriptor stat is both
+                # redundant and unreliable because the two Windows stat paths
+                # can expose different device/file-index representations.
+                return False
             try:
                 return _stat_fingerprint(source.stat()) != initial_fingerprint
             except OSError:

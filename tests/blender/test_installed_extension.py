@@ -19,7 +19,12 @@ session_api = importlib.import_module(f"{module_root}.vao_blender.blender.sessio
 assert module_root in bpy.context.preferences.addons
 assert hasattr(bpy.context.scene, "vao_runtime")
 outcome = archive.validate_package(package_path)
-assert outcome.state == model.OutcomeState.UNSUPPORTED
+diagnostic_summary = "; ".join(
+    f"{item.code}:{item.severity.value}:{item.message}" for item in outcome.diagnostics
+)
+assert outcome.state == model.OutcomeState.UNSUPPORTED, (
+    f"unexpected validation state {outcome.state.value}; diagnostics={diagnostic_summary}"
+)
 assert outcome.contract_line == "0.4.0"
 assert outcome.rights_acknowledgement_required
 
