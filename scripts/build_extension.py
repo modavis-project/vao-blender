@@ -305,7 +305,7 @@ def probe_builder(blender: Path, expected: dict[str, object]) -> dict[str, objec
     expression = (
         "import bpy,json,platform,sys,zlib;"
         f"print({marker!r}+json.dumps({{"
-        "'blenderVersion':bpy.app.version_string,"
+        "'blenderVersion':'.'.join(str(item) for item in bpy.app.version),"
         "'blenderVersionTuple':list(bpy.app.version),"
         "'blenderBuildHash':bpy.app.build_hash.decode('ascii','replace'),"
         "'pythonVersion':platform.python_version(),"

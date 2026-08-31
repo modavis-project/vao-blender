@@ -313,12 +313,15 @@ class PrepareNativeBlenderTests(unittest.TestCase):
             ("blender",), 0, stdout="VAO_NATIVE_HOST_PROBE=" + subject.json.dumps(actual) + "\n"
         )
         with (
-            mock.patch.object(subject.subprocess, "run", return_value=completed),
+            mock.patch.object(subject.subprocess, "run", return_value=completed) as run,
             mock.patch.object(subject, "sha256", side_effect=("stable", "stable")) as digest,
         ):
             observed = subject.probe(Path("/official/blender"), policy)
         self.assertEqual(observed["blenderExecutableSha256"], "stable")
         self.assertEqual(digest.call_count, 2)
+        probe_expression = run.call_args.args[0][-1]
+        self.assertIn("bpy.app.version", probe_expression)
+        self.assertNotIn("bpy.app.version_string", probe_expression)
 
         with (
             mock.patch.object(subject.subprocess, "run", return_value=completed),

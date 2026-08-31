@@ -12,6 +12,7 @@ from unittest import mock
 from scripts.build_extension import (
     inspect_output_directory,
     normalize_archive,
+    probe_builder,
     promote_release_directory,
     verify_artifact_contents,
 )
@@ -77,6 +78,45 @@ def _artifact(
 
 
 class ReproducibleReleaseTests(unittest.TestCase):
+    def test_builder_probe_uses_numeric_version_not_lts_display_label(self):
+        actual = {
+            "blenderVersion": "5.2.1",
+            "blenderVersionTuple": [5, 2, 1],
+            "blenderBuildHash": "build",
+            "pythonVersion": "3.13.13",
+            "pythonImplementation": "CPython",
+            "system": "Linux",
+            "machine": "x86_64",
+            "zlibCompileVersion": "1.3.1",
+            "zlibRuntimeVersion": "1.3.1",
+        }
+        expected = {
+            "blender_version": "5.2.1",
+            "blender_build_hash": "build",
+            "blender_python_version": "3.13.13",
+            "driver_python_version": "3.13.13",
+            "platform_system": "Linux",
+            "platform_machine": "x86_64",
+            "blender_executable_sha256": "stable",
+            "official_archive_sha256": "archive",
+            "official_archive_url": "https://example.invalid/blender.tar.xz",
+        }
+        completed = mock.Mock(stdout="VAO_BUILDER_PROVENANCE=" + json.dumps(actual) + "\n")
+        with (
+            mock.patch("scripts.build_extension.platform.python_version", return_value="3.13.13"),
+            mock.patch(
+                "scripts.build_extension.platform.python_implementation", return_value="CPython"
+            ),
+            mock.patch("scripts.build_extension.subprocess.run", return_value=completed) as run,
+            mock.patch("scripts.build_extension.sha256", return_value="stable"),
+        ):
+            observed = probe_builder(Path("/official/blender"), expected)
+
+        self.assertEqual(observed["blenderVersion"], "5.2.1")
+        probe_expression = run.call_args.args[0][-1]
+        self.assertIn("bpy.app.version", probe_expression)
+        self.assertNotIn("bpy.app.version_string", probe_expression)
+
     def test_zip_normalization_removes_order_and_timestamp_variance(self):
         with tempfile.TemporaryDirectory() as directory:
             first = Path(directory) / "first.zip"

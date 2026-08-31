@@ -198,16 +198,14 @@ jobs:
             | sha256sum --check --strict
           version_output="$("${blender_bin}" --version)"
           printf '%s\n' "${version_output}"
-          grep --fixed-strings --line-regexp "Blender ${{ matrix.blender }}" \
-            <<< "${version_output}"
           grep --extended-regexp --line-regexp \
             "[[:space:]]*build hash: ${{ matrix.build_hash }}" \
             <<< "${version_output}"
           probe_output="$("${blender_bin}" --background --factory-startup \
-            --python-expr 'import platform; print("VAO_RUNTIME_PROBE=" + platform.python_version() + ":" + platform.system() + ":" + platform.machine())')"
+            --python-expr 'import bpy, platform; print("VAO_RUNTIME_PROBE=" + ".".join(str(item) for item in bpy.app.version) + ":" + platform.python_version() + ":" + platform.system() + ":" + platform.machine() + ":" + bpy.app.build_hash.decode("ascii", "replace"))')"
           printf '%s\n' "${probe_output}"
           grep --fixed-strings --line-regexp \
-            "VAO_RUNTIME_PROBE=${{ matrix.python_version }}:Linux:x86_64" \
+            "VAO_RUNTIME_PROBE=${{ matrix.blender }}:${{ matrix.python_version }}:Linux:x86_64:${{ matrix.build_hash }}" \
             <<< "${probe_output}"
           echo "BLENDER_BIN=${blender_bin}" >> "${GITHUB_ENV}"
       - name: Prepare Blender-local pinned dependencies
