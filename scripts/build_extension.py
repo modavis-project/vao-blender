@@ -316,20 +316,29 @@ def probe_builder(blender: Path, expected: dict[str, object]) -> dict[str, objec
         "'zlibRuntimeVersion':zlib.ZLIB_RUNTIME_VERSION"
         "}},sort_keys=True))"
     )
-    result = subprocess.run(
-        (
-            str(blender),
-            "--background",
-            "--factory-startup",
-            "--python-exit-code",
-            "1",
-            "--python-expr",
-            expression,
-        ),
-        check=True,
-        capture_output=True,
-        text=True,
-    )
+    try:
+        result = subprocess.run(
+            (
+                str(blender),
+                "--background",
+                "--factory-startup",
+                "--python-exit-code",
+                "1",
+                "--python-expr",
+                expression,
+            ),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        detail = "\n".join(part.strip() for part in (exc.stdout, exc.stderr) if part).strip()
+        if len(detail) > 4000:
+            detail = detail[-4000:]
+        raise RuntimeError(
+            f"Blender builder provenance probe exited with status {exc.returncode}"
+            + (f":\n{detail}" if detail else "")
+        ) from exc
     line = next((item for item in result.stdout.splitlines() if item.startswith(marker)), None)
     if line is None:
         raise RuntimeError("Blender did not report canonical builder provenance")

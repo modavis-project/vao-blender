@@ -379,20 +379,29 @@ def probe(executable: Path, policy: dict[str, Any]) -> dict[str, Any]:
         "}},sort_keys=True))"
     )
     executable_sha256 = sha256(executable)
-    result = subprocess.run(
-        (
-            str(executable),
-            "--background",
-            "--factory-startup",
-            "--python-exit-code",
-            "1",
-            "--python-expr",
-            expression,
-        ),
-        check=True,
-        capture_output=True,
-        text=True,
-    )
+    try:
+        result = subprocess.run(
+            (
+                str(executable),
+                "--background",
+                "--factory-startup",
+                "--python-exit-code",
+                "1",
+                "--python-expr",
+                expression,
+            ),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        detail = "\n".join(part.strip() for part in (exc.stdout, exc.stderr) if part).strip()
+        if len(detail) > 4000:
+            detail = detail[-4000:]
+        raise RuntimeError(
+            f"Blender native-host probe exited with status {exc.returncode}"
+            + (f":\n{detail}" if detail else "")
+        ) from exc
     if sha256(executable) != executable_sha256:
         raise RuntimeError("Blender executable changed during the native-host probe")
     line = next((item for item in result.stdout.splitlines() if item.startswith(marker)), None)
