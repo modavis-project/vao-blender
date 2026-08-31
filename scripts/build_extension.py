@@ -225,6 +225,7 @@ def verify_artifact_contents(
     with zipfile.ZipFile(artifact, "r") as archive:
         entries = archive.infolist()
         names = [item.filename for item in entries]
+        original_names = [item.orig_filename for item in entries]
         if len(names) != len(set(names)):
             raise RuntimeError(f"duplicate ZIP member in {artifact.name}")
         portable_names: set[str] = set()
@@ -242,7 +243,8 @@ def verify_artifact_contents(
             or "\\" in name
             or name.endswith((".pyc", ".pyo"))
             or name.startswith(("build/", "dist/", "docs/", "scripts/", "tests/", "tmp/"))
-            for name in names
+            or "\x00" in name
+            for name in original_names
         ):
             raise RuntimeError(f"unsafe or development-only member in {artifact.name}")
         try:
