@@ -1,6 +1,6 @@
 # Security and trust model
 
-Status: maintained threat model for version 0.4.0-rc.1
+Status: maintained threat model for version 0.4.0-rc.2
 Primary threat: an untrusted `.vao` supplied to a Blender process with access to
 the user's files and current scene
 

@@ -4,7 +4,7 @@ Current release state: **prerelease**. The Zenodo draft has reserved DOI
 `10.5281/zenodo.22210517` and intended publication date 2026-08-31.
 
 This checklist is intentionally manual. The prepared identity is
-`v0.4.0-rc.1`; its GitHub release and Zenodo record remain unpublished. Do not
+`v0.4.0-rc.2`; its GitHub release and Zenodo record remain unpublished. Do not
 push, create a remote release, upload release files, or publish the deposition
 without the responsible maintainer's explicit approval.
 
@@ -39,7 +39,7 @@ Use the prepared metadata as the authoritative transcription source:
 
 - **Title:** VAO Blender: A Blender Extension for Virtual Acoustic Objects
 - **Resource type:** Software
-- **Version:** 0.4.0-rc.1
+- **Version:** 0.4.0-rc.2
 - **Creator:** Dominik Ukolov, ORCID 0000-0002-7904-3892
 - **License:** GNU General Public License v3.0 or later
 - **Access:** Open access
@@ -83,7 +83,7 @@ surface, or inconsistent date blocks the tagged build.
 1. Confirm a clean `main`, review `git diff` and the generated staging evidence,
    and rerun all gates.
 2. Commit the publication-metadata update.
-3. Create the exact annotated tag `v0.4.0-rc.1` at that commit. Do not move or
+3. Create the exact annotated tag `v0.4.0-rc.2` at that commit. Do not move or
    reuse it.
 4. On the canonical Linux x86_64 release host, run Python 3.13.13 with the exact
    verified Blender 5.2.1 executable:
@@ -114,7 +114,7 @@ set is complete:
 
 ```console
 python scripts/native_evidence.py template \
-  --release-dir dist/release-candidate/0.4.0-rc.1 \
+  --release-dir dist/release-candidate/0.4.0-rc.2 \
   > /absolute/path/to/native-test-input.json
 ```
 
@@ -123,9 +123,9 @@ annotated tag. It creates no release and publishes nothing; it only uploads a
 canonical base set, six cell JSON artifacts, and a verified publication-set
 artifact for maintainer review. Complete all six exact artifact-bound cells:
 Blender 5.1.2 and 5.2.1 on Windows
-x64 using `vao_blender-0.4.0-rc.1-windows_x64.zip`, macOS ARM64 using
-`vao_blender-0.4.0-rc.1-macos_arm64.zip`, and Linux x64 using
-`vao_blender-0.4.0-rc.1-linux_x64.zip`. Each cell must pass every required test,
+x64 using `vao_blender-0.4.0-rc.2-windows_x64.zip`, macOS ARM64 using
+`vao_blender-0.4.0-rc.2-macos_arm64.zip`, and Linux x64 using
+`vao_blender-0.4.0-rc.2-linux_x64.zip`. Each cell must pass every required test,
 import the installed ZIP bytes, verify the pinned official Blender archive, and
 record the executable hash, Blender/build/Python/system/machine probe, hosted
 runner image/version, UTC time, and this repository's exact Actions run-attempt
@@ -138,15 +138,15 @@ cell artifacts, place only the six JSON files in one directory and run:
 
 ```console
 python scripts/native_evidence.py merge \
-  --release-dir dist/release-candidate/0.4.0-rc.1 \
+  --release-dir dist/release-candidate/0.4.0-rc.2 \
   --input-dir /absolute/path/to/native-cell-json \
   > /absolute/path/to/completed-native-test-input.json
 python scripts/native_evidence.py assemble \
-  --release-dir dist/release-candidate/0.4.0-rc.1 \
+  --release-dir dist/release-candidate/0.4.0-rc.2 \
   --input /absolute/path/to/completed-native-test-input.json
 python scripts/native_evidence.py verify \
-  --release-dir dist/release-candidate/0.4.0-rc.1
-(cd dist/release-candidate/0.4.0-rc.1 && \
+  --release-dir dist/release-candidate/0.4.0-rc.2
+(cd dist/release-candidate/0.4.0-rc.2 && \
   shasum -a 256 -c PUBLICATION_SHA256SUMS)
 ```
 
@@ -156,19 +156,19 @@ source-freeze table embedded in `RELEASE_NOTES.md` deliberately remains “Not
 run”; never rewrite a base release asset to record later results.
 
 Download the exact
-`vao-blender-0.4.0-rc.1-native-verified-publication-set-attempt-<n>` workflow
+`vao-blender-0.4.0-rc.2-native-verified-publication-set-attempt-<n>` workflow
 artifact from the single accepted run attempt, verify it in a fresh directory,
 and use **only its members** for the release attachments below. Compare every
 member with any locally built final set, but never mix local base files, cells
 from another attempt, or independently assembled evidence into the uploaded set.
 
-The draft GitHub prerelease should be titled `VAO Blender 0.4.0-rc.1` and use
+The draft GitHub prerelease should be titled `VAO Blender 0.4.0-rc.2` and use
 `RELEASE_NOTES.md`. Attach:
 
-- `vao_blender-0.4.0-rc.1-windows_x64.zip`;
-- `vao_blender-0.4.0-rc.1-macos_arm64.zip`;
-- `vao_blender-0.4.0-rc.1-linux_x64.zip`;
-- `vao-blender-0.4.0-rc.1-source.zip`;
+- `vao_blender-0.4.0-rc.2-windows_x64.zip`;
+- `vao_blender-0.4.0-rc.2-macos_arm64.zip`;
+- `vao_blender-0.4.0-rc.2-linux_x64.zip`;
+- `vao-blender-0.4.0-rc.2-source.zip`;
 - `SHA256SUMS` and `RELEASE_EVIDENCE.json`;
 - `NATIVE_TEST_EVIDENCE.json` and `PUBLICATION_SHA256SUMS`;
 - `SBOM.spdx.json`, `RELEASE_NOTES.md`, and `release_metadata.toml`.

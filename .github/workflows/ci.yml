@@ -269,15 +269,15 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/build_extension.py --blender "${BLENDER_BIN}" --staging --overwrite
-          (cd dist/release-candidate/0.4.0-rc.1 && sha256sum --check --strict SHA256SUMS)
-          cp dist/release-candidate/0.4.0-rc.1/SHA256SUMS "${RUNNER_TEMP}/first-SHA256SUMS"
-          cp dist/release-candidate/0.4.0-rc.1/RELEASE_EVIDENCE.json \
+          (cd dist/release-candidate/0.4.0-rc.2 && sha256sum --check --strict SHA256SUMS)
+          cp dist/release-candidate/0.4.0-rc.2/SHA256SUMS "${RUNNER_TEMP}/first-SHA256SUMS"
+          cp dist/release-candidate/0.4.0-rc.2/RELEASE_EVIDENCE.json \
             "${RUNNER_TEMP}/first-evidence.json"
           python scripts/build_extension.py --blender "${BLENDER_BIN}" --staging --overwrite
           diff --unified "${RUNNER_TEMP}/first-SHA256SUMS" \
-            dist/release-candidate/0.4.0-rc.1/SHA256SUMS
+            dist/release-candidate/0.4.0-rc.2/SHA256SUMS
           diff --unified "${RUNNER_TEMP}/first-evidence.json" \
-            dist/release-candidate/0.4.0-rc.1/RELEASE_EVIDENCE.json
+            dist/release-candidate/0.4.0-rc.2/RELEASE_EVIDENCE.json
       - name: Install, exercise, and uninstall the staged extension
         if: matrix.blender == '5.2.1'
         shell: bash
@@ -286,7 +286,7 @@ jobs:
           profile="${RUNNER_TEMP}/vao-blender-installed-profile"
           repo_dir="${profile}/extensions/vao_rc_test"
           fixture="${RUNNER_TEMP}/visual-bootstrap.vao"
-          artifact="${PWD}/dist/release-candidate/0.4.0-rc.1/vao_blender-0.4.0-rc.1-linux_x64.zip"
+          artifact="${PWD}/dist/release-candidate/0.4.0-rc.2/vao_blender-0.4.0-rc.2-linux_x64.zip"
           mkdir -p "${repo_dir}"
           VAO_FIXTURE="${fixture}" python -c \
             'import os; from pathlib import Path; from tests.unit.test_vao04 import build_visual_bootstrap; build_visual_bootstrap(Path(os.environ["VAO_FIXTURE"]))'

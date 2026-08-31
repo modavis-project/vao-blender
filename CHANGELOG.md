@@ -4,7 +4,7 @@ All notable changes are documented here. The project follows semantic versioning
 for the Blender extension; supported VAO format versions remain exact contract
 identities.
 
-## 0.4.0-rc.1 — Unreleased
+## 0.4.0-rc.2 — Unreleased
 
 - Added exact offline validation for the VAO 0.5.0 candidate at standard commit
   `d17b3f188fdf7fadd01ba025383e4feca8def935`.

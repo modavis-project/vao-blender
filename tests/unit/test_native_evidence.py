@@ -289,7 +289,7 @@ class NativeEvidenceTests(unittest.TestCase):
             self.tagged_binding_mock.assert_called_once()
             call = self.tagged_binding_mock.call_args
             self.assertEqual(call.args, (release_dir,))
-            self.assertEqual(call.kwargs["context"]["release"]["release_tag"], "v0.4.0-rc.1")
+            self.assertEqual(call.kwargs["context"]["release"]["release_tag"], "v0.4.0-rc.2")
             self.assertEqual(
                 set(call.kwargs["checksums"]),
                 release_context()["base_names"] - {"SHA256SUMS"},

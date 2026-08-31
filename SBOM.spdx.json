@@ -6,25 +6,25 @@
       "Tool: VAO-Blender release preparation"
     ]
   },
-  "comment": "Standalone release-set SBOM for the complete three-platform VAO Blender 0.4.0-rc.1 artifact set. It is distributed as a release asset and is not embedded in any platform-specific extension ZIP. Each extension ZIP contains exactly one native rpds-py wheel; this document records all three native-wheel variants in the release set.",
+  "comment": "Standalone release-set SBOM for the complete three-platform VAO Blender 0.4.0-rc.2 artifact set. It is distributed as a release asset and is not embedded in any platform-specific extension ZIP. Each extension ZIP contains exactly one native rpds-py wheel; this document records all three native-wheel variants in the release set.",
   "dataLicense": "CC0-1.0",
   "documentDescribes": [
     "SPDXRef-Package-VAO-Blender"
   ],
-  "documentNamespace": "https://github.com/modavis-project/vao-blender/spdx/v0.4.0-rc.1",
-  "name": "VAO-Blender-0.4.0-rc.1-SBOM",
+  "documentNamespace": "https://github.com/modavis-project/vao-blender/spdx/v0.4.0-rc.2",
+  "name": "VAO-Blender-0.4.0-rc.2-SBOM",
   "packages": [
     {
       "SPDXID": "SPDXRef-Package-VAO-Blender",
       "comment": "This package entry describes the complete three-platform release set, not the contents of one platform-specific extension ZIP.",
       "copyrightText": "Copyright 2026 VAO-Blender contributors",
-      "downloadLocation": "https://github.com/modavis-project/vao-blender/releases/tag/v0.4.0-rc.1",
+      "downloadLocation": "https://github.com/modavis-project/vao-blender/releases/tag/v0.4.0-rc.2",
       "filesAnalyzed": false,
       "licenseConcluded": "GPL-3.0-or-later",
       "licenseDeclared": "GPL-3.0-or-later",
       "name": "VAO Blender",
       "supplier": "Organization: VAO-Blender contributors",
-      "versionInfo": "0.4.0-rc.1"
+      "versionInfo": "0.4.0-rc.2"
     },
     {
       "SPDXID": "SPDXRef-Package-VAO-Standard-040",

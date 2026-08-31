@@ -1,6 +1,6 @@
 # Compatibility
 
-VAO Blender 0.4.0-rc.1 supports Blender 5.1.x and 5.2.x on Windows x64,
+VAO Blender 0.4.0-rc.2 supports Blender 5.1.x and 5.2.x on Windows x64,
 macOS Apple Silicon, and Linux x64. Each split release artifact contains the
 pure-Python validator dependencies plus exactly one CPython 3.13 `rpds-py` wheel.
 The manifest excludes Blender 5.3+ until that runtime and API line is tested.

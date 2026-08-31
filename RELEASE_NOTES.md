@@ -1,4 +1,4 @@
-# VAO Blender 0.4.0-rc.1
+# VAO Blender 0.4.0-rc.2
 
 Current release state: **prerelease**. These notes describe the source freeze for
 the candidate with reserved DOI `10.5281/zenodo.22210517` and intended publication
@@ -7,7 +7,12 @@ the exact native evidence matrix.
 
 Status: **prerelease**.
 
-VAO Blender 0.4.0-rc.1 is a major correctness, safety, lifecycle, and usability
+This candidate supersedes the unpublished `v0.4.0-rc.1` freeze. That tag failed
+the Windows installed-extension evidence gate and is retained only as an
+immutable audit checkpoint; it must not be released or archived as the current
+software version.
+
+VAO Blender 0.4.0-rc.2 is a major correctness, safety, lifecycle, and usability
 release. It supports the published
 [VAO Standard 0.4.0](https://github.com/modavis-project/vao-standard/releases/tag/v0.4.0)
 and the exact 0.5.0 candidate at commit
@@ -88,12 +93,12 @@ canonical artifacts are built:
 
 | Blender | Native platform | Exact ZIP under test | Source-freeze state |
 | --- | --- | --- | --- |
-| 5.1.2 | Windows x64 | `vao_blender-0.4.0-rc.1-windows_x64.zip` | Not run |
-| 5.1.2 | macOS ARM64 | `vao_blender-0.4.0-rc.1-macos_arm64.zip` | Not run |
-| 5.1.2 | Linux x64 | `vao_blender-0.4.0-rc.1-linux_x64.zip` | Not run |
-| 5.2.1 | Windows x64 | `vao_blender-0.4.0-rc.1-windows_x64.zip` | Not run |
-| 5.2.1 | macOS ARM64 | `vao_blender-0.4.0-rc.1-macos_arm64.zip` | Not run |
-| 5.2.1 | Linux x64 | `vao_blender-0.4.0-rc.1-linux_x64.zip` | Not run |
+| 5.1.2 | Windows x64 | `vao_blender-0.4.0-rc.2-windows_x64.zip` | Not run |
+| 5.1.2 | macOS ARM64 | `vao_blender-0.4.0-rc.2-macos_arm64.zip` | Not run |
+| 5.1.2 | Linux x64 | `vao_blender-0.4.0-rc.2-linux_x64.zip` | Not run |
+| 5.2.1 | Windows x64 | `vao_blender-0.4.0-rc.2-windows_x64.zip` | Not run |
+| 5.2.1 | macOS ARM64 | `vao_blender-0.4.0-rc.2-macos_arm64.zip` | Not run |
+| 5.2.1 | Linux x64 | `vao_blender-0.4.0-rc.2-linux_x64.zip` | Not run |
 
 Configured CI jobs, successful package construction, and source-tree validation
 are not native installed-extension evidence. A local Blender 5.1.1/macOS ARM64
@@ -118,7 +123,7 @@ the source-freeze table above stays “Not run” by design.
 After publication, download `PUBLICATION_SHA256SUMS` and the ZIP matching the
 host platform from the same release, verify the checksum, and install the ZIP
 without unpacking it through **Edit → Preferences → Get Extensions → Install
-from Disk**. The package names begin `vao_blender-0.4.0-rc.1-`; see
+from Disk**. The package names begin `vao_blender-0.4.0-rc.2-`; see
 [Installation](docs/INSTALLATION.md).
 
 ## Citation and research record
@@ -127,6 +132,6 @@ This candidate has reserved DOI
 [10.5281/zenodo.22210517](https://doi.org/10.5281/zenodo.22210517) and intended
 publication date 2026-08-31. The prior release DOI
 [10.5281/zenodo.22134389](https://doi.org/10.5281/zenodo.22134389) does not
-identify 0.4.0-rc.1. The published VAO Standard 0.4.0 is separately archived as
+identify 0.4.0-rc.2. The published VAO Standard 0.4.0 is separately archived as
 [10.5281/zenodo.22122774](https://doi.org/10.5281/zenodo.22122774). The reserved
 candidate DOI will resolve only after the reviewed Zenodo draft is published.

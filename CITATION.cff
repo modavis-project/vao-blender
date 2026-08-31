@@ -3,7 +3,7 @@
   "message": "If you use VAO Blender in research, cite this software and the VAO Standard used by your data.",
   "title": "VAO Blender: A Blender Extension for Virtual Acoustic Objects",
   "type": "software",
-  "version": "0.4.0-rc.1",
+  "version": "0.4.0-rc.2",
   "doi": "10.5281/zenodo.22210517",
   "date-released": "2026-08-31",
   "license": "GPL-3.0-or-later",
@@ -35,7 +35,7 @@
         "affiliation": "Digital Humanities (Image/Object), Friedrich Schiller University Jena; Research Group DIGITAL ORGANOLOGY, Leipzig University"
       }
     ],
-    "version": "0.4.0-rc.1",
+    "version": "0.4.0-rc.2",
     "doi": "10.5281/zenodo.22210517",
     "date-released": "2026-08-31",
     "repository-code": "https://github.com/modavis-project/vao-blender"

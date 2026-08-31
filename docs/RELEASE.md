@@ -1,7 +1,7 @@
 # Release engineering
 
-This runbook covers extension version `0.4.0-rc.1` and its intended tag
-`v0.4.0-rc.1`. `release_metadata.toml` is the canonical, machine-audited identity.
+This runbook covers extension version `0.4.0-rc.2` and its intended tag
+`v0.4.0-rc.2`. `release_metadata.toml` is the canonical, machine-audited identity.
 
 Current release state: **prerelease**. The reserved version DOI is
 `10.5281/zenodo.22210517` and the intended publication date is 2026-08-31. The
@@ -103,10 +103,10 @@ Before creating a tag, commit the reviewed tree and run:
 python3.13 scripts/build_extension.py \
   --blender /absolute/path/to/blender-5.2.1-linux-x64/blender \
   --staging --overwrite
-(cd dist/release-candidate/0.4.0-rc.1 && shasum -a 256 -c SHA256SUMS)
+(cd dist/release-candidate/0.4.0-rc.2 && shasum -a 256 -c SHA256SUMS)
 ```
 
-Staging writes `dist/release-candidate/0.4.0-rc.1/` and still requires a clean
+Staging writes `dist/release-candidate/0.4.0-rc.2/` and still requires a clean
 checkout. The explicit `--blender` path must resolve to the immutable builder
 described above; the script probes the executable, build hash, platform, Blender
 Python, and driver Python before building. Its source archive is generated from
@@ -117,10 +117,10 @@ The builder validates the source and every artifact with Blender, canonicalizes
 ZIP ordering and timestamps, verifies manifest/platform/native-wheel contents,
 and emits:
 
-- `vao_blender-0.4.0-rc.1-windows_x64.zip`;
-- `vao_blender-0.4.0-rc.1-macos_arm64.zip`;
-- `vao_blender-0.4.0-rc.1-linux_x64.zip`;
-- `vao-blender-0.4.0-rc.1-source.zip`;
+- `vao_blender-0.4.0-rc.2-windows_x64.zip`;
+- `vao_blender-0.4.0-rc.2-macos_arm64.zip`;
+- `vao_blender-0.4.0-rc.2-linux_x64.zip`;
+- `vao-blender-0.4.0-rc.2-source.zip`;
 - standalone release assets `SBOM.spdx.json`, `RELEASE_NOTES.md`, and
   `release_metadata.toml`;
 - `SHA256SUMS` and `RELEASE_EVIDENCE.json`.
@@ -139,7 +139,7 @@ relink, save/reopen, and uninstall. Repeat on each advertised native platform.
 The publication metadata transition records prerelease status, reserved DOI
 `10.5281/zenodo.22210517`, and intended publication date 2026-08-31. After every
 pre-build gate passes, rerun the full audit, commit, and create the exact
-annotated tag `v0.4.0-rc.1`. Detached native gates run against the resulting
+annotated tag `v0.4.0-rc.2`. Detached native gates run against the resulting
 immutable ZIPs. Build them with:
 
 ```console
@@ -170,7 +170,7 @@ release directory:
 
 ```console
 python scripts/native_evidence.py template \
-  --release-dir dist/release-candidate/0.4.0-rc.1 \
+  --release-dir dist/release-candidate/0.4.0-rc.2 \
   > /absolute/path/to/native-test-input.json
 ```
 
@@ -198,15 +198,15 @@ replace the detached evidence set:
 
 ```console
 python scripts/native_evidence.py merge \
-  --release-dir dist/release-candidate/0.4.0-rc.1 \
+  --release-dir dist/release-candidate/0.4.0-rc.2 \
   --input-dir /absolute/path/to/native-cell-json \
   > /absolute/path/to/completed-native-test-input.json
 python scripts/native_evidence.py assemble \
-  --release-dir dist/release-candidate/0.4.0-rc.1 \
+  --release-dir dist/release-candidate/0.4.0-rc.2 \
   --input /absolute/path/to/completed-native-test-input.json
 python scripts/native_evidence.py verify \
-  --release-dir dist/release-candidate/0.4.0-rc.1
-(cd dist/release-candidate/0.4.0-rc.1 && \
+  --release-dir dist/release-candidate/0.4.0-rc.2
+(cd dist/release-candidate/0.4.0-rc.2 && \
   shasum -a 256 -c PUBLICATION_SHA256SUMS)
 ```
 

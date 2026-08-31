@@ -1,10 +1,10 @@
 # VAO Blender: A Blender Extension for Virtual Acoustic Objects
 
-[![Release candidate](https://img.shields.io/badge/release-0.4.0--rc.1%20prerelease-D97706.svg)](RELEASE_NOTES.md)
+[![Release candidate](https://img.shields.io/badge/release-0.4.0--rc.2%20prerelease-D97706.svg)](RELEASE_NOTES.md)
 [![VAO 0.4.0](https://img.shields.io/badge/VAO-0.4.0%20published-245B78.svg)](https://github.com/modavis-project/vao-standard/releases/tag/v0.4.0)
 [![VAO 0.5.0 candidate](https://img.shields.io/badge/VAO-0.5.0%20candidate-2C5F73.svg)](https://github.com/modavis-project/vao-standard/tree/d17b3f188fdf7fadd01ba025383e4feca8def935)
 
-Current release state: **prerelease**. Version 0.4.0-rc.1 has reserved DOI
+Current release state: **prerelease**. Version 0.4.0-rc.2 has reserved DOI
 [`10.5281/zenodo.22210517`](https://doi.org/10.5281/zenodo.22210517) and intended
 publication date 2026-08-31. Its GitHub release and Zenodo record remain
 unpublished until the exact native evidence matrix is complete.
@@ -14,7 +14,7 @@ carrier and payload, presents the package as inspectable research data, and can
 materialize a supported 3D realization. It works offline and treats every VAO as
 untrusted input.
 
-The current extension candidate is 0.4.0-rc.1, targeting the 0.4.0 release line.
+The current extension candidate is 0.4.0-rc.2, targeting the 0.4.0 release line.
 It implements the published [VAO Standard 0.4.0](https://github.com/modavis-project/vao-standard/releases/tag/v0.4.0),
 adds exact support for the 0.5.0 candidate at commit
 `d17b3f188fdf7fadd01ba025383e4feca8def935`, and keeps isolated compatibility
@@ -72,9 +72,9 @@ Preferences → Get Extensions → Install from Disk** in Blender. Do not unpack
 ZIP.
 
 ```text
-vao_blender-0.4.0-rc.1-windows_x64.zip
-vao_blender-0.4.0-rc.1-macos_arm64.zip
-vao_blender-0.4.0-rc.1-linux_x64.zip
+vao_blender-0.4.0-rc.2-windows_x64.zip
+vao_blender-0.4.0-rc.2-macos_arm64.zip
+vao_blender-0.4.0-rc.2-linux_x64.zip
 ```
 
 For a published candidate, `PUBLICATION_SHA256SUMS` is the complete release-set
@@ -120,7 +120,7 @@ available.
 
 ## Citation
 
-Version 0.4.0-rc.1 has reserved DOI
+Version 0.4.0-rc.2 has reserved DOI
 [10.5281/zenodo.22210517](https://doi.org/10.5281/zenodo.22210517) and intended
 publication date 2026-08-31. The DOI will resolve after the reviewed Zenodo draft
 is published; until then, use [`CITATION.cff`](CITATION.cff) as the authoritative
@@ -167,7 +167,7 @@ python3.13 scripts/build_extension.py \
 ```
 
 The staging command writes the versioned candidate directory
-`dist/release-candidate/0.4.0-rc.1/`. The final command omits `--staging` and
+`dist/release-candidate/0.4.0-rc.2/`. The final command omits `--staging` and
 therefore requires the exact annotated tag at `HEAD`. The build creates three
 platform packages, a deterministic source archive, checksums, release evidence,
 and a standalone release-set SBOM. The SBOM is a release asset, not a member of

@@ -1,9 +1,9 @@
 # Canonical, reviewable release identity. Publication fields remain empty until
 # the corresponding external records exist; release tooling must never invent
 # or reuse a DOI from an earlier version.
-extension_version = "0.4.0-rc.1"
-release_label = "0.4.0-rc.1"
-release_tag = "v0.4.0-rc.1"
+extension_version = "0.4.0-rc.2"
+release_label = "0.4.0-rc.2"
+release_tag = "v0.4.0-rc.2"
 status = "prerelease"
 release_doi = "10.5281/zenodo.22210517"
 release_date = "2026-08-31"

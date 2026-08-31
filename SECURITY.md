@@ -3,7 +3,7 @@
 ## Supported versions
 
 Security fixes are provided for the latest published VAO Blender release. During
-the 0.4.0 release-candidate period, reports against 0.4.0-rc.1 and `main` are in
+the 0.4.0 release-candidate period, reports against 0.4.0-rc.2 and `main` are in
 scope. The published 0.3.0-rc.1 build receives fixes only when a maintainer
 explicitly backports them; older development builds are not maintained.
 
