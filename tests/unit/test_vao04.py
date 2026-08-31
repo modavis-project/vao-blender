@@ -207,7 +207,7 @@ class VAO04ContractTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = build_visual_bootstrap(Path(directory) / "visual-bootstrap.vao")
             reference = reference_validator_04().validate_archive(path)
-            outcome = validate_package(path, hash_archive=False)
+            outcome = validate_package(path)
         self.assertTrue(reference["valid"], reference["errors"])
         self.assertEqual(outcome.state, OutcomeState.UNSUPPORTED)
         self.assertTrue(outcome.rights_acknowledgement_required)

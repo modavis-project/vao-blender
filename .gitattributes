@@ -1,0 +1,25 @@
+# Tagged release bytes must be identical on Linux, macOS, and Windows.  The
+# native evidence gate compares checked-out source with canonical artifacts
+# byte-for-byte, so text is always materialized with LF regardless of host Git
+# configuration.
+* text=auto eol=lf
+
+# Archives, carriers, wheels, and other opaque payloads must never undergo
+# newline conversion or text diff/merge processing.
+*.blend binary -eol
+*.blend1 binary -eol
+*.glb binary -eol
+*.gz binary -eol
+*.ico binary -eol
+*.jpeg binary -eol
+*.jpg binary -eol
+*.mp3 binary -eol
+*.ogg binary -eol
+*.pdf binary -eol
+*.png binary -eol
+*.tar binary -eol
+*.vao binary -eol
+*.wav binary -eol
+*.whl binary -eol
+*.xz binary -eol
+*.zip binary -eol

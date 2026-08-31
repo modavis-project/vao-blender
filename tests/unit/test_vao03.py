@@ -106,7 +106,7 @@ class VAO03ContractTests(unittest.TestCase):
     def test_small_force_zip64_carrier_is_processed(self):
         with tempfile.TemporaryDirectory() as directory:
             path = rebuild_carrier(Path(directory) / "zip64.vao", force_zip64=True)
-            outcome = validate_package(path, hash_archive=False)
+            outcome = validate_package(path)
         self.assertTrue(outcome.is_valid)
         self.assertEqual(len(outcome.verified_assets), 8)
 

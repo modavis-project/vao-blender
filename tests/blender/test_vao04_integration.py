@@ -37,8 +37,11 @@ with tempfile.TemporaryDirectory() as directory:
     assert runtime.pose_count == 3
     assert runtime.measurement_count == 1
     assert not session.rights_ready(bpy.context.scene)
-    runtime.rights_acknowledged = True
+    assert bpy.ops.vao.acknowledge_rights() == {"FINISHED"}
     assert session.rights_ready(bpy.context.scene)
+    assert runtime.state == "UNSUPPORTED"
+    assert runtime.support_state == "UNSUPPORTED"
+    assert runtime.rights_state == "ACKNOWLEDGED"
 
     expected_realization = "urn:vao:fixture:acousticrooms:realization:geometry:glb"
     assert runtime.selected_realization_id == expected_realization
@@ -64,7 +67,7 @@ with tempfile.TemporaryDirectory() as directory:
         session.ensure_audio()
         raise AssertionError("VAO 0.4 Playable/RIR content was exposed to the legacy audio engine")
     except RuntimeError as exc:
-        assert "VAO 0.4.0 Playable" in str(exc)
+        assert "VAO 0.4.0 program-audio and acoustic execution" in str(exc)
 
     close_all()
     remove_materialization(session)

@@ -23,7 +23,12 @@ TRACE_KEYS = {
     "realization": "vao_realization_id",
     "binding": "vao_geometry_binding_id",
     "frame": "vao_coordinate_frame_id",
+    "archive": "vao_archive_sha256",
+    "contract": "vao_contract_sha256",
+    "materialization": "vao_materialization_id",
+    "session": "vao_session_id",
 }
+TRACE_ROOT = "vao_materialization_root"
 
 # Blender's glTF importer maps the glTF (+Y up, -Z forward) basis to Blender
 # (+Z up, -Y forward).  Declared VAO frame matrices are composed against the
@@ -54,16 +59,117 @@ def _link_child(parent: bpy.types.Collection, name: str) -> bpy.types.Collection
     return child
 
 
+def _scene_collections(scene: bpy.types.Scene):
+    seen: set[int] = set()
+    stack = list(scene.collection.children)
+    while stack:
+        collection = stack.pop()
+        pointer = collection.as_pointer()
+        if pointer in seen:
+            continue
+        seen.add(pointer)
+        yield collection
+        stack.extend(collection.children)
+
+
+def _materialization_roots(scene: bpy.types.Scene, materialization_id: str):
+    return tuple(
+        collection
+        for collection in _scene_collections(scene)
+        if collection.get(TRACE_ROOT)
+        and str(collection.get(TRACE_KEYS["materialization"], "")) == materialization_id
+    )
+
+
+def _linked_scenes(root: bpy.types.Collection) -> tuple[bpy.types.Scene, ...]:
+    return tuple(scene for scene in bpy.data.scenes if _collection_in_scene(scene, root))
+
+
+def _resolve_session_root(
+    session,
+    scene: bpy.types.Scene,
+    *,
+    allow_initial_missing: bool,
+) -> bpy.types.Collection | None:
+    """Resolve a live root by durable identity and enforce unique scene ownership."""
+    if not session.materialization_id:
+        raise RuntimeError("live VAO session has no materialization identity")
+    try:
+        if session.scene != scene:
+            raise RuntimeError("VAO session does not own the requested Blender scene")
+    except ReferenceError as exc:
+        raise RuntimeError("VAO session scene ownership is no longer valid") from exc
+    matches = _materialization_roots(scene, session.materialization_id)
+    if not matches:
+        if allow_initial_missing and not session.root_collection_name:
+            return None
+        hint = (
+            f" (last known as {session.root_collection_name!r})"
+            if session.root_collection_name
+            else ""
+        )
+        raise RuntimeError(
+            "no managed VAO root with this materialization ID exists in the owning scene" + hint
+        )
+    if len(matches) != 1:
+        raise RuntimeError(
+            "multiple managed VAO roots claim this materialization ID in the owning scene; "
+            "resolve the duplicate IDs before continuing"
+        )
+    root = matches[0]
+    owners = _linked_scenes(root)
+    if len(owners) != 1 or owners[0] != scene:
+        raise RuntimeError(
+            "managed VAO root is not linked exclusively to its owning scene; unlink it from "
+            "every additional scene before continuing"
+        )
+    session.root_collection_name = root.name
+    if hasattr(scene, "vao_runtime") and scene.vao_runtime.session_id == session.id:
+        scene.vao_runtime.root_collection_name = root.name
+    return root
+
+
+def _resolve_detached_root(
+    materialization_id: str,
+    root_name_hint: str,
+) -> tuple[bpy.types.Collection, bpy.types.Scene]:
+    """Resolve a detached root globally by ID; a saved Blender name is only a hint."""
+    if not materialization_id:
+        raise RuntimeError("managed VAO removal requires a materialization ID")
+    matches = tuple(
+        collection
+        for collection in bpy.data.collections
+        if collection.get(TRACE_ROOT)
+        and str(collection.get(TRACE_KEYS["materialization"], "")) == materialization_id
+    )
+    if not matches:
+        hint = f" (last known as {root_name_hint!r})" if root_name_hint else ""
+        raise RuntimeError("no managed VAO root has the requested materialization ID" + hint)
+    if len(matches) != 1:
+        raise RuntimeError(
+            "multiple managed VAO roots claim the requested materialization ID; resolve the "
+            "duplicate IDs before removal"
+        )
+    root = matches[0]
+    owners = _linked_scenes(root)
+    if len(owners) != 1:
+        raise RuntimeError("managed VAO root must be linked to exactly one scene before removal")
+    return root, owners[0]
+
+
 def ensure_root(session, scene: bpy.types.Scene) -> bpy.types.Collection:
-    if session.root_collection_name:
-        existing = bpy.data.collections.get(session.root_collection_name)
-        if existing:
-            return existing
+    existing = _resolve_session_root(session, scene, allow_initial_missing=True)
+    if existing is not None:
+        _assert_owned_subtree(existing, session.materialization_id)
+        _retag_live_session(existing, session.id)
+        return existing
     manifest = session.outcome.manifest
     title_value = manifest.get("title", {})
     title = title_value.get("en") or next(iter(title_value.values()), "Untitled")
     root = bpy.data.collections.new(f"VAO::{title}")
     scene.collection.children.link(root)
+    root[TRACE_ROOT] = True
+    root["vao_title"] = title
     root[TRACE_KEYS["package"]] = manifest.get("id", "")
     release = manifest.get("release", {})
     revision = (
@@ -72,28 +178,84 @@ def ensure_root(session, scene: bpy.types.Scene) -> bpy.types.Collection:
     root[TRACE_KEYS["revision"]] = revision
     root[TRACE_KEYS["format"]] = manifest.get("formatVersion", "")
     root[TRACE_KEYS["manifest"]] = session.outcome.manifest_sha256
+    root[TRACE_KEYS["archive"]] = session.outcome.archive_sha256
+    root[TRACE_KEYS["contract"]] = session.outcome.contract_sha256
+    root[TRACE_KEYS["materialization"]] = session.materialization_id
+    root[TRACE_KEYS["session"]] = session.id
     if hasattr(release, "get"):
         root[TRACE_KEYS["release"]] = release.get("id", "")
     root["vao_source_name"] = Path(session.source_path).name
     root["vao_materialization_version"] = "0.4.0"
+    children = {}
     for name in ("Representations", "Controls", "Spatial", "Diagnostics"):
         child = _link_child(root, name)
+        child["vao_collection_role"] = name
+        children[name] = child
         child[TRACE_KEYS["package"]] = manifest.get("id", "")
         child[TRACE_KEYS["format"]] = manifest.get("formatVersion", "")
         child[TRACE_KEYS["manifest"]] = session.outcome.manifest_sha256
+        child[TRACE_KEYS["archive"]] = session.outcome.archive_sha256
+        child[TRACE_KEYS["contract"]] = session.outcome.contract_sha256
+        child[TRACE_KEYS["materialization"]] = session.materialization_id
+        child[TRACE_KEYS["session"]] = session.id
         if hasattr(release, "get"):
             child[TRACE_KEYS["release"]] = release.get("id", "")
-    spatial = root.children["Spatial"]
+    spatial = children["Spatial"]
     spatial.hide_viewport = True
-    diagnostics = root.children["Diagnostics"]
+    diagnostics = children["Diagnostics"]
     diagnostics.hide_viewport = True
     session.root_collection_name = root.name
+    if hasattr(scene, "vao_runtime"):
+        scene.vao_runtime.root_collection_name = root.name
+        scene.vao_runtime.materialization_state = "READY"
     return root
 
 
+def _retag_live_session(root: bpy.types.Collection, session_id: str) -> None:
+    """Refresh ephemeral ownership after an exact relink without changing provenance."""
+    stack = [root]
+    seen: set[int] = set()
+    while stack:
+        collection = stack.pop()
+        if collection.as_pointer() in seen:
+            continue
+        seen.add(collection.as_pointer())
+        collection[TRACE_KEYS["session"]] = session_id
+        stack.extend(collection.children)
+        for obj in collection.objects:
+            obj[TRACE_KEYS["session"]] = session_id
+
+
 def _child(root: bpy.types.Collection, name: str) -> bpy.types.Collection:
-    existing = root.children.get(name)
-    return existing or _link_child(root, name)
+    existing = _find_child(root, name)
+    if existing:
+        return existing
+    child = _link_child(root, name)
+    child["vao_collection_role"] = name
+    for key in (
+        TRACE_KEYS["package"],
+        TRACE_KEYS["format"],
+        TRACE_KEYS["manifest"],
+        TRACE_KEYS["archive"],
+        TRACE_KEYS["contract"],
+        TRACE_KEYS["release"],
+        TRACE_KEYS["materialization"],
+        TRACE_KEYS["session"],
+    ):
+        if key in root:
+            child[key] = root[key]
+    return child
+
+
+def _find_child(root: bpy.types.Collection, role: str) -> bpy.types.Collection | None:
+    return next(
+        (
+            child
+            for child in root.children
+            if child.get("vao_collection_role") == role or child.name == role
+        ),
+        None,
+    )
 
 
 def _rollback(before: dict[str, set]) -> None:
@@ -111,6 +273,13 @@ def _rollback(before: dict[str, set]) -> None:
 def import_visual(
     session, scene: bpy.types.Scene, asset_id: str
 ) -> tuple[bpy.types.Collection, int]:
+    if not session.media_ready(scene):
+        raise RuntimeError(
+            "verified media is unavailable for this result; complete validation, exact relink, "
+            "and rights acknowledgement are required"
+        )
+    if bpy.context.scene is not None and bpy.context.scene != scene:
+        raise RuntimeError("visual import must run in the owning scene context")
     is_modern = session.outcome.contract_line in {"0.3.2", "0.4.0", "0.5.0"}
     graph = session.outcome.graph
     if is_modern:
@@ -139,13 +308,9 @@ def import_visual(
         visual_key = asset.id
     if asset.media_type != "model/gltf-binary":
         raise RuntimeError("VAO-Blender materializes verified GLB assets; this remains inspectable")
-    existing_root = (
-        bpy.data.collections.get(session.root_collection_name)
-        if session.root_collection_name
-        else None
-    )
+    existing_root = _resolve_session_root(session, scene, allow_initial_missing=True)
     if existing_root:
-        representations = existing_root.children.get("Representations")
+        representations = _find_child(existing_root, "Representations")
         if representations:
             for existing in representations.children:
                 if (
@@ -154,7 +319,6 @@ def import_visual(
                 ):
                     return existing, len(existing.all_objects)
 
-    verified_path = session.cache.extract(session.source_path, asset)
     before = {
         category: set(getattr(bpy.data, category))
         for category in (
@@ -169,17 +333,25 @@ def import_visual(
             "lights",
         )
     }
-    window = bpy.context.window
-    if window is not None:
-        try:
-            window.cursor_set("WAIT")
-        except RuntimeError:
-            window = None
-    if hasattr(scene, "vao_runtime"):
-        scene.vao_runtime.status_message = (
-            f"Preparing verified model {asset.original_filename or asset.id}…"
-        )
+    cache = session.cache
+    verified_path = cache.extract(session.source_path, asset, protect=True)
     try:
+        session.adopt_protected_cache_path(verified_path, cache.root)
+    except Exception:
+        cache.unregister_protected(verified_path)
+        raise
+    window = None
+    try:
+        window = bpy.context.window
+        if window is not None:
+            try:
+                window.cursor_set("WAIT")
+            except RuntimeError:
+                window = None
+        if hasattr(scene, "vao_runtime"):
+            scene.vao_runtime.status_message = (
+                f"Preparing verified model {asset.original_filename or asset.id}…"
+            )
         with tempfile.TemporaryDirectory(prefix="vao-blender-gltf-") as directory:
             derivative = Path(directory) / f"{asset.sha256}.indexed.glb"
             inject_glb_node_indices(verified_path, derivative)
@@ -217,8 +389,26 @@ def import_visual(
             target = by_index.get(index)
             if target is None:
                 raise RuntimeError(f"required glTF node-index selector {index} did not resolve")
-            target["vao_geometry_binding_id"] = binding.get("id", "")
-            target["vao_entity_ids"] = binding.get("subjectId", "")
+            binding_ids = {
+                value
+                for value in str(target.get("vao_geometry_binding_ids", "")).split("|")
+                if value
+            }
+            entity_ids = {
+                value for value in str(target.get("vao_entity_ids", "")).split("|") if value
+            }
+            binding_id = str(binding.get("id", ""))
+            entity_id = str(binding.get("subjectId", ""))
+            if binding_id:
+                binding_ids.add(binding_id)
+            if entity_id:
+                entity_ids.add(entity_id)
+            target["vao_geometry_binding_ids"] = "|".join(sorted(binding_ids))
+            target["vao_entity_ids"] = "|".join(sorted(entity_ids))
+            if "vao_geometry_binding_id" not in target:
+                target["vao_geometry_binding_id"] = binding_id
+            if "vao_entity_id" not in target:
+                target["vao_entity_id"] = entity_id
             target["vao_selector_kind"] = "gltf-node-index"
             target["vao_selector_value"] = index
 
@@ -260,6 +450,10 @@ def import_visual(
         collection[TRACE_KEYS["asset_hash"]] = asset.sha256
         collection[TRACE_KEYS["package"]] = session.outcome.manifest.get("id", "")
         collection[TRACE_KEYS["manifest"]] = session.outcome.manifest_sha256
+        collection[TRACE_KEYS["archive"]] = session.outcome.archive_sha256
+        collection[TRACE_KEYS["contract"]] = session.outcome.contract_sha256
+        collection[TRACE_KEYS["materialization"]] = session.materialization_id
+        collection[TRACE_KEYS["session"]] = session.id
         collection[TRACE_KEYS["format"]] = session.outcome.manifest.get("formatVersion", "")
         release = session.outcome.manifest.get("release", {})
         if hasattr(release, "get"):
@@ -284,6 +478,10 @@ def import_visual(
             obj[TRACE_KEYS["asset_hash"]] = asset.sha256
             obj["vao_generated"] = False
             obj[TRACE_KEYS["manifest"]] = session.outcome.manifest_sha256
+            obj[TRACE_KEYS["archive"]] = session.outcome.archive_sha256
+            obj[TRACE_KEYS["contract"]] = session.outcome.contract_sha256
+            obj[TRACE_KEYS["materialization"]] = session.materialization_id
+            obj[TRACE_KEYS["session"]] = session.id
             obj[TRACE_KEYS["format"]] = session.outcome.manifest.get("formatVersion", "")
             if hasattr(release, "get"):
                 obj[TRACE_KEYS["release"]] = release.get("id", "")
@@ -296,6 +494,7 @@ def import_visual(
                 )
                 obj["vao_common_frame_root_id"] = common_root_id
                 obj["vao_declared_transform_row_major"] = list(declared_transform)
+                obj["vao_entity_ids"] = binding.subject_id
         if is_modern:
             _create_acoustic_markers(session, root, collection)
         for candidate in set(bpy.data.collections) - before["collections"] - {collection}:
@@ -307,7 +506,10 @@ def import_visual(
                 bpy.data.collections.remove(candidate)
         return collection, len(imported)
     except Exception:
-        _rollback(before)
+        try:
+            _rollback(before)
+        finally:
+            session.release_cache_path(verified_path)
         if session.root_collection_name not in bpy.data.collections:
             session.root_collection_name = ""
         raise
@@ -371,6 +573,7 @@ def _create_acoustic_markers(
             obj["vao_generated"] = True
             obj["vao_spatial_role"] = role
             obj["vao_entity_id"] = entity_id
+            obj["vao_entity_ids"] = entity_id
             obj["vao_pose_id"] = pose.id
             obj["vao_measurement_id"] = measurement.id
             obj["vao_declared_position"] = list(pose.position)
@@ -389,6 +592,10 @@ def _create_acoustic_markers(
             obj[TRACE_KEYS["package"]] = session.outcome.manifest.get("id", "")
             obj[TRACE_KEYS["manifest"]] = session.outcome.manifest_sha256
             obj[TRACE_KEYS["format"]] = session.outcome.contract_line
+            obj[TRACE_KEYS["archive"]] = session.outcome.archive_sha256
+            obj[TRACE_KEYS["contract"]] = session.outcome.contract_sha256
+            obj[TRACE_KEYS["materialization"]] = session.materialization_id
+            obj[TRACE_KEYS["session"]] = session.id
             release = session.outcome.manifest.get("release", {})
             if hasattr(release, "get"):
                 obj[TRACE_KEYS["release"]] = release.get("id", "")
@@ -407,17 +614,7 @@ def _create_acoustic_markers(
         representation["vao_rir_support"] = "metadata-only"
 
 
-def remove_materialization(session) -> None:
-    """Remove only this session's managed scene root for explicit lifecycle cleanup."""
-    root = (
-        bpy.data.collections.get(session.root_collection_name)
-        if session.root_collection_name
-        else None
-    )
-    if root is None:
-        session.root_collection_name = ""
-        return
-    objects = set(root.all_objects)
+def _owned_datablocks(objects: set[bpy.types.Object]):
     owned_data = {
         (obj.data.bl_rna.identifier, obj.data.name) for obj in objects if obj.data is not None
     }
@@ -441,16 +638,15 @@ def remove_materialization(session) -> None:
         for obj in objects
         if obj.animation_data is not None and obj.animation_data.action is not None
     }
-    child_collections: set[bpy.types.Collection] = set()
+    return owned_data, owned_materials, owned_images, owned_actions
 
-    def collect_children(collection: bpy.types.Collection) -> None:
-        for child in collection.children:
-            child_collections.add(child)
-            collect_children(child)
 
-    collect_children(root)
-    for obj in objects:
-        bpy.data.objects.remove(obj, do_unlink=True)
+def _remove_unused_datablocks(
+    owned_data,
+    owned_materials: set[str],
+    owned_images: set[str],
+    owned_actions: set[str],
+) -> None:
     categories = {
         "Mesh": "meshes",
         "Curve": "curves",
@@ -478,22 +674,259 @@ def remove_materialization(session) -> None:
         action = bpy.data.actions.get(name)
         if action is not None and action.users == 0:
             bpy.data.actions.remove(action)
+
+
+def _collection_subtree(root: bpy.types.Collection) -> set[bpy.types.Collection]:
+    collections: set[bpy.types.Collection] = set()
+    stack = [root]
+    while stack:
+        collection = stack.pop()
+        if collection in collections:
+            continue
+        collections.add(collection)
+        stack.extend(collection.children)
+    return collections
+
+
+def _assert_owned_subtree(
+    root: bpy.types.Collection,
+    materialization_id: str,
+) -> tuple[set[bpy.types.Collection], set[bpy.types.Object]]:
+    """Preflight a managed subtree before any unlink or global datablock removal."""
+    collections = _collection_subtree(root)
+    for collection in collections:
+        actual = str(collection.get(TRACE_KEYS["materialization"], ""))
+        if actual != materialization_id:
+            state = "untagged" if not actual else f"owned by {actual!r}"
+            raise RuntimeError(
+                f"managed subtree contains collection {collection.name!r} that is {state}; "
+                "move user collections out or restore the exact VAO ownership tag before removal"
+            )
+    objects = {obj for collection in collections for obj in collection.objects}
+    for obj in objects:
+        actual = str(obj.get(TRACE_KEYS["materialization"], ""))
+        if actual != materialization_id:
+            state = "untagged" if not actual else f"owned by {actual!r}"
+            raise RuntimeError(
+                f"managed subtree contains object {obj.name!r} that is {state}; move user objects "
+                "out or restore the exact VAO ownership tag before removal"
+            )
+    return collections, objects
+
+
+def _assert_no_external_collection_links(
+    root: bpy.types.Collection,
+    owned_collections: set[bpy.types.Collection],
+    *,
+    check_root: bool,
+    allowed_root_parents: set[bpy.types.Collection] | None = None,
+    allowed_root_scenes: set[bpy.types.Scene] | None = None,
+) -> None:
+    """Refuse global deletion when a managed subtree was separately linked by the user."""
+    allowed_root_parents = allowed_root_parents or set()
+    allowed_root_scenes = allowed_root_scenes or set()
+    parents: dict[bpy.types.Collection, list[bpy.types.Collection]] = {
+        collection: [] for collection in owned_collections
+    }
+    for parent in bpy.data.collections:
+        for child in parent.children:
+            if child in parents:
+                parents[child].append(parent)
+    for collection in owned_collections:
+        if collection == root and not check_root:
+            continue
+        external_parents = [
+            parent
+            for parent in parents[collection]
+            if parent not in owned_collections
+            and not (collection == root and parent in allowed_root_parents)
+        ]
+        direct_scenes = [
+            scene
+            for scene in bpy.data.scenes
+            if scene.collection.children.get(collection.name) == collection
+            and not (collection == root and scene in allowed_root_scenes)
+        ]
+        if external_parents or direct_scenes:
+            owners = [f"collection {parent.name}" for parent in external_parents]
+            owners.extend(f"scene {scene.name}" for scene in direct_scenes)
+            raise RuntimeError(
+                f"managed collection {collection.name!r} is also linked from "
+                f"{', '.join(owners)}; unlink that shared subtree before removal"
+            )
+
+
+def remove_materialization(
+    session=None,
+    *,
+    root_name: str = "",
+    materialization_id: str = "",
+) -> None:
+    """Remove only this session's managed scene root for explicit lifecycle cleanup."""
+    root_name = root_name or (session.root_collection_name if session else "")
+    materialization_id = materialization_id or (session.materialization_id if session else "")
+    if session:
+        owner_scene = session.scene
+        root = _resolve_session_root(session, owner_scene, allow_initial_missing=False)
+        assert root is not None
+    else:
+        root, owner_scene = _resolve_detached_root(materialization_id, root_name)
+    owned_collections, objects = _assert_owned_subtree(root, materialization_id)
+    owned_data, owned_materials, owned_images, owned_actions = _owned_datablocks(objects)
+    child_collections = owned_collections - {root}
+    _assert_no_external_collection_links(
+        root,
+        owned_collections,
+        check_root=True,
+        allowed_root_scenes={owner_scene},
+    )
+    if session:
+        session.stop_audio()
+    for obj in objects:
+        external = [owner for owner in obj.users_collection if owner not in owned_collections]
+        if external:
+            for owner in tuple(obj.users_collection):
+                if owner in owned_collections:
+                    owner.objects.unlink(obj)
+        else:
+            bpy.data.objects.remove(obj, do_unlink=True)
+    _remove_unused_datablocks(owned_data, owned_materials, owned_images, owned_actions)
     for collection in sorted(child_collections, key=lambda item: len(item.name), reverse=True):
         if collection.name in bpy.data.collections:
             bpy.data.collections.remove(collection)
     if root.name in bpy.data.collections:
         bpy.data.collections.remove(root)
-    session.root_collection_name = ""
+    for text in tuple(bpy.data.texts):
+        if materialization_id and text.get(TRACE_KEYS["materialization"]) == materialization_id:
+            bpy.data.texts.remove(text)
+    if session:
+        session.root_collection_name = ""
+        session.release_cache_paths()
+        if hasattr(session.scene, "vao_runtime"):
+            runtime = session.scene.vao_runtime
+            if runtime.materialization_id == materialization_id:
+                runtime.root_collection_name = ""
+                runtime.materialization_state = "NONE"
+
+
+def _collection_in_scene(scene: bpy.types.Scene, target: bpy.types.Collection) -> bool:
+    seen: set[int] = set()
+
+    def contains(collection: bpy.types.Collection) -> bool:
+        if collection == target:
+            return True
+        pointer = collection.as_pointer()
+        if pointer in seen:
+            return False
+        seen.add(pointer)
+        return any(contains(child) for child in collection.children)
+
+    return contains(scene.collection)
+
+
+def representation_collection(
+    session,
+    identifier: str,
+    *,
+    strict: bool = False,
+) -> bpy.types.Collection | None:
+    try:
+        root = _resolve_session_root(session, session.scene, allow_initial_missing=True)
+    except RuntimeError:
+        if strict:
+            raise
+        return None
+    if root is None:
+        return None
+    representations = _find_child(root, "Representations")
+    if representations is None:
+        return None
+    if str(representations.get(TRACE_KEYS["materialization"], "")) != session.materialization_id:
+        if strict:
+            raise RuntimeError("managed Representations collection has conflicting ownership")
+        return None
+    matches = tuple(
+        collection
+        for collection in representations.children
+        if identifier
+        in {
+            str(collection.get(TRACE_KEYS["asset"], "")),
+            str(collection.get(TRACE_KEYS["logical_asset"], "")),
+            str(collection.get(TRACE_KEYS["realization"], "")),
+        }
+    )
+    if len(matches) > 1:
+        if strict:
+            raise RuntimeError("multiple managed representations claim the selected identifier")
+        return None
+    if not matches:
+        return None
+    collection = matches[0]
+    if str(collection.get(TRACE_KEYS["materialization"], "")) != session.materialization_id:
+        if strict:
+            raise RuntimeError("selected representation has conflicting ownership")
+        return None
+    return collection
+
+
+def set_representation_hidden(session, identifier: str, hidden: bool) -> bpy.types.Collection:
+    collection = representation_collection(session, identifier, strict=True)
+    if collection is None:
+        raise RuntimeError("selected representation has not been materialized in this scene")
+    collection.hide_viewport = hidden
+    collection.hide_render = hidden
+    return collection
+
+
+def remove_representation(session, identifier: str) -> None:
+    """Remove one exact managed representation and no sibling materializations."""
+    collection = representation_collection(session, identifier, strict=True)
+    if collection is None:
+        raise RuntimeError("selected representation has not been materialized in this scene")
+    owned_collections, objects = _assert_owned_subtree(
+        collection,
+        session.materialization_id,
+    )
+    owned_data, owned_materials, owned_images, owned_actions = _owned_datablocks(objects)
+    root = _resolve_session_root(session, session.scene, allow_initial_missing=False)
+    representations = _find_child(root, "Representations") if root else None
+    _assert_no_external_collection_links(
+        collection,
+        owned_collections,
+        check_root=True,
+        allowed_root_parents={representations} if representations else set(),
+    )
+    for obj in objects:
+        external = [owner for owner in obj.users_collection if owner not in owned_collections]
+        if external:
+            for owner in tuple(obj.users_collection):
+                if owner in owned_collections:
+                    owner.objects.unlink(obj)
+        else:
+            bpy.data.objects.remove(obj, do_unlink=True)
+    for child in sorted(owned_collections, key=lambda item: len(item.name), reverse=True):
+        if child.name in bpy.data.collections:
+            bpy.data.collections.remove(child)
+    _remove_unused_datablocks(owned_data, owned_materials, owned_images, owned_actions)
 
 
 def create_control_surface(session, scene: bpy.types.Scene) -> int:
     bundle = session.outcome.interaction_plans
-    if not bundle:
-        raise RuntimeError("package has no compiled controls")
+    if not session.media_ready(scene):
+        raise RuntimeError("package media is not ready for control materialization")
+    if not bundle or not bundle.supported:
+        raise RuntimeError("package has no fully supported compiled controls")
+    if not bundle.gates and not bundle.selections:
+        raise RuntimeError("supported interaction plan declares no materializable controls")
     root = ensure_root(session, scene)
     controls = _child(root, "Controls")
-    existing = [obj for obj in controls.objects if obj.get("vao_generated")]
+    existing = [
+        obj
+        for obj in controls.objects
+        if obj.get("vao_generated") and not obj.get("vao_control_label_object")
+    ]
     if existing:
+        update_control_surface(session)
         return len(existing)
 
     created_objects: list[bpy.types.Object] = []
@@ -515,7 +948,7 @@ def create_control_surface(session, scene: bpy.types.Scene) -> int:
         )
         mesh.update()
         notes = [gate.key_number for gate in bundle.gates]
-        minimum = min(notes)
+        minimum = min(notes, default=0)
         black_classes = {1, 3, 6, 8, 10}
         package_id = session.outcome.manifest.get("id", "")
         for gate in bundle.gates:
@@ -526,19 +959,31 @@ def create_control_surface(session, scene: bpy.types.Scene) -> int:
             obj["vao_generated"] = True
             obj["vao_gate_id"] = gate.interaction_id
             obj["vao_key_number"] = gate.key_number
+            obj["vao_control_label"] = gate.label
             obj[TRACE_KEYS["package"]] = package_id
+            obj[TRACE_KEYS["materialization"]] = session.materialization_id
+            obj[TRACE_KEYS["session"]] = session.id
+            obj.show_name = True
+            obj.show_in_front = True
             controls.objects.link(obj)
             created_objects.append(obj)
         for index, selection in enumerate(bundle.selections):
             obj = bpy.data.objects.new(f"VAO Stop {selection.label}", mesh)
-            obj.location = (index * 0.45, -1.2, 0.0)
+            obj.location = ((index % 8) * 0.55, -1.2 - (index // 8) * 0.42, 0.0)
             obj.scale = (0.35, 0.25, 0.25)
             obj["vao_generated"] = True
             obj["vao_selection_id"] = selection.interaction_id
             obj["vao_configuration_id"] = selection.configuration_id
+            obj["vao_control_label"] = selection.label
+            obj["vao_selection_independent"] = selection.independent
             obj[TRACE_KEYS["package"]] = package_id
+            obj[TRACE_KEYS["materialization"]] = session.materialization_id
+            obj[TRACE_KEYS["session"]] = session.id
+            obj.show_name = True
+            obj.show_in_front = True
             controls.objects.link(obj)
             created_objects.append(obj)
+        update_control_surface(session)
         return len(created_objects)
     except Exception:
         for obj in created_objects:
@@ -546,3 +991,35 @@ def create_control_surface(session, scene: bpy.types.Scene) -> int:
         if mesh.users == 0:
             bpy.data.meshes.remove(mesh)
         raise
+
+
+def update_control_surface(session) -> None:
+    """Expose pressed/selected state without editing source representation materials."""
+    try:
+        root = _resolve_session_root(session, session.scene, allow_initial_missing=True)
+        if root is not None:
+            _assert_owned_subtree(root, session.materialization_id)
+    except RuntimeError:
+        return
+    controls = _find_child(root, "Controls") if root else None
+    if controls is None:
+        return
+    black_classes = {1, 3, 6, 8, 10}
+    for obj in controls.objects:
+        if obj.get(TRACE_KEYS["session"]) != session.id:
+            continue
+        gate_id = str(obj.get("vao_gate_id", ""))
+        configuration_id = str(obj.get("vao_configuration_id", ""))
+        if gate_id:
+            pressed = gate_id in session.pressed_gates
+            is_black = int(obj.get("vao_key_number", 0)) % 12 in black_classes
+            obj.color = (
+                (1.0, 0.35, 0.05, 1.0)
+                if pressed
+                else ((0.04, 0.04, 0.04, 1.0) if is_black else (0.85, 0.85, 0.78, 1.0))
+            )
+            obj["vao_control_active"] = pressed
+        elif configuration_id:
+            active = configuration_id in session.active_configurations
+            obj.color = (0.08, 0.8, 0.18, 1.0) if active else (0.22, 0.24, 0.28, 1.0)
+            obj["vao_control_active"] = active

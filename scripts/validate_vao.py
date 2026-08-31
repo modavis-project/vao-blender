@@ -18,9 +18,21 @@ def main() -> int:
     parser.add_argument("package", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument(
-        "--no-payload", action="store_true", help="Development-only: skip payload fixity"
+        "--no-payload",
+        action="store_true",
+        help=(
+            "Development-only metadata inspection: skip payload fixity and return an "
+            "incomplete, non-valid result with a non-zero exit status"
+        ),
     )
-    parser.add_argument("--no-archive-hash", action="store_true")
+    parser.add_argument(
+        "--no-archive-hash",
+        action="store_true",
+        help=(
+            "Development-only metadata inspection: skip the carrier SHA-256 and return an "
+            "incomplete, non-valid result with a non-zero exit status"
+        ),
+    )
     parser.add_argument("--show-progress", action="store_true")
     parser.add_argument("--include-paths", action="store_true")
     arguments = parser.parse_args()

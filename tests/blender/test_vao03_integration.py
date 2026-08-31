@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
@@ -47,7 +48,7 @@ try:
     session.ensure_audio()
     raise AssertionError("VAO 0.3.2 RIR was incorrectly exposed to the program-audio engine")
 except RuntimeError as exc:
-    assert "convolution" in str(exc)
+    assert "VAO 0.3.2 program-audio and acoustic execution" in str(exc)
 
 # A decoder/preparation failure must leave every Blender scene datablock untouched.
 before = {
@@ -115,6 +116,12 @@ for obj in collection.all_objects:
     assert obj["vao_geometry_binding_id"] == (
         "urn:vao:fixture:acousticrooms:geometry-binding:visual"
     )
+    assert (
+        obj["vao_entity_ids"]
+        == outcome.acoustic_scene.geometry_bindings[
+            outcome.acoustic_scene.runtime_visual_binding_id
+        ].subject_id
+    )
 
 root = bpy.data.collections[session.root_collection_name]
 assert root["vao_package_id"] == outcome.manifest["id"]
@@ -164,7 +171,12 @@ assert collection["vao_rir_sample_count"] == ORACLE["impulseResponse"]["sampleCo
 assert collection["vao_rir_channel_count"] == ORACLE["impulseResponse"]["channelCount"]
 assert not [obj for obj in root.all_objects if obj.type == "SPEAKER"]
 
-output = Path(os.environ.get("VAO_TEST_VAO03_BLEND", "/tmp/vao-blender-vao03-integration.blend"))
+output = Path(
+    os.environ.get(
+        "VAO_TEST_VAO03_BLEND",
+        str(Path(tempfile.gettempdir()) / "vao-blender-vao03-integration.blend"),
+    )
+)
 bpy.ops.wm.save_as_mainfile(filepath=str(output), check_existing=False)
 assert output.is_file()
 

@@ -13,9 +13,12 @@ sys.path.insert(0, str(ROOT))
 
 from vao_blender.core.archive import validate_package
 from vao_blender.core.cache import AssetCache
+from vao_blender.core.model import OutcomeState
 
 package = ROOT / "dist/Cuntz-Positiv-4010243-VAO-0.2.2.vao"
 outcome = validate_package(package, verify_payload=False, hash_archive=False)
+assert outcome.state == OutcomeState.INCOMPLETE
+assert not outcome.is_valid
 asset = next(item for item in outcome.graph.assets.values() if item.media_type == "audio/wav")
 with tempfile.TemporaryDirectory(prefix="vao-audio-smoke-") as directory:
     path = AssetCache(Path(directory) / "cache").extract(package, asset)

@@ -5,6 +5,7 @@ from __future__ import annotations
 import bpy
 from bpy_extras import view3d_utils
 
+from .scene_adapter import update_control_surface
 from .session import active_session
 
 EVENT_KEYS = (
@@ -66,41 +67,65 @@ class VAO_OT_performance_mode(bpy.types.Operator):
     _pressed = None
     _mouse_gate = ""
     _finished = False
+    _session = None
+    _scene = None
 
     @classmethod
     def poll(cls, context):
-        return (
-            context.area is not None
-            and context.area.type == "VIEW_3D"
-            and hasattr(context.scene, "vao_runtime")
-            and not context.scene.vao_runtime.performance_active
+        if (
+            context.area is None
+            or context.area.type != "VIEW_3D"
+            or not hasattr(context.scene, "vao_runtime")
+            or context.scene.vao_runtime.performance_active
+        ):
+            return False
+        session = active_session(context.scene)
+        bundle = session.outcome.interaction_plans if session else None
+        return bool(
+            session
+            and bundle
+            and bundle.supported
+            and bundle.gates
+            and bundle.voices
+            and session.media_ready(context.scene)
         )
 
     def invoke(self, context, _event):
         session = active_session(context.scene)
-        if not session or not session.outcome.interaction_plans:
-            self.report({"ERROR"}, "No compiled playable VAO session")
+        bundle = session.outcome.interaction_plans if session else None
+        if (
+            not session
+            or not bundle
+            or not bundle.supported
+            or not bundle.gates
+            or not bundle.voices
+        ):
+            self.report({"ERROR"}, "No fully supported playable VAO session")
             return {"CANCELLED"}
-        if not session.rights_ready(context.scene):
-            self.report({"ERROR"}, "Acknowledge rights/access limitations first")
+        if not session.media_ready(context.scene):
+            self.report({"ERROR"}, "The session is not fully verified and media-ready")
             return {"CANCELLED"}
-        gates = session.outcome.interaction_plans.gates
+        gates = bundle.gates
         self._event_to_gate = {
             event: gate.interaction_id for event, gate in zip(EVENT_KEYS, gates, strict=False)
         }
         self._pressed = set()
         self._mouse_gate = ""
         self._finished = False
+        self._session = session
+        self._scene = context.scene
         context.scene.vao_runtime.performance_active = True
+        unmapped = max(0, len(gates) - len(self._event_to_gate))
+        suffix = f"; {unmapped} additional control(s) use pointer/preview" if unmapped else ""
         context.scene.vao_runtime.status_message = (
-            f"Performance mode: {len(self._event_to_gate)} mapped keys; Escape exits"
+            f"Performance mode: {len(self._event_to_gate)} mapped keys{suffix}; Escape exits"
         )
         context.window_manager.modal_handler_add(self)
         return {"RUNNING_MODAL"}
 
     def _gate(self, context, gate_id: str, opening: bool) -> bool:
         session = active_session(context.scene)
-        if not session:
+        if not session or session is not self._session:
             return False
         engine = session.ensure_audio()
         if opening:
@@ -110,6 +135,7 @@ class VAO_OT_performance_mode(bpy.types.Operator):
         else:
             engine.close_gate(gate_id)
             session.pressed_gates.discard(gate_id)
+        update_control_surface(session)
         return True
 
     def _pick(self, context, event):
@@ -134,9 +160,11 @@ class VAO_OT_performance_mode(bpy.types.Operator):
     def modal(self, context, event):
         if event.type in {"ESC", "WINDOW_DEACTIVATE"}:
             return self._finish(context)
+        if context.area is None or context.area.type != "VIEW_3D":
+            return self._finish(context, cancelled=True)
         try:
             session = active_session(context.scene)
-            if not session:
+            if not session or session is not self._session:
                 return self._finish(context, cancelled=True)
             gate_id = self._event_to_gate.get(event.type)
             if gate_id:
@@ -150,15 +178,34 @@ class VAO_OT_performance_mode(bpy.types.Operator):
             if event.type == "LEFTMOUSE":
                 if event.value == "PRESS":
                     obj = self._pick(context, event)
-                    if obj and obj.get("vao_gate_id"):
+                    owned = bool(obj and obj.get("vao_session_id") == session.id)
+                    if owned and obj.get("vao_gate_id"):
                         self._mouse_gate = obj["vao_gate_id"]
                         self._gate(context, self._mouse_gate, True)
-                    elif obj and obj.get("vao_configuration_id"):
+                    elif owned and obj.get("vao_configuration_id"):
                         configuration = obj["vao_configuration_id"]
                         if configuration in session.active_configurations:
                             session.active_configurations.remove(configuration)
                         else:
+                            selection = next(
+                                (
+                                    item
+                                    for item in session.outcome.interaction_plans.selections
+                                    if item.configuration_id == configuration
+                                ),
+                                None,
+                            )
+                            if selection is None:
+                                return {"RUNNING_MODAL"}
+                            if not selection.independent:
+                                exclusive_ids = {
+                                    item.configuration_id
+                                    for item in session.outcome.interaction_plans.selections
+                                    if not item.independent
+                                }
+                                session.active_configurations.difference_update(exclusive_ids)
                             session.active_configurations.add(configuration)
+                        update_control_surface(session)
                 elif event.value == "RELEASE" and self._mouse_gate:
                     self._gate(context, self._mouse_gate, False)
                     self._mouse_gate = ""
@@ -172,8 +219,8 @@ class VAO_OT_performance_mode(bpy.types.Operator):
         if self._finished:
             return {"CANCELLED" if cancelled else "FINISHED"}
         self._finished = True
-        scene = getattr(context, "scene", None)
-        session = active_session(scene)
+        scene = self._scene or getattr(context, "scene", None)
+        session = self._session
         if session:
             session.stop_audio()
         if scene is not None and hasattr(scene, "vao_runtime"):
@@ -181,6 +228,8 @@ class VAO_OT_performance_mode(bpy.types.Operator):
             scene.vao_runtime.status_message = "Performance mode ended; all owned voices stopped"
         self._pressed = set()
         self._mouse_gate = ""
+        self._session = None
+        self._scene = None
         return {"CANCELLED" if cancelled else "FINISHED"}
 
 

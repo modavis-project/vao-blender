@@ -7,12 +7,14 @@ from enum import StrEnum
 from types import MappingProxyType
 from typing import Any, Mapping
 
+from .. import __version__
 from .diagnostics import Diagnostic
 
 
 class OutcomeState(StrEnum):
     VALID = "valid"
     INVALID = "invalid"
+    INCOMPLETE = "incomplete"
     RESOURCE_LIMITED = "resource-limited"
     UNSUPPORTED = "unsupported"
     BLOCKED_RIGHTS = "blocked-rights"
@@ -231,6 +233,7 @@ class ValidationOutcome:
     source_path: str
     archive_sha256: str = ""
     manifest_sha256: str = ""
+    manifest_bytes: bytes = b""
     manifest: Mapping[str, Any] | None = None
     graph: GraphIndex | None = None
     diagnostics: tuple[Diagnostic, ...] = ()
@@ -240,6 +243,8 @@ class ValidationOutcome:
     capabilities: tuple[CapabilityResult, ...] = ()
     interaction_plans: "InteractionBundle | None" = None
     verified_payload_bytes: int = 0
+    payload_verification_complete: bool = False
+    archive_hash_complete: bool = False
     contract_line: str = "0.2.2"
     contract_sha256: str = ""
     carrier: CarrierRecord | None = None
@@ -254,11 +259,21 @@ class ValidationOutcome:
 
     @property
     def is_valid(self) -> bool:
-        return self.state in {
-            OutcomeState.VALID,
-            OutcomeState.UNSUPPORTED,
-            OutcomeState.BLOCKED_RIGHTS,
-        }
+        return (
+            self.payload_verification_complete
+            and self.archive_hash_complete
+            and self.state
+            in {
+                OutcomeState.VALID,
+                OutcomeState.UNSUPPORTED,
+                OutcomeState.BLOCKED_RIGHTS,
+            }
+        )
+
+    @property
+    def runtime_ready(self) -> bool:
+        """Whether package bytes are trusted enough to permit runtime/media actions."""
+        return self.is_valid and self.state == OutcomeState.VALID
 
     def report(self, *, redact_paths: bool = True) -> dict[str, Any]:
         source = self.source_path
@@ -268,7 +283,7 @@ class ValidationOutcome:
             source = Path(source).name
         manifest = self.manifest or {}
         return {
-            "reader": "VAO-Blender/0.4.0",
+            "reader": f"VAO-Blender/{__version__}",
             "contract": {
                 "line": self.contract_line,
                 "releaseBundleSHA256": self.contract_sha256
@@ -291,6 +306,7 @@ class ValidationOutcome:
             "source": source,
             "archiveSHA256": self.archive_sha256,
             "manifestSHA256": self.manifest_sha256,
+            "manifestByteSize": len(self.manifest_bytes),
             "packageId": manifest.get("id", ""),
             "revision": (
                 manifest.get("release", {}).get("revision")
@@ -300,6 +316,9 @@ class ValidationOutcome:
             "formatVersion": manifest.get("formatVersion", ""),
             "verifiedAssets": len(self.verified_assets),
             "verifiedPayloadBytes": self.verified_payload_bytes,
+            "payloadVerificationComplete": self.payload_verification_complete,
+            "archiveHashComplete": self.archive_hash_complete,
+            "runtimeReady": self.runtime_ready,
             "rightsAcknowledgementRequired": self.rights_acknowledgement_required,
             "graph": {
                 "entities": len(self.graph.entities) if self.graph else 0,
@@ -369,9 +388,16 @@ class VoicePlan:
     sample_sha256: str
     component_id: str
     parameter_set_id: str
+    root_key_number: int
+    minimum_key_number: int
+    maximum_key_number: int
+    minimum_velocity: int
+    maximum_velocity: int
+    target_frequency_hz: float
     gain_db: float
     pitch_mode: str
     attack_seconds: float
+    sustain_level: float
     release_seconds: float
     envelope_curve: str
     channel_policy: str

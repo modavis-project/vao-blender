@@ -15,7 +15,10 @@ class VAOAddonPreferences(bpy.types.AddonPreferences):
     cache_root: StringProperty(
         name="Verified media cache",
         subtype="DIR_PATH",
-        description="Managed content-addressed cache; source VAOs are never modified",
+        description=(
+            "Dedicated managed content-addressed cache. A custom directory must be new/empty "
+            "or already marked by VAO-Blender; source VAOs are never modified"
+        ),
         default="",
     )
     cache_quota_gib: IntProperty(name="Cache quota (GiB)", default=20, min=1, max=1024)
@@ -30,6 +33,12 @@ class VAOAddonPreferences(bpy.types.AddonPreferences):
         layout.prop(self, "cache_quota_gib")
         layout.prop(self, "max_polyphony")
         layout.prop(self, "diagnostics_redact_paths")
+        box = layout.box()
+        box.label(text="Effective managed cache root:")
+        for line in _wrap(cache_root(), 80):
+            box.label(text=line)
+        box.label(text="Custom roots are adopted only when empty.", icon="INFO")
+        box.label(text="Clear Cache confirms this exact path and protects active assets.")
         layout.label(text="Offline reader: no network permission is requested", icon="LOCKED")
 
 
@@ -45,3 +54,9 @@ def cache_root(context=None) -> str:
     if preferences and preferences.cache_root:
         return bpy.path.abspath(preferences.cache_root)
     return bpy.utils.user_resource("DATAFILES", path="vao_blender/cache", create=True)
+
+
+def _wrap(text: str, width: int) -> list[str]:
+    if len(text) <= width:
+        return [text]
+    return [text[index : index + width] for index in range(0, len(text), width)]

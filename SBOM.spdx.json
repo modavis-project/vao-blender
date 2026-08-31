@@ -1,31 +1,33 @@
 {
   "SPDXID": "SPDXRef-DOCUMENT",
   "creationInfo": {
-    "created": "2026-08-27T00:00:00Z",
+    "created": "2026-08-30T00:00:00Z",
     "creators": [
       "Tool: VAO-Blender release preparation"
     ]
   },
+  "comment": "Standalone release-set SBOM for the complete three-platform VAO Blender 0.4.0-rc.1 artifact set. It is distributed as a release asset and is not embedded in any platform-specific extension ZIP. Each extension ZIP contains exactly one native rpds-py wheel; this document records all three native-wheel variants in the release set.",
   "dataLicense": "CC0-1.0",
   "documentDescribes": [
     "SPDXRef-Package-VAO-Blender"
   ],
-  "documentNamespace": "https://github.com/modavis-project/vao-blender/spdx/v0.3.0-rc.1",
-  "name": "VAO-Blender-0.3.0-rc.1-SBOM",
+  "documentNamespace": "https://github.com/modavis-project/vao-blender/spdx/v0.4.0-rc.1",
+  "name": "VAO-Blender-0.4.0-rc.1-SBOM",
   "packages": [
     {
       "SPDXID": "SPDXRef-Package-VAO-Blender",
+      "comment": "This package entry describes the complete three-platform release set, not the contents of one platform-specific extension ZIP.",
       "copyrightText": "Copyright 2026 VAO-Blender contributors",
-      "downloadLocation": "https://github.com/modavis-project/vao-blender",
+      "downloadLocation": "https://github.com/modavis-project/vao-blender/releases/tag/v0.4.0-rc.1",
       "filesAnalyzed": false,
       "licenseConcluded": "GPL-3.0-or-later",
       "licenseDeclared": "GPL-3.0-or-later",
       "name": "VAO Blender",
       "supplier": "Organization: VAO-Blender contributors",
-      "versionInfo": "0.3.0-rc.1"
+      "versionInfo": "0.4.0-rc.1"
     },
     {
-      "SPDXID": "SPDXRef-Package-VAO-Standard",
+      "SPDXID": "SPDXRef-Package-VAO-Standard-040",
       "checksums": [
         {
           "algorithm": "SHA256",
@@ -36,10 +38,41 @@
       "downloadLocation": "https://github.com/modavis-project/vao-standard/releases/tag/v0.4.0",
       "filesAnalyzed": false,
       "licenseConcluded": "NOASSERTION",
-      "licenseDeclared": "NOASSERTION",
+      "licenseDeclared": "CC-BY-4.0 AND Apache-2.0",
       "name": "Virtual Acoustic Object (VAO) Standard",
+      "packageFileName": "vao-standard-0.4.0.zip",
       "supplier": "Organization: VAO Standard contributors",
       "versionInfo": "0.4.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-VAO-Standard-050-Candidate",
+      "copyrightText": "Copyright 2026 Dominik Ukolov and contributors",
+      "downloadLocation": "https://github.com/modavis-project/vao-standard/tree/d17b3f188fdf7fadd01ba025383e4feca8def935",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "CC-BY-4.0 AND Apache-2.0",
+      "name": "Virtual Acoustic Object (VAO) Standard candidate",
+      "sourceInfo": "Exact Git commit d17b3f188fdf7fadd01ba025383e4feca8def935; the separately modeled normative release-bundle file binds the reviewed contract inventory.",
+      "supplier": "Organization: VAO Standard contributors",
+      "versionInfo": "0.5.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-VAO-Standard-050-Release-Bundle",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "82efb6ee31353e72c81671e2c6500c51dc223d7f21af4983705933ea6caa5c96"
+        }
+      ],
+      "copyrightText": "Copyright 2026 Dominik Ukolov and contributors",
+      "downloadLocation": "https://raw.githubusercontent.com/modavis-project/vao-standard/d17b3f188fdf7fadd01ba025383e4feca8def935/Schemas/vao-release-bundle-0.5.0.json",
+      "filesAnalyzed": false,
+      "licenseConcluded": "CC-BY-4.0",
+      "licenseDeclared": "CC-BY-4.0",
+      "name": "VAO Standard 0.5.0 normative release bundle",
+      "packageFileName": "Schemas/vao-release-bundle-0.5.0.json",
+      "supplier": "Organization: VAO Standard contributors",
+      "versionInfo": "0.5.0"
     },
     {
       "SPDXID": "SPDXRef-Package-attrs",
@@ -50,6 +83,7 @@
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
       "name": "attrs",
+      "packageFileName": "attrs-26.1.0-py3-none-any.whl",
       "supplier": "NOASSERTION",
       "versionInfo": "26.1.0"
     },
@@ -62,6 +96,7 @@
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
       "name": "jsonschema",
+      "packageFileName": "jsonschema-4.26.0-py3-none-any.whl",
       "supplier": "NOASSERTION",
       "versionInfo": "4.26.0"
     },
@@ -74,6 +109,7 @@
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
       "name": "jsonschema-specifications",
+      "packageFileName": "jsonschema_specifications-2025.9.1-py3-none-any.whl",
       "supplier": "NOASSERTION",
       "versionInfo": "2025.9.1"
     },
@@ -86,6 +122,7 @@
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
       "name": "referencing",
+      "packageFileName": "referencing-0.37.0-py3-none-any.whl",
       "supplier": "NOASSERTION",
       "versionInfo": "0.37.0"
     },
@@ -98,6 +135,7 @@
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
       "name": "rfc3339-validator",
+      "packageFileName": "rfc3339_validator-0.1.4-py2.py3-none-any.whl",
       "supplier": "NOASSERTION",
       "versionInfo": "0.1.4"
     },
@@ -110,6 +148,7 @@
       "licenseConcluded": "GPL-3.0-or-later",
       "licenseDeclared": "GPL-3.0-or-later",
       "name": "rfc3987",
+      "packageFileName": "rfc3987-1.3.8-py2.py3-none-any.whl",
       "supplier": "NOASSERTION",
       "versionInfo": "1.3.8"
     },
@@ -122,23 +161,49 @@
       "licenseConcluded": "Apache-2.0",
       "licenseDeclared": "Apache-2.0",
       "name": "rfc8785",
+      "packageFileName": "rfc8785-0.1.4-py3-none-any.whl",
       "supplier": "NOASSERTION",
       "versionInfo": "0.1.4"
     },
     {
-      "SPDXID": "SPDXRef-Package-rpds-py",
-      "checksums": [
-        {"algorithm": "SHA256", "checksumValue": "3cfe765c1da0072636ca06628261e0ea05688e160d5c8a03e0217c3854037223"},
-        {"algorithm": "SHA256", "checksumValue": "f4d78253f6996be4901669ad25319f842f740eccf4d58e3c7f3dd39e6dde1d8f"},
-        {"algorithm": "SHA256", "checksumValue": "acac386b453c2516111b50985d60ce46e7fadb5ea71ae7b25f4c946935bf27cf"},
-        {"algorithm": "SHA256", "checksumValue": "9250a9a0a6fd4648b3f868da8d91a4c52b5811a62df58e753d50ae4454a36f80"}
-      ],
+      "SPDXID": "SPDXRef-Package-rpds-py-macos-arm64",
+      "checksums": [{"algorithm": "SHA256", "checksumValue": "f4d78253f6996be4901669ad25319f842f740eccf4d58e3c7f3dd39e6dde1d8f"}],
+      "comment": "Native wheel selected only by the macos-arm64 extension package.",
       "copyrightText": "NOASSERTION",
       "downloadLocation": "https://pypi.org/project/rpds-py/2026.6.3/",
       "filesAnalyzed": false,
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
       "name": "rpds-py",
+      "packageFileName": "rpds_py-2026.6.3-cp313-cp313-macosx_11_0_arm64.whl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2026.6.3"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-rpds-py-linux-x64",
+      "checksums": [{"algorithm": "SHA256", "checksumValue": "acac386b453c2516111b50985d60ce46e7fadb5ea71ae7b25f4c946935bf27cf"}],
+      "comment": "Native wheel selected only by the linux-x64 extension package.",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://pypi.org/project/rpds-py/2026.6.3/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "rpds-py",
+      "packageFileName": "rpds_py-2026.6.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2026.6.3"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-rpds-py-windows-x64",
+      "checksums": [{"algorithm": "SHA256", "checksumValue": "9250a9a0a6fd4648b3f868da8d91a4c52b5811a62df58e753d50ae4454a36f80"}],
+      "comment": "Native wheel selected only by the windows-x64 extension package.",
+      "copyrightText": "NOASSERTION",
+      "downloadLocation": "https://pypi.org/project/rpds-py/2026.6.3/",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "name": "rpds-py",
+      "packageFileName": "rpds_py-2026.6.3-cp313-cp313-win_amd64.whl",
       "supplier": "NOASSERTION",
       "versionInfo": "2026.6.3"
     },
@@ -151,12 +216,15 @@
       "licenseConcluded": "MIT",
       "licenseDeclared": "MIT",
       "name": "six",
+      "packageFileName": "six-1.17.0-py2.py3-none-any.whl",
       "supplier": "NOASSERTION",
       "versionInfo": "1.17.0"
     }
   ],
   "relationships": [
-    {"relatedSpdxElement": "SPDXRef-Package-VAO-Standard", "relationshipType": "CONTAINS", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-VAO-Standard-040", "relationshipType": "CONTAINS", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-VAO-Standard-050-Candidate", "relationshipType": "CONTAINS", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-VAO-Standard-050-Release-Bundle", "relationshipType": "CONTAINS", "spdxElementId": "SPDXRef-Package-VAO-Standard-050-Candidate"},
     {"relatedSpdxElement": "SPDXRef-Package-attrs", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
     {"relatedSpdxElement": "SPDXRef-Package-jsonschema", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
     {"relatedSpdxElement": "SPDXRef-Package-jsonschema-specifications", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
@@ -164,7 +232,9 @@
     {"relatedSpdxElement": "SPDXRef-Package-rfc3339-validator", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
     {"relatedSpdxElement": "SPDXRef-Package-rfc3987", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
     {"relatedSpdxElement": "SPDXRef-Package-rfc8785", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
-    {"relatedSpdxElement": "SPDXRef-Package-rpds-py", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-rpds-py-macos-arm64", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-rpds-py-linux-x64", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"relatedSpdxElement": "SPDXRef-Package-rpds-py-windows-x64", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
     {"relatedSpdxElement": "SPDXRef-Package-six", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"}
   ],
   "spdxVersion": "SPDX-2.3"

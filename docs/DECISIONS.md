@@ -205,15 +205,17 @@ runs, and clear/eviction uses exact marked managed paths only.
 
 Status: accepted
 
-Alpha target is the installed Blender 5.1.1/macOS ARM64. Release target adds
-5.2 LTS and macOS x64, Windows x64, Linux x64. Initial manifest minimum is 5.1.0.
+Alpha target is the installed Blender 5.1.1/macOS ARM64. The release target adds
+5.2 and covers macOS ARM64, Windows x64, and Linux x64. The manifest minimum is
+5.1.0 and its maximum is exclusive 5.3.0.
 
 Why: the development machine and API baseline are concrete, while the current
 5.2 LTS is the durable release target. Supporting 4.5 immediately adds Python/
 wheel/API matrix cost before the design is proven.
 
-Consequence: 4.5 LTS is a later compatibility project and is not advertised
-without its own full tests.
+Consequence: 4.5 LTS and Intel macOS are not advertised without their own full
+official-host test support. Blender 5.1/5.2 publish no official macOS x64 build,
+so that target cannot meet this release's reproducible native-evidence gate.
 
 ## ADR-015 — Validate JSON Schema with a bundled standards library
 

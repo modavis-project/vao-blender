@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import sys
+import tempfile
 from pathlib import Path
 
 import bpy
@@ -20,7 +21,7 @@ register()
 register()
 assert hasattr(bpy.types.Scene, "vao_runtime")
 package = ROOT / "dist/Cuntz-Positiv-4010243-VAO-0.2.2.vao"
-outcome = validate_package(package, verify_payload=False, hash_archive=False)
+outcome = validate_package(package)
 assert outcome.is_valid
 session = install_outcome(bpy.context.scene, outcome)
 assert bpy.context.scene.vao_runtime.state == "BLOCKED-RIGHTS"
@@ -29,7 +30,9 @@ assert outcome.interaction_plans.summary()["gates"] == 45
 assert outcome.interaction_plans.summary()["voices"] == 225
 assert bpy.ops.vao.acknowledge_rights() == {"FINISHED"}
 assert bpy.context.scene.vao_runtime.rights_acknowledged
-assert bpy.context.scene.vao_runtime.state == "VALID"
+assert bpy.context.scene.vao_runtime.state == "BLOCKED-RIGHTS"
+assert bpy.context.scene.vao_runtime.validity_state == "VALID"
+assert bpy.context.scene.vao_runtime.rights_state == "ACKNOWLEDGED"
 asset = next(
     item for item in outcome.graph.assets.values() if item.original_filename == "positiv_keys.glb"
 )
@@ -44,7 +47,12 @@ bound_collection, bound_count = import_visual(session, bpy.context.scene, bound_
 assert bound_count > 0 and bound_collection.get("vao_asset_id") == bound_asset.id
 assert any(obj.get("vao_geometry_binding_id") for obj in bound_collection.all_objects)
 assert create_control_surface(session, bpy.context.scene) == 50
-output = Path(os.environ.get("VAO_TEST_BLEND", "/tmp/vao-blender-integration.blend"))
+output = Path(
+    os.environ.get(
+        "VAO_TEST_BLEND",
+        str(Path(tempfile.gettempdir()) / "vao-blender-integration.blend"),
+    )
+)
 bpy.ops.wm.save_as_mainfile(filepath=str(output), check_existing=False)
 assert output.is_file()
 close_all()

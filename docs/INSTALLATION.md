@@ -1,63 +1,90 @@
 # Installation
 
+Current release state: **unreleased**. The filenames below describe the intended
+candidate; no current download or publication is claimed yet.
+
 ## Release package
 
-1. Confirm Blender 5.1+ and your platform: Windows x64, macOS x64, macOS Apple
-   Silicon, or Linux x64.
-2. Download the matching `vao_blender-0.3.0-<platform>.zip` and `SHA256SUMS` from
-   the same [GitHub release](https://github.com/modavis-project/vao-blender/releases).
-
-   Blender normalizes the filename platform suffixes to `windows_x64`,
-   `macos_x64`, `macos_arm64`, and `linux_x64`.
-3. Keep only the checksum line for the downloaded ZIP, then verify SHA-256.
-   On macOS or Linux:
+1. Use Blender 5.1.x or 5.2.x on Windows x64, macOS Apple Silicon, or Linux x64.
+   Blender 5.3+ is deliberately outside the manifest range until
+   its Python ABI and integration behavior have been tested.
+2. After publication, download `PUBLICATION_SHA256SUMS`, `SHA256SUMS`,
+   `NATIVE_TEST_EVIDENCE.json`, and the matching
+   `vao_blender-0.4.0-rc.1-<platform>.zip` from the same
+   [GitHub release](https://github.com/modavis-project/vao-blender/releases).
+   Blender uses the suffixes `windows_x64`, `macos_arm64`, and `linux_x64` in
+   the generated filenames.
+3. Verify the package before installing it. On macOS or Linux:
 
    ```console
-   grep 'vao_blender-0.3.0-<platform>.zip' SHA256SUMS | shasum -a 256 -c -
+   grep 'vao_blender-0.4.0-rc.1-<platform>.zip' PUBLICATION_SHA256SUMS | shasum -a 256 -c -
    ```
 
-   Replace `<platform>` with the suffix from the downloaded filename. On Windows
-   PowerShell, run:
+   On Windows PowerShell:
 
    ```powershell
-   Get-FileHash .\vao_blender-0.3.0-windows_x64.zip -Algorithm SHA256
+   Get-FileHash .\vao_blender-0.4.0-rc.1-windows_x64.zip -Algorithm SHA256
    ```
 
-   Compare the printed value with the matching `SHA256SUMS` entry. A mismatch
-   means the file must not be installed.
+   Compare that value with the matching line in `PUBLICATION_SHA256SUMS`. Do not
+   install a file whose checksum differs.
 4. In Blender choose **Edit → Preferences → Get Extensions**, open the menu, and
    choose **Install from Disk**.
-5. Select the ZIP without unpacking it and enable **VAO Blender** if Blender does
-   not enable it automatically.
-6. In a 3D Viewport press **N** and open the **VAO** tab.
+5. Select the ZIP without unpacking it and enable **VAO Blender** if necessary.
+6. Open a 3D Viewport, press **N**, and select the **VAO** tab.
 
-Use only a package matching the current operating system. An architecture mismatch
-usually appears as a dependency import error during add-on registration.
-
-The `v0.3.0-rc.1` GitHub prerelease corresponds to extension version `0.3.0` in
-Blender. Blender's extension manifest accepts strict semantic versions and does
-not include the release-candidate suffix.
+The intended GitHub prerelease tag and Blender extension version are both
+`0.4.0-rc.1` (the tag adds the conventional `v` prefix). The candidate remains
+unreleased until the annotated tag and release records are created by a maintainer.
+`SHA256SUMS` binds the immutable canonical build set.
+`NATIVE_TEST_EVIDENCE.json` binds six installed-extension test cells to those
+exact platform ZIP hashes, and `PUBLICATION_SHA256SUMS` binds the base inventory
+plus that detached attestation as the complete publication set.
 
 ## Update or remove
 
-Close open VAO sessions and save any Blender file containing imported geometry
-before updating. Install the new release ZIP from disk; if Blender reports a
-conflict, remove the old extension in Preferences, restart Blender, and install
-the new one. Removing the extension does not modify source `.vao` packages or
-delete geometry already saved into `.blend` files.
+Stop performance mode and close open VAO sessions before updating. If Blender
+reports a conflict, remove the old extension in Preferences, restart Blender,
+and install the new package. Removing the extension never modifies source `.vao`
+packages. Geometry already saved in a `.blend` remains ordinary Blender data with
+VAO provenance and can be explicitly relinked after reinstalling the extension.
 
-The verified media cache is stored in Blender's user data directory unless a
-custom location is selected in add-on preferences. Cache deletion is a separate,
-explicit operation; see [Privacy](PRIVACY.md).
+The verified media cache is separate from installed extension files. Its default
+location is under Blender's user-data directory; a custom location must be an
+explicitly managed cache root. Cache cleanup skips files protected by active
+sessions. Deleting the extension does not silently delete the cache; use the
+preference controls described in [Privacy](PRIVACY.md).
 
 ## Source checkout
 
-Developers can validate a checkout with:
+Developers can validate a checkout with a local compatible Blender:
 
 ```console
 /path/to/blender --command extension validate /path/to/vao-blender
 ```
 
-Use `python scripts/build_extension.py` to produce installable artifacts. Copying
-the source tree directly into Blender's legacy `scripts/addons` directory is not a
-supported release installation method.
+That command validates source compatibility only. It does not create or certify
+canonical release artifacts. Canonical artifacts require Linux x86_64,
+Python 3.13.13 for both driver and Blender, and the exact official Blender 5.2.1
+Linux x64 archive
+`https://download.blender.org/release/Blender5.2/blender-5.2.1-linux-x64.tar.xz`
+(archive SHA-256
+`a31f524fa99a527d3d52b7f5aaa68c34e1a19d5a1c9473f79c5cc610fd5b10e9`,
+executable SHA-256
+`c2fd82553c979a7f6ba85202c487aa1173c90db588a67d74d70cc7b0c2bea01c`,
+build hash `9e2066aef7ef`).
+
+A clean, untagged staging build is intentionally distinct from a final tagged
+release build:
+
+```console
+python3.13 scripts/build_extension.py \
+  --blender /absolute/path/to/blender-5.2.1-linux-x64/blender \
+  --staging --overwrite
+```
+
+The staging command writes `dist/release-candidate/0.4.0-rc.1/`. The final
+command omits `--staging` and refuses a dirty checkout, a missing or lightweight
+tag, or a tag that does not point to `HEAD`. Copying the source tree into
+Blender's legacy `scripts/addons` directory is not a supported installation
+method.

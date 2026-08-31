@@ -300,8 +300,8 @@ streaming, caching, and UI scheduling—not the conformance result.
 | --- | --- | --- |
 | Pure lint/type/unit | Yes | Yes |
 | Contract checksum + positive/negative conformance | Yes | Yes |
-| Blender 5.1.1 macOS ARM64 | Yes on development host | Yes |
-| Blender latest 5.1 and 5.2 LTS | Targeted smoke | Full supported-platform matrix |
+| Blender 5.1.1 macOS ARM64 development smoke | Development host only | Does not satisfy a release-target cell |
+| Blender 5.1.2 and 5.2.1 native targets | Targeted smoke | Six detached, exact-artifact installed-extension cells |
 | Extension build/validate | Yes | Yes, built artifact revalidated |
 | Dependency/SBOM/license scan | Dependency changes | Yes |
 | Synthetic playable fixture | Yes | Yes |

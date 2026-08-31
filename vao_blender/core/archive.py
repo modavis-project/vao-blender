@@ -7,10 +7,11 @@ import os
 import stat
 import unicodedata
 import zipfile
+from contextlib import ExitStack, contextmanager
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from types import MappingProxyType
-from typing import Callable, Iterable
+from typing import BinaryIO, Callable, Iterable, Iterator
 
 from .cancellation import CancellationToken, CancelledError
 from .capability import negotiate
@@ -49,6 +50,7 @@ MODERN_VERSIONS = {"0.3.2", "0.4.0", "0.5.0"}
 
 @dataclass(frozen=True, slots=True)
 class ValidationLimits:
+    max_archive_bytes: int | None = None
     max_entries: int = 20_000
     max_manifest_bytes: int = 32 * 1024 * 1024
     max_entry_bytes: int = 8 * 1024 * 1024 * 1024
@@ -80,6 +82,128 @@ class ResourceLimited(RuntimeError):
     pass
 
 
+def _open_validation_source(source: Path) -> BinaryIO:
+    """Open a source that cannot be concurrently rewritten on Windows.
+
+    POSIX exposes an inode-change fingerprint including ctime, which is checked
+    after validation. Windows ``st_ctime`` is creation time, so use a native
+    handle that shares reads only. The kernel then rejects writers, replacement,
+    and deletion for the lifetime of validation instead of relying on a second,
+    racy whole-archive hash.
+    """
+    if os.name != "nt":
+        return source.open("rb")
+
+    # Imported only on native Windows; keeping the binding here preserves a
+    # dependency-free core on every platform.
+    import ctypes  # pragma: no cover - native Windows CI
+    import msvcrt  # pragma: no cover - native Windows CI
+    from ctypes import wintypes  # pragma: no cover - native Windows CI
+
+    generic_read = 0x80000000
+    file_share_read = 0x00000001
+    open_existing = 3
+    file_attribute_normal = 0x00000080
+    file_flag_sequential_scan = 0x08000000
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    create_file = kernel32.CreateFileW
+    create_file.argtypes = (
+        wintypes.LPCWSTR,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.LPVOID,
+        wintypes.DWORD,
+        wintypes.DWORD,
+        wintypes.HANDLE,
+    )
+    create_file.restype = wintypes.HANDLE
+    close_handle = kernel32.CloseHandle
+    close_handle.argtypes = (wintypes.HANDLE,)
+    close_handle.restype = wintypes.BOOL
+
+    handle = create_file(
+        os.fspath(source),
+        generic_read,
+        file_share_read,
+        None,
+        open_existing,
+        file_attribute_normal | file_flag_sequential_scan,
+        None,
+    )
+    handle_value = getattr(handle, "value", handle)
+    invalid_handle = ctypes.c_void_p(-1).value
+    if handle_value in {None, invalid_handle}:
+        error = ctypes.get_last_error()
+        raise OSError(error, ctypes.FormatError(error), os.fspath(source))
+    try:
+        descriptor = msvcrt.open_osfhandle(
+            handle_value,
+            os.O_RDONLY | getattr(os, "O_BINARY", 0),
+        )
+    except BaseException:
+        close_handle(handle)
+        raise
+    return os.fdopen(descriptor, "rb")
+
+
+def _stat_fingerprint(value: os.stat_result) -> tuple[int, int, int, int, int, int]:
+    """Return fields that change if the bytes behind an open source handle change."""
+    return (
+        value.st_dev,
+        value.st_ino,
+        stat.S_IFMT(value.st_mode),
+        value.st_size,
+        value.st_mtime_ns,
+        value.st_ctime_ns,
+    )
+
+
+@contextmanager
+def _stable_source(
+    source: Path,
+    token: CancellationToken,
+) -> Iterator[tuple[BinaryIO, os.stat_result]]:
+    """Open one source handle and reject in-place changes during validation.
+
+    Archive hashing and validation use the same descriptor. The path must still identify that
+    exact unchanged file when validation finishes so later materialization cannot silently reopen
+    a different package.
+    """
+    try:
+        stream = _open_validation_source(source)
+    except (FileNotFoundError, IsADirectoryError, PermissionError) as exc:
+        raise PackageInvalid("VAO-CNT-001", "VAO source is not a readable regular file") from exc
+    with stream:
+        initial = os.fstat(stream.fileno())
+        if not stat.S_ISREG(initial.st_mode):
+            raise PackageInvalid("VAO-CNT-001", "VAO source is not a regular file")
+        initial_fingerprint = _stat_fingerprint(initial)
+
+        def changed() -> bool:
+            current = os.fstat(stream.fileno())
+            if _stat_fingerprint(current) != initial_fingerprint:
+                return True
+            try:
+                return _stat_fingerprint(source.stat()) != initial_fingerprint
+            except OSError:
+                return True
+
+        try:
+            yield stream, initial
+        except BaseException as exc:
+            if changed():
+                raise PackageInvalid(
+                    "VAO-CNT-025",
+                    "VAO source changed while it was being validated; retry with a stable file",
+                ) from exc
+            raise
+        if changed():
+            raise PackageInvalid(
+                "VAO-CNT-025",
+                "VAO source changed while it was being validated; retry with a stable file",
+            )
+
+
 def _emit(callback: ProgressCallback | None, record: ProgressRecord) -> None:
     if callback is not None:
         callback(record)
@@ -100,7 +224,10 @@ def validate_archive_path(name: str) -> str:
         raise PackageInvalid("VAO-CNT-003", "archive path is not Unicode NFC", path=name)
     if name.startswith(("/", "//")) or (len(name) >= 2 and name[1] == ":"):
         raise PackageInvalid("VAO-CNT-004", "absolute, UNC, or drive archive path", path=name)
-    components = name.rstrip("/").split("/")
+    if name.endswith("//"):
+        raise PackageInvalid("VAO-CNT-005", "unsafe archive path component", path=name)
+    trimmed = name[:-1] if name.endswith("/") else name
+    components = trimmed.split("/")
     if any(component in {"", ".", ".."} for component in components):
         raise PackageInvalid("VAO-CNT-005", "unsafe archive path component", path=name)
     if len(components) > 128:
@@ -149,6 +276,12 @@ def _preflight(zf: zipfile.ZipFile, limits: ValidationLimits) -> dict[str, zipfi
         raise PackageInvalid("VAO-CNT-012", "mimetype must be the first archive entry")
     if infos[0].compress_type != zipfile.ZIP_STORED:
         raise PackageInvalid("VAO-CNT-013", "mimetype must be uncompressed", path="mimetype")
+    if infos[0].file_size != len(MIMETYPE):
+        raise PackageInvalid(
+            "VAO-CNT-017",
+            f"mimetype must contain exactly {len(MIMETYPE)} bytes",
+            path="mimetype",
+        )
 
     by_name: dict[str, zipfile.ZipInfo] = {}
     casefolded: dict[str, str] = {}
@@ -188,8 +321,10 @@ def _preflight(zf: zipfile.ZipFile, limits: ValidationLimits) -> dict[str, zipfi
                     path=parent,
                 )
     manifest = by_name.get("vao-manifest.json")
-    if manifest is None or manifest.file_size > limits.max_manifest_bytes:
-        raise ResourceLimited("manifest is absent or exceeds the configured manifest limit")
+    if manifest is None:
+        raise PackageInvalid("VAO-CNT-011", "archive is missing vao-manifest.json")
+    if manifest.file_size > limits.max_manifest_bytes:
+        raise ResourceLimited("manifest exceeds the configured manifest limit")
     return by_name
 
 
@@ -268,16 +403,32 @@ def _reference_diagnostics(report: dict, prefix: str = "VAO03") -> list[Diagnost
     return diagnostics
 
 
-def _hash_file(path: Path, token: CancellationToken, callback: ProgressCallback | None) -> str:
+def _hash_stream(
+    stream: BinaryIO,
+    size: int,
+    token: CancellationToken,
+    callback: ProgressCallback | None,
+) -> str:
     digest = hashlib.sha256()
-    size = path.stat().st_size
     done = 0
-    with path.open("rb") as stream:
-        while chunk := stream.read(CHUNK_SIZE):
-            token.check()
-            digest.update(chunk)
-            done += len(chunk)
-            _emit(callback, ProgressRecord("archive-hash", verified_bytes=done, total_bytes=size))
+    stream.seek(0)
+    while done < size:
+        chunk = stream.read(min(CHUNK_SIZE, size - done))
+        if not chunk:
+            raise PackageInvalid(
+                "VAO-CNT-025",
+                "VAO source was truncated while it was being hashed",
+            )
+        token.check()
+        digest.update(chunk)
+        done += len(chunk)
+        _emit(callback, ProgressRecord("archive-hash", verified_bytes=done, total_bytes=size))
+    if stream.read(1):
+        raise PackageInvalid(
+            "VAO-CNT-025",
+            "VAO source grew while it was being hashed",
+        )
+    stream.seek(0)
     return digest.hexdigest()
 
 
@@ -287,12 +438,43 @@ def _outcome(
     diagnostics: list[Diagnostic],
     **kwargs,
 ) -> ValidationOutcome:
+    kwargs.setdefault("archive_hash_complete", bool(kwargs.get("archive_sha256")))
     return ValidationOutcome(
         state=state,
         source_path=str(source),
         diagnostics=ordered(diagnostics),
         **kwargs,
     )
+
+
+def _append_incomplete_verification_diagnostics(
+    diagnostics: list[Diagnostic],
+    *,
+    payload_verified: bool,
+    archive_hashed: bool,
+) -> bool:
+    """Explain every deliberately skipped trust check and report whether any were skipped."""
+    if not payload_verified:
+        diagnostics.append(
+            Diagnostic(
+                "VAO-VER-001",
+                Severity.WARNING,
+                Stage.SEMANTIC,
+                "payload fixity was not verified; inspection is incomplete and runtime/media "
+                "use is disabled",
+            )
+        )
+    if not archive_hashed:
+        diagnostics.append(
+            Diagnostic(
+                "VAO-VER-002",
+                Severity.WARNING,
+                Stage.CONTAINER,
+                "archive SHA-256 was not calculated; inspection is incomplete and cannot be "
+                "used as a trusted provenance result",
+            )
+        )
+    return not payload_verified or not archive_hashed
 
 
 def _rights_require_acknowledgement_03(manifest: dict) -> bool:
@@ -503,6 +685,7 @@ def _validate_03_reference(
             diagnostics,
             archive_sha256=archive_sha,
             manifest_sha256=manifest_sha,
+            manifest_bytes=raw_manifest,
             manifest=freeze(manifest),
             verified_assets=MappingProxyType(verified),
             verified_payload_bytes=verified_bytes,
@@ -531,7 +714,13 @@ def _validate_03_reference(
                 )
             )
     rights_required = _rights_require_acknowledgement_03(manifest)
-    if any(not capability.supported for capability in capabilities):
+    if _append_incomplete_verification_diagnostics(
+        diagnostics,
+        payload_verified=verify_payload,
+        archive_hashed=bool(archive_sha),
+    ):
+        state = OutcomeState.INCOMPLETE
+    elif any(not capability.supported for capability in capabilities):
         state = OutcomeState.UNSUPPORTED
     elif rights_required:
         state = OutcomeState.BLOCKED_RIGHTS
@@ -551,11 +740,14 @@ def _validate_03_reference(
         diagnostics,
         archive_sha256=archive_sha,
         manifest_sha256=manifest_sha,
+        manifest_bytes=raw_manifest,
         manifest=freeze(manifest),
         graph=graph,
         verified_assets=MappingProxyType(verified),
         capabilities=capabilities,
         verified_payload_bytes=verified_bytes,
+        payload_verification_complete=verify_payload,
+        archive_hash_complete=bool(archive_sha),
         contract_line="0.3.2",
         contract_sha256=RELEASE_BUNDLE_03_SHA256,
         carrier=carrier,
@@ -783,6 +975,7 @@ def _validate_modern_reference(
             diagnostics,
             archive_sha256=archive_sha,
             manifest_sha256=manifest_sha,
+            manifest_bytes=raw_manifest,
             manifest=freeze(manifest),
             verified_assets=MappingProxyType(verified),
             verified_payload_bytes=verified_bytes,
@@ -811,7 +1004,13 @@ def _validate_modern_reference(
                 )
             )
     rights_required = _rights_require_acknowledgement_03(manifest)
-    if any(not capability.supported for capability in capabilities):
+    if _append_incomplete_verification_diagnostics(
+        diagnostics,
+        payload_verified=verify_payload,
+        archive_hashed=bool(archive_sha),
+    ):
+        state = OutcomeState.INCOMPLETE
+    elif any(not capability.supported for capability in capabilities):
         state = OutcomeState.UNSUPPORTED
     elif rights_required:
         state = OutcomeState.BLOCKED_RIGHTS
@@ -831,11 +1030,14 @@ def _validate_modern_reference(
         diagnostics,
         archive_sha256=archive_sha,
         manifest_sha256=manifest_sha,
+        manifest_bytes=raw_manifest,
         manifest=freeze(manifest),
         graph=graph,
         verified_assets=MappingProxyType(verified),
         capabilities=capabilities,
         verified_payload_bytes=verified_bytes,
+        payload_verification_complete=verify_payload,
+        archive_hash_complete=bool(archive_sha),
         contract_line=version,
         contract_sha256=contract_sha,
         carrier=carrier,
@@ -855,13 +1057,14 @@ def validate_package(
     verify_payload: bool = True,
     hash_archive: bool = True,
 ) -> ValidationOutcome:
-    """Fully validate one VAO without extracting or decoding any payload media."""
+    """Validate one VAO without extraction; skipped trust checks yield ``INCOMPLETE``."""
     source = Path(source_path).expanduser().resolve()
     limits = limits or ValidationLimits()
     token = cancellation or CancellationToken()
     diagnostics: list[Diagnostic] = []
     archive_sha = ""
     manifest_sha = ""
+    manifest_bytes = b""
     manifest: dict | None = None
     graph = None
     bundle = None
@@ -870,23 +1073,33 @@ def validate_package(
 
     try:
         token.check()
-        if not source.is_file():
-            raise PackageInvalid("VAO-CNT-001", "VAO source is not a regular file")
         if source.suffix.lower() != ".vao":
             raise PackageInvalid("VAO-CNT-016", "source filename does not end in .vao")
-        if hash_archive:
-            archive_sha = _hash_file(source, token, progress)
+        with (
+            _stable_source(source, token) as (source_stream, source_stat),
+            ExitStack() as cleanup,
+        ):
+            if (
+                limits.max_archive_bytes is not None
+                and source_stat.st_size > limits.max_archive_bytes
+            ):
+                raise ResourceLimited(
+                    f"archive contains {source_stat.st_size} bytes; configured archive limit is "
+                    f"{limits.max_archive_bytes}"
+                )
+            if hash_archive:
+                archive_sha = _hash_stream(source_stream, source_stat.st_size, token, progress)
 
-        with zipfile.ZipFile(source, mode="r", allowZip64=True) as zf:
+            zf = cleanup.enter_context(zipfile.ZipFile(source_stream, mode="r", allowZip64=True))
             entries = _preflight(zf, limits)
             token.check()
             mimetype_bytes = zf.read(entries["mimetype"])
             if mimetype_bytes != MIMETYPE:
                 raise PackageInvalid("VAO-CNT-017", "mimetype bytes are not exact", path="mimetype")
-            raw_manifest = zf.read(entries["vao-manifest.json"])
-            manifest_sha = hashlib.sha256(raw_manifest).hexdigest()
+            manifest_bytes = zf.read(entries["vao-manifest.json"])
+            manifest_sha = hashlib.sha256(manifest_bytes).hexdigest()
             try:
-                decoded = loads(raw_manifest)
+                decoded = loads(manifest_bytes)
             except StrictJSONError as exc:
                 raise PackageInvalid("VAO-CNT-018", f"manifest JSON is not strict: {exc}") from exc
             if not isinstance(decoded, dict):
@@ -899,7 +1112,7 @@ def validate_package(
                     source,
                     zf,
                     entries,
-                    raw_manifest,
+                    manifest_bytes,
                     manifest,
                     manifest_sha,
                     archive_sha,
@@ -912,7 +1125,7 @@ def validate_package(
                     source,
                     zf,
                     entries,
-                    raw_manifest,
+                    manifest_bytes,
                     manifest,
                     manifest_sha,
                     archive_sha,
@@ -926,7 +1139,7 @@ def validate_package(
                     source,
                     zf,
                     entries,
-                    raw_manifest,
+                    manifest_bytes,
                     manifest,
                     manifest_sha,
                     archive_sha,
@@ -954,6 +1167,7 @@ def validate_package(
                     diagnostics,
                     archive_sha256=archive_sha,
                     manifest_sha256=manifest_sha,
+                    manifest_bytes=manifest_bytes,
                     manifest=freeze(manifest),
                     contract_line=version or "unknown",
                 )
@@ -966,6 +1180,7 @@ def validate_package(
                     diagnostics,
                     archive_sha256=archive_sha,
                     manifest_sha256=manifest_sha,
+                    manifest_bytes=manifest_bytes,
                     manifest=freeze(manifest),
                 )
 
@@ -978,6 +1193,7 @@ def validate_package(
                     diagnostics,
                     archive_sha256=archive_sha,
                     manifest_sha256=manifest_sha,
+                    manifest_bytes=manifest_bytes,
                     manifest=freeze(manifest),
                 )
 
@@ -1003,6 +1219,7 @@ def validate_package(
                     diagnostics,
                     archive_sha256=archive_sha,
                     manifest_sha256=manifest_sha,
+                    manifest_bytes=manifest_bytes,
                     manifest=freeze(manifest),
                 )
 
@@ -1048,6 +1265,7 @@ def validate_package(
                             diagnostics,
                             archive_sha256=archive_sha,
                             manifest_sha256=manifest_sha,
+                            manifest_bytes=manifest_bytes,
                             manifest=freeze(manifest),
                         )
                     verified[asset["id"]] = VerificationRecord(asset["id"], count, actual_hash)
@@ -1084,7 +1302,13 @@ def validate_package(
                         )
                     )
             rights_required = rights_require_acknowledgement(manifest)
-            if bundle and not bundle.supported:
+            if _append_incomplete_verification_diagnostics(
+                diagnostics,
+                payload_verified=verify_payload,
+                archive_hashed=bool(archive_sha),
+            ):
+                state = OutcomeState.INCOMPLETE
+            elif bundle and not bundle.supported:
                 state = OutcomeState.UNSUPPORTED
             elif any(not item.supported for item in capabilities):
                 state = OutcomeState.UNSUPPORTED
@@ -1098,22 +1322,45 @@ def validate_package(
                 diagnostics,
                 archive_sha256=archive_sha,
                 manifest_sha256=manifest_sha,
+                manifest_bytes=manifest_bytes,
                 manifest=freeze(manifest),
                 graph=graph,
                 verified_assets=MappingProxyType(verified),
                 capabilities=capabilities,
                 interaction_plans=bundle,
                 verified_payload_bytes=verified_bytes,
+                payload_verification_complete=verify_payload,
+                archive_hash_complete=bool(archive_sha),
                 rights_acknowledgement_required=rights_required,
             )
     except CancelledError:
         diagnostics.append(
             Diagnostic("VAO-LIF-001", Severity.INFO, Stage.LIFECYCLE, "validation cancelled")
         )
-        return _outcome(OutcomeState.CANCELLED, source, diagnostics)
+        return _outcome(
+            OutcomeState.CANCELLED,
+            source,
+            diagnostics,
+            archive_sha256=archive_sha,
+            manifest_sha256=manifest_sha,
+            manifest_bytes=manifest_bytes,
+            manifest=freeze(manifest) if manifest else None,
+            verified_assets=MappingProxyType(verified),
+            verified_payload_bytes=verified_bytes,
+        )
     except ResourceLimited as exc:
         diagnostics.append(Diagnostic("VAO-CNT-020", Severity.WARNING, Stage.CONTAINER, str(exc)))
-        return _outcome(OutcomeState.RESOURCE_LIMITED, source, diagnostics)
+        return _outcome(
+            OutcomeState.RESOURCE_LIMITED,
+            source,
+            diagnostics,
+            archive_sha256=archive_sha,
+            manifest_sha256=manifest_sha,
+            manifest_bytes=manifest_bytes,
+            manifest=freeze(manifest) if manifest else None,
+            verified_assets=MappingProxyType(verified),
+            verified_payload_bytes=verified_bytes,
+        )
     except PackageInvalid as exc:
         diagnostics.append(
             Diagnostic(
@@ -1145,6 +1392,7 @@ def validate_package(
         diagnostics,
         archive_sha256=archive_sha,
         manifest_sha256=manifest_sha,
+        manifest_bytes=manifest_bytes,
         manifest=freeze(manifest) if manifest else None,
         graph=graph,
         verified_assets=MappingProxyType(verified),

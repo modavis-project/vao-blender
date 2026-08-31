@@ -120,7 +120,7 @@ evidence and cannot truthfully be closed by the implementation host alone:
 - approval to redistribute the private VAO contract files;
 - project security contact and governance approval;
 - independent conformance/security review;
-- Blender 5.1/5.2 tests on macOS x64, Windows x64, and Linux x64;
+- Blender 5.1/5.2 tests on macOS ARM64, Windows x64, and Linux x64;
 - manual real-device audio, accessibility, UI, cancellation, and long-soak
   sign-off on the supported platform matrix.
 

@@ -13,7 +13,7 @@ body:
     id: format
     attributes:
       label: VAO format
-      options: ["0.4.0", "0.3.2 compatibility", "0.2.2 compatibility", "Not format-specific"]
+      options: ["0.5.0 pinned candidate", "0.4.0 published", "0.3.2 compatibility", "0.2.2 compatibility", "Not format-specific"]
     validations:
       required: true
   - type: textarea

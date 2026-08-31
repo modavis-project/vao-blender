@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "vao-blender-core"
-version = "0.4.0"
+version = "0.4.0rc1"
 description = "Blender-neutral validation core for the VAO-Blender extension"
 requires-python = ">=3.11"
 license = {text = "GPL-3.0-or-later"}
@@ -14,6 +14,9 @@ dependencies = [
   "rfc3987==1.3.8",
   "rfc8785==0.1.4",
 ]
+
+[project.optional-dependencies]
+dev = ["ruff==0.16.4"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

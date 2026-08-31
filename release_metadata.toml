@@ -1,0 +1,83 @@
+# Canonical, reviewable release identity. Publication fields remain empty until
+# the corresponding external records exist; release tooling must never invent
+# or reuse a DOI from an earlier version.
+extension_version = "0.4.0-rc.1"
+release_label = "0.4.0-rc.1"
+release_tag = "v0.4.0-rc.1"
+status = "unreleased"
+release_doi = ""
+release_date = ""
+repository = "https://github.com/modavis-project/vao-blender"
+
+[blender]
+version_min = "5.1.0"
+version_max_exclusive = "5.3.0"
+python = "3.13"
+python_abi = "cp313"
+platforms = ["windows-x64", "macos-arm64", "linux-x64"]
+
+[builder]
+# Release artifacts are canonically assembled on the exact official Linux
+# builder below. ZIP normalization stores entries without deflate so zlib
+# revisions cannot change the published bytes.
+blender_version = "5.2.1"
+blender_python_version = "3.13.13"
+driver_python_version = "3.13.13"
+platform_system = "Linux"
+platform_machine = "x86_64"
+official_archive_url = "https://download.blender.org/release/Blender5.2/blender-5.2.1-linux-x64.tar.xz"
+official_archive_sha256 = "a31f524fa99a527d3d52b7f5aaa68c34e1a19d5a1c9473f79c5cc610fd5b10e9"
+blender_build_hash = "9e2066aef7ef"
+blender_executable_sha256 = "c2fd82553c979a7f6ba85202c487aa1173c90db588a67d74d70cc7b0c2bea01c"
+
+[citation]
+cff_version = "1.2.0"
+schema_url = "https://raw.githubusercontent.com/citation-file-format/citation-file-format/396f738fb025b1d8acdb02a56ffc923f95dc8999/schema.json"
+schema_sha256 = "0b8d22140da702d766df318dcff3a91af2f39521298dcf36d76315fd99cc169b"
+
+[spdx]
+version = "2.3"
+schema_url = "https://raw.githubusercontent.com/spdx/spdx-spec/aadf3b0b8dbbabdb4d880b0fc714255fea436ff7/schemas/spdx-schema.json"
+schema_sha256 = "239208b7ac287b3cf5d9a9af23f9d69863971102a5e1587a27a398b43490b89b"
+
+[native_evidence]
+# Native results are a detached post-build attestation so recording exact ZIP
+# hashes never changes those ZIPs. Publication tooling requires all six cells.
+blender_versions = ["5.1.2", "5.2.1"]
+platforms = ["windows-x64", "macos-arm64", "linux-x64"]
+required_tests = [
+  "installed-extension-smoke",
+  "lifecycle",
+  "detached-reopen",
+  "vao-0.3.2",
+  "vao-0.4.0",
+  "vao-0.5.0",
+  "audio-policy",
+]
+attestation_filename = "NATIVE_TEST_EVIDENCE.json"
+publication_checksums_filename = "PUBLICATION_SHA256SUMS"
+hosts = [
+  { blender_version = "5.1.2", platform = "windows-x64", archive_url = "https://download.blender.org/release/Blender5.1/blender-5.1.2-windows-x64.zip", archive_sha256 = "345bedea7b0acf7cc9666423d8553f9129622aea34ded65c23e8cb70f83f14ff", build_hash = "ec6e62d40fa9", python_version = "3.13.9", system = "Windows", machine = "AMD64", runner_image = "windows-2025" },
+  { blender_version = "5.1.2", platform = "macos-arm64", archive_url = "https://download.blender.org/release/Blender5.1/blender-5.1.2-macos-arm64.dmg", archive_sha256 = "f104ffee2ba6aee32328e5c203b7e4608d8a1745f7bbcf2766f3b9777e8fbe17", build_hash = "ec6e62d40fa9", python_version = "3.13.9", system = "Darwin", machine = "arm64", runner_image = "macos-15" },
+  { blender_version = "5.1.2", platform = "linux-x64", archive_url = "https://download.blender.org/release/Blender5.1/blender-5.1.2-linux-x64.tar.xz", archive_sha256 = "aaccb355f50183979b698bcce7467103a76261b5fa59f4972295842662a285fb", build_hash = "ec6e62d40fa9", python_version = "3.13.9", system = "Linux", machine = "x86_64", runner_image = "ubuntu-24.04" },
+  { blender_version = "5.2.1", platform = "windows-x64", archive_url = "https://download.blender.org/release/Blender5.2/blender-5.2.1-windows-x64.zip", archive_sha256 = "0e631dad7d0cad6d5d18abdd2e2550f6c0213215334eda00ddbd3d22b96ecb2c", build_hash = "9e2066aef7ef", python_version = "3.13.13", system = "Windows", machine = "AMD64", runner_image = "windows-2025" },
+  { blender_version = "5.2.1", platform = "macos-arm64", archive_url = "https://download.blender.org/release/Blender5.2/blender-5.2.1-macos-arm64.dmg", archive_sha256 = "6409e21de80994db5f4c4a34486b6fd43cea21085b912f7491c53e923acb65a3", build_hash = "9e2066aef7ef", python_version = "3.13.13", system = "Darwin", machine = "arm64", runner_image = "macos-15" },
+  { blender_version = "5.2.1", platform = "linux-x64", archive_url = "https://download.blender.org/release/Blender5.2/blender-5.2.1-linux-x64.tar.xz", archive_sha256 = "a31f524fa99a527d3d52b7f5aaa68c34e1a19d5a1c9473f79c5cc610fd5b10e9", build_hash = "9e2066aef7ef", python_version = "3.13.13", system = "Linux", machine = "x86_64", runner_image = "ubuntu-24.04" },
+]
+
+[previous_release]
+label = "0.3.0-rc.1"
+doi = "10.5281/zenodo.22134389"
+tag = "v0.3.0-rc.1"
+
+[vao_standard.published]
+version = "0.4.0"
+doi = "10.5281/zenodo.22122774"
+release_url = "https://github.com/modavis-project/vao-standard/releases/tag/v0.4.0"
+source_sha256 = "2acbda0a257c7f71e2b57e01617678745de2ecf11197b4687aa623f71d23955d"
+
+[vao_standard.candidate]
+version = "0.5.0"
+commit = "d17b3f188fdf7fadd01ba025383e4feca8def935"
+tree_url = "https://github.com/modavis-project/vao-standard/tree/d17b3f188fdf7fadd01ba025383e4feca8def935"
+release_bundle_sha256 = "82efb6ee31353e72c81671e2c6500c51dc223d7f21af4983705933ea6caa5c96"

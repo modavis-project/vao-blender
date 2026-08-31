@@ -117,9 +117,16 @@ def cuntz_interaction_manifest() -> dict[str, list[dict]]:
                             AUDIO + "envelope": {
                                 "attackSeconds": 0.0,
                                 "curve": "linear",
+                                "sustainLevel": 1.0,
                                 "releaseSeconds": 0.3,
                             },
                             AUDIO + "gainDB": 0.0,
+                            AUDIO + "rootKeyNumber": key,
+                            AUDIO + "minimumKeyNumber": key,
+                            AUDIO + "maximumKeyNumber": key,
+                            AUDIO + "minimumVelocity": 1,
+                            AUDIO + "maximumVelocity": 127,
+                            AUDIO + "targetFrequencyHz": 440.0,
                             AUDIO + "noteOffPolicy": "voice-scoped-fade",
                             AUDIO + "pitchTrackingMode": "preserveRecordedPitch",
                             AUDIO + "status": "reviewed",
@@ -174,6 +181,16 @@ class StrictJSONTests(unittest.TestCase):
         with self.assertRaises(StrictJSONError):
             loads('{"a": NaN}')
 
+    def test_excessive_nesting_is_rejected_without_recursing(self):
+        source = '{"value":' + "[" * 256 + "0" + "]" * 256 + "}"
+        with self.assertRaisesRegex(StrictJSONError, "nesting exceeds"):
+            loads(source)
+
+    def test_parser_recursion_failure_is_normalized(self):
+        source = "[" * 10_000 + "0" + "]" * 10_000
+        with self.assertRaises(StrictJSONError):
+            loads(source)
+
 
 class ArchivePathTests(unittest.TestCase):
     def test_safe_path(self):
@@ -186,6 +203,7 @@ class ArchivePathTests(unittest.TestCase):
             "payload\\a",
             "/payload/a",
             "payload//a",
+            "payload///",
         ):
             with self.subTest(value=value), self.assertRaises(RuntimeError):
                 validate_archive_path(value)

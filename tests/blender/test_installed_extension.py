@@ -26,7 +26,10 @@ assert outcome.rights_acknowledgement_required
 session = session_api.install_outcome(bpy.context.scene, outcome)
 runtime = bpy.context.scene.vao_runtime
 assert not session.rights_ready(bpy.context.scene)
-runtime.rights_acknowledged = True
+assert bpy.ops.vao.acknowledge_rights() == {"FINISHED"}
+assert runtime.state == "UNSUPPORTED"
+assert runtime.support_state == "UNSUPPORTED"
+assert runtime.rights_state == "ACKNOWLEDGED"
 collection, object_count = scene_adapter.import_visual(
     session,
     bpy.context.scene,

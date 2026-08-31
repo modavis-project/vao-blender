@@ -4,7 +4,7 @@ All notable changes are documented here. The project follows semantic versioning
 for the Blender extension; supported VAO format versions remain exact contract
 identities.
 
-## Unreleased
+## 0.4.0-rc.1 — Unreleased
 
 - Added exact offline validation for the VAO 0.5.0 candidate at standard commit
   `d17b3f188fdf7fadd01ba025383e4feca8def935`.
@@ -13,7 +13,22 @@ identities.
 - Added a Kinoorgel-compatible metadata path for scientific measurements,
   physical MIDI-interface topology, playable mappings, rights, and provenance
   when no 3D realization is present.
-- Retained exact 0.2.2, 0.3.2, and published 0.4.0 readers unchanged.
+- Retained isolated exact support for 0.2.2, 0.3.2, and published 0.4.0.
+- Made payload verification and archive hashing independently visible completeness
+  gates; opted-out validation is now non-valid and non-materializable.
+- Hardened bounded archive parsing, duplicate-key JSON, MIME preflight, validated
+  manifest-byte reuse, command-line exit semantics, and extraction provenance.
+- Added unique live-session and durable materialization identities, multi-scene
+  lifecycle reconciliation, relink/remove workflows, and exact source checks.
+- Added complete paged explorer and diagnostics views instead of silently dropping
+  records beyond the first page.
+- Added an owned, bounded, concurrency-safe cache with atomic writes, quarantine,
+  active-path protection, and safe custom-root/deletion rules.
+- Restricted legacy audio execution to fully compiled semantics and made gate
+  polyphony atomic; added decoded-sound bounds and failure-safe device/timer cleanup.
+- Centralized extension/release/standard identity, expanded the SBOM and both
+  modern contract inventories, and separated clean untagged staging builds from
+  immutable annotated-tag builds.
 
 ## 0.3.0-rc.1 — 2026-08-27
 

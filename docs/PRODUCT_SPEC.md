@@ -1,6 +1,6 @@
 # Product and UX specification
 
-> Historical 0.2.0 product baseline. For the current 0.3.0 release scope and
+> Historical 0.2.0 product baseline. For the current 0.4.0 release scope and
 > exact VAO 0.4.0/0.5.0 capability matrix, see [COMPATIBILITY.md](COMPATIBILITY.md).
 
 Status: proposed implementation baseline  
@@ -101,11 +101,13 @@ a resource path from `4010243_<stop>_<note>.wav`.
 | Stage | Blender versions | Platforms |
 | --- | --- | --- |
 | Developer alpha | 5.1.1 | macOS ARM64 |
-| Release candidate | 5.1 latest and 5.2 LTS latest | macOS ARM64/x64, Windows x64, Linux x64 |
+| Release candidate | 5.1 latest and 5.2 LTS latest | macOS ARM64, Windows x64, Linux x64 |
 | Later compatibility | 4.5 LTS | Only after automated and manual compatibility tests pass |
 
-The initial `blender_manifest.toml` should use `blender_version_min = "5.1.0"`.
-There is no maximum until a known incompatible version exists.
+The release manifest uses `blender_version_min = "5.1.0"` and
+`blender_version_max = "5.3.0"`; a new Blender line is admitted only after its
+runtime, API, packaging, and native test cells pass. Intel macOS is excluded
+because neither Blender 5.1 nor 5.2 provides an official x64 host build.
 
 ### 4.3 Media/runtime support
 

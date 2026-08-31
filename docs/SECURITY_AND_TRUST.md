@@ -1,6 +1,6 @@
 # Security and trust model
 
-Status: maintained threat model for version 0.3.0
+Status: maintained threat model for version 0.4.0-rc.1
 Primary threat: an untrusted `.vao` supplied to a Blender process with access to
 the user's files and current scene
 
@@ -13,6 +13,8 @@ the user's files and current scene
   refusal rather than semantic invalidity.
 - A package must not be called valid merely because its manifest parses or its
   ZIP CRC passes.
+- Deliberately skipped archive hashing or payload verification must remain visibly
+  incomplete and must not unlock media actions.
 - Unknown rights, access restrictions, provenance status, and unsupported
   capabilities must remain visible.
 - Cleanup must target only exact resources owned by the operation/session.
@@ -189,11 +191,15 @@ applicable action.
   where the platform permits.
 - Cache re-use checks type, expected size, and hash. A mismatch quarantines the
   entry under the managed root and re-extracts it.
+- Writes and index updates are atomic and serialized by a cross-process lock.
+  Quarantine and cache growth are quota-bounded; cleanup skips paths protected by
+  a live session.
 
 ## 9. Scene and runtime isolation
 
-- All scene objects/data-blocks created by an operation are recorded by pointer
-  and unique operation ID. Rollback uses this ownership set, not names/globs.
+- All scene objects/data-blocks created by an operation carry unique live-session
+  and durable materialization IDs. Rollback/removal uses that ownership, not
+  names or package hashes that could collide across scenes.
 - Imported objects receive no auto-run handlers or drivers from the manifest.
 - Performance mode handles events only in the active 3D Viewport/session and
   exits on context loss.
@@ -205,7 +211,7 @@ applicable action.
 
 ## 10. Privacy and diagnostics
 
-- Version 0.3.0 has no telemetry and no network permission.
+- Version 0.4.0 has no telemetry and no network permission.
 - Diagnostic JSON includes package/revision IDs, contract/manifest hashes,
   validation results, and relative archive paths.
 - Absolute source/cache paths, user names, host names, and acknowledgement state

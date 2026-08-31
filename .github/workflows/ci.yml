@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,32 +16,108 @@ concurrency:
 jobs:
   core:
     name: Core conformance and release audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          python-version: "3.13"
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13.13"
+          cache: pip
       - name: Install pinned runtime wheels offline
         run: >-
           python -m pip install --no-index --find-links wheels
-          jsonschema==4.26.0 rfc3339-validator==0.1.4
-          rfc3987==1.3.8 rfc8785==0.1.4
+          attrs==26.1.0 jsonschema==4.26.0
+          jsonschema-specifications==2025.9.1 referencing==0.37.0
+          rfc3339-validator==0.1.4 rfc3987==1.3.8 rfc8785==0.1.4
+          rpds-py==2026.6.3 six==1.17.0
       - name: Compile source
         run: python -m compileall -q vao_blender tests scripts
-      - name: Unit and contract tests
+      - name: Unit, contract, security, and release-build tests
         run: python -m unittest discover -s tests/unit -v
       - name: Release audit
         run: python scripts/release_audit.py
+      - name: Validate CITATION.cff against pinned official CFF schema
+        shell: bash
+        run: |
+          set -euo pipefail
+          schema_url="$(python -c 'import tomllib; print(tomllib.load(open("release_metadata.toml", "rb"))["citation"]["schema_url"])')"
+          schema_sha="$(python -c 'import tomllib; print(tomllib.load(open("release_metadata.toml", "rb"))["citation"]["schema_sha256"])')"
+          schema_path="${RUNNER_TEMP}/cff-1.2.0-schema.json"
+          curl --fail --location --proto '=https' --proto-redir '=https' --tlsv1.2 --retry 5 \
+            --output "${schema_path}" "${schema_url}"
+          echo "${schema_sha}  ${schema_path}" | sha256sum --check --strict
+          python - "${schema_path}" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          from jsonschema import Draft7Validator
+
+          schema = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          citation = json.loads(Path("CITATION.cff").read_text(encoding="utf-8"))
+          Draft7Validator.check_schema(schema)
+          Draft7Validator(schema).validate(citation)
+          PY
+      - name: Validate SBOM against pinned official SPDX 2.3 schema
+        shell: bash
+        run: |
+          set -euo pipefail
+          schema_url="$(python -c 'import tomllib; print(tomllib.load(open("release_metadata.toml", "rb"))["spdx"]["schema_url"])')"
+          schema_sha="$(python -c 'import tomllib; print(tomllib.load(open("release_metadata.toml", "rb"))["spdx"]["schema_sha256"])')"
+          schema_path="${RUNNER_TEMP}/spdx-2.3-schema.json"
+          curl --fail --location --proto '=https' --proto-redir '=https' --tlsv1.2 --retry 5 \
+            --output "${schema_path}" "${schema_url}"
+          echo "${schema_sha}  ${schema_path}" | sha256sum --check --strict
+          python - "${schema_path}" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          from jsonschema import Draft7Validator
+
+          schema = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          sbom = json.loads(Path("SBOM.spdx.json").read_text(encoding="utf-8"))
+          Draft7Validator.check_schema(schema)
+          Draft7Validator(schema).validate(sbom)
+          PY
+
+  python-compatibility:
+    name: Core Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Install core package
+        run: |
+          python -m pip install --only-binary=:all: \
+            attrs==26.1.0 jsonschema==4.26.0 \
+            jsonschema-specifications==2025.9.1 referencing==0.37.0 \
+            rfc3339-validator==0.1.4 rfc3987==1.3.8 rfc8785==0.1.4 \
+            rpds-py==2026.6.3 six==1.17.0
+          python -m pip install --no-deps -e .
+      - name: Run core suite
+        run: python -m unittest discover -s tests/unit -v
 
   lint:
     name: Ruff
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v7
-      - uses: astral-sh/ruff-action@v4.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: astral-sh/ruff-action@278981a28ce3188b1e39527901f38254bf3aac89 # v4.1.0
         with:
           version: "0.16.4"
           args: check
@@ -50,3 +127,155 @@ jobs:
             scripts
       - name: Formatting
         run: ruff format --check vao_blender tests scripts
+
+  blender:
+    name: Blender ${{ matrix.blender }} integration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - blender: "5.1.2"
+            series: "5.1"
+            archive_sha256: "aaccb355f50183979b698bcce7467103a76261b5fa59f4972295842662a285fb"
+            executable_sha256: "ed4a1317936e9993ee5b2c766976bff6fa6c5b7443f611d3367637240fc8593d"
+            build_hash: "ec6e62d40fa9"
+            python_version: "3.13.9"
+          - blender: "5.2.1"
+            series: "5.2"
+            archive_sha256: "a31f524fa99a527d3d52b7f5aaa68c34e1a19d5a1c9473f79c5cc610fd5b10e9"
+            executable_sha256: "c2fd82553c979a7f6ba85202c487aa1173c90db588a67d74d70cc7b0c2bea01c"
+            build_hash: "9e2066aef7ef"
+            python_version: "3.13.13"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13.13"
+      - name: Install pinned host dependencies offline
+        run: >-
+          python -m pip install --no-index --find-links wheels
+          attrs==26.1.0 jsonschema==4.26.0
+          jsonschema-specifications==2025.9.1 referencing==0.37.0
+          rfc3339-validator==0.1.4 rfc3987==1.3.8 rfc8785==0.1.4
+          rpds-py==2026.6.3 six==1.17.0
+      - name: Cache exact official Blender archive
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: >-
+            ${{ runner.tool_cache }}/vao-blender/archives/blender-${{ matrix.blender }}-linux-x64.tar.xz
+          key: blender-linux-x64-tar-xz-${{ matrix.blender }}-${{ matrix.archive_sha256 }}
+      - name: Fetch and verify official Blender archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive_dir="${RUNNER_TOOL_CACHE}/vao-blender/archives"
+          archive="${archive_dir}/blender-${{ matrix.blender }}-linux-x64.tar.xz"
+          mkdir -p "${archive_dir}"
+          if [[ ! -f "${archive}" ]]; then
+            download="${archive}.download"
+            curl --fail --location --proto '=https' --proto-redir '=https' --tlsv1.2 --retry 5 \
+              --output "${download}" \
+              "https://download.blender.org/release/Blender${{ matrix.series }}/blender-${{ matrix.blender }}-linux-x64.tar.xz"
+            echo "${{ matrix.archive_sha256 }}  ${download}" | sha256sum --check --strict
+            mv "${download}" "${archive}"
+          fi
+
+          # A cache key is only an address, not integrity evidence. Verify restored
+          # archives on every run, then extract into a fresh job-local directory.
+          echo "${{ matrix.archive_sha256 }}  ${archive}" | sha256sum --check --strict
+          blender_root="${RUNNER_TEMP}/blender-${{ matrix.blender }}-linux-x64"
+          test ! -e "${blender_root}"
+          mkdir -p "${blender_root}"
+          tar --extract --xz --file "${archive}" --directory "${blender_root}" \
+            --strip-components=1 --no-same-owner --no-same-permissions
+          blender_bin="${blender_root}/blender"
+          test -x "${blender_bin}"
+          echo "${{ matrix.executable_sha256 }}  ${blender_bin}" \
+            | sha256sum --check --strict
+          version_output="$("${blender_bin}" --version)"
+          printf '%s\n' "${version_output}"
+          grep --fixed-strings --line-regexp "Blender ${{ matrix.blender }}" \
+            <<< "${version_output}"
+          grep --extended-regexp --line-regexp \
+            "[[:space:]]*build hash: ${{ matrix.build_hash }}" \
+            <<< "${version_output}"
+          probe_output="$("${blender_bin}" --background --factory-startup \
+            --python-expr 'import platform; print("VAO_RUNTIME_PROBE=" + platform.python_version() + ":" + platform.system() + ":" + platform.machine())')"
+          printf '%s\n' "${probe_output}"
+          grep --fixed-strings --line-regexp \
+            "VAO_RUNTIME_PROBE=${{ matrix.python_version }}:Linux:x86_64" \
+            <<< "${probe_output}"
+          echo "BLENDER_BIN=${blender_bin}" >> "${GITHUB_ENV}"
+      - name: Prepare Blender-local pinned dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          deps_dir="${RUNNER_TEMP}/vao-blender-deps"
+          mkdir -p "${deps_dir}"
+          for wheel in wheels/*-none-any.whl wheels/*manylinux*x86_64.whl; do
+            unzip -q "${wheel}" -d "${deps_dir}"
+          done
+          echo "BLENDER_DEPS=${deps_dir}" >> "${GITHUB_ENV}"
+      - name: Validate extension source
+        run: |
+          "${BLENDER_BIN}" --command extension validate .
+      - name: Run Blender fixture and lifecycle integration
+        shell: bash
+        run: |
+          set -euo pipefail
+          for test_script in \
+            tests/blender/test_lifecycle.py \
+            tests/blender/test_detached_reopen.py \
+            tests/blender/test_vao03_integration.py \
+            tests/blender/test_vao04_integration.py \
+            tests/blender/test_vao05_integration.py \
+            tests/blender/test_audio_engine_policy.py
+          do
+            PYTHONPATH="${BLENDER_DEPS}" "${BLENDER_BIN}" \
+              --background --factory-startup --python-use-system-env \
+              --python-exit-code 1 --python "${test_script}"
+          done
+      - name: Build, validate, and reproduce staged artifacts
+        if: matrix.blender == '5.2.1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/build_extension.py --blender "${BLENDER_BIN}" --staging --overwrite
+          (cd dist/release-candidate/0.4.0-rc.1 && sha256sum --check --strict SHA256SUMS)
+          cp dist/release-candidate/0.4.0-rc.1/SHA256SUMS "${RUNNER_TEMP}/first-SHA256SUMS"
+          cp dist/release-candidate/0.4.0-rc.1/RELEASE_EVIDENCE.json \
+            "${RUNNER_TEMP}/first-evidence.json"
+          python scripts/build_extension.py --blender "${BLENDER_BIN}" --staging --overwrite
+          diff --unified "${RUNNER_TEMP}/first-SHA256SUMS" \
+            dist/release-candidate/0.4.0-rc.1/SHA256SUMS
+          diff --unified "${RUNNER_TEMP}/first-evidence.json" \
+            dist/release-candidate/0.4.0-rc.1/RELEASE_EVIDENCE.json
+      - name: Install, exercise, and uninstall the staged extension
+        if: matrix.blender == '5.2.1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          profile="${RUNNER_TEMP}/vao-blender-installed-profile"
+          repo_dir="${profile}/extensions/vao_rc_test"
+          fixture="${RUNNER_TEMP}/visual-bootstrap.vao"
+          artifact="${PWD}/dist/release-candidate/0.4.0-rc.1/vao_blender-0.4.0-rc.1-linux_x64.zip"
+          mkdir -p "${repo_dir}"
+          VAO_FIXTURE="${fixture}" python -c \
+            'import os; from pathlib import Path; from tests.unit.test_vao04 import build_visual_bootstrap; build_visual_bootstrap(Path(os.environ["VAO_FIXTURE"]))'
+          BLENDER_USER_RESOURCES="${profile}" "${BLENDER_BIN}" \
+            --command extension repo-add vao_rc_test --name "VAO RC Test" \
+            --directory "${repo_dir}" --clear-all
+          BLENDER_USER_RESOURCES="${profile}" "${BLENDER_BIN}" \
+            --command extension install-file -r vao_rc_test -e "${artifact}"
+          BLENDER_USER_RESOURCES="${profile}" \
+            VAO_BLENDER_SMOKE_PACKAGE="${fixture}" \
+            VAO_BLENDER_SMOKE_MODULE="bl_ext.vao_rc_test.vao_blender" \
+            "${BLENDER_BIN}" --background --offline-mode --python-exit-code 1 \
+            --python tests/blender/test_installed_extension.py
+          BLENDER_USER_RESOURCES="${profile}" "${BLENDER_BIN}" \
+            --command extension remove vao_blender
+          test ! -e "${repo_dir}/vao_blender"
