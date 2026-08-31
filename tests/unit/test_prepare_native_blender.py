@@ -320,6 +320,7 @@ class PrepareNativeBlenderTests(unittest.TestCase):
         self.assertEqual(observed["blenderExecutableSha256"], "stable")
         self.assertEqual(digest.call_count, 2)
         probe_expression = run.call_args.args[0][-1]
+        compile(probe_expression, "<native-host-probe>", "exec")
         self.assertIn("bpy.app.version", probe_expression)
         self.assertNotIn("bpy.app.version_string", probe_expression)
 

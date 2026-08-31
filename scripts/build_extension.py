@@ -314,7 +314,7 @@ def probe_builder(blender: Path, expected: dict[str, object]) -> dict[str, objec
         "'machine':platform.machine(),"
         "'zlibCompileVersion':zlib.ZLIB_VERSION,"
         "'zlibRuntimeVersion':zlib.ZLIB_RUNTIME_VERSION"
-        "}},sort_keys=True))"
+        "},sort_keys=True))"
     )
     try:
         result = subprocess.run(

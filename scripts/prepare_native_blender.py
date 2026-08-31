@@ -376,7 +376,7 @@ def probe(executable: Path, policy: dict[str, Any]) -> dict[str, Any]:
         "'pythonVersion':platform.python_version(),"
         "'system':platform.system(),"
         "'machine':platform.machine()"
-        "}},sort_keys=True))"
+        "},sort_keys=True))"
     )
     executable_sha256 = sha256(executable)
     try:
