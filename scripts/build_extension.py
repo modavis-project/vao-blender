@@ -744,10 +744,7 @@ def main() -> int:
             "builder": builder_provenance,
             "splitPlatforms": not args.single_package,
             "platforms": manifest.get("platforms", []),
-            "standards": {
-                "published": release["vao_standard"]["published"],
-                "candidate": release["vao_standard"]["candidate"],
-            },
+            "standards": release["vao_standard"],
             "nativeEvidenceRequired": release["native_evidence"],
             "filesExceptEvidenceAndChecksumList": records,
         }

@@ -67,7 +67,7 @@ def _base_release(directory: Path) -> dict:
         "releaseStatus": release["status"],
         "releaseTag": release["release_tag"],
         "intendedReleaseTag": release["release_tag"],
-        "releaseDOI": release["release_doi"],
+        "releaseDOI": release["release_doi"] or None,
         "releaseDate": release["release_date"],
         "blenderCompatibility": release["blender"],
         "platforms": release["blender"]["platforms"],
@@ -289,7 +289,10 @@ class NativeEvidenceTests(unittest.TestCase):
             self.tagged_binding_mock.assert_called_once()
             call = self.tagged_binding_mock.call_args
             self.assertEqual(call.args, (release_dir,))
-            self.assertEqual(call.kwargs["context"]["release"]["release_tag"], "v0.4.0-rc.2")
+            self.assertEqual(
+                call.kwargs["context"]["release"]["release_tag"],
+                release_context()["release"]["release_tag"],
+            )
             self.assertEqual(
                 set(call.kwargs["checksums"]),
                 release_context()["base_names"] - {"SHA256SUMS"},

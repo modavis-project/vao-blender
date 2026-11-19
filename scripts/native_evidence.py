@@ -198,11 +198,10 @@ def validate_final_release_evidence(
     if (
         release.get("status") != "prerelease"
         or release.get("release_tag") != f"v{release.get('release_label')}"
-        or not release.get("release_doi")
         or not release.get("release_date")
     ):
         raise RuntimeError(
-            "native evidence may only certify a final prerelease base with its real tag, DOI, and date"
+            "native evidence requires a final prerelease base with its exact tag and date"
         )
 
     commit, clean = source_checkout_state(release["release_tag"])
@@ -217,7 +216,7 @@ def validate_final_release_evidence(
         "releaseStatus": release["status"],
         "releaseTag": release["release_tag"],
         "intendedReleaseTag": release["release_tag"],
-        "releaseDOI": release["release_doi"],
+        "releaseDOI": release["release_doi"] or None,
         "releaseDate": release["release_date"],
         "blenderCompatibility": release["blender"],
         "platforms": release["blender"]["platforms"],

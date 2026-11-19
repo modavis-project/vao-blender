@@ -1,30 +1,30 @@
 {
   "SPDXID": "SPDXRef-DOCUMENT",
   "creationInfo": {
-    "created": "2026-08-30T00:00:00Z",
+    "created": "2026-11-19T00:00:00Z",
     "creators": [
       "Tool: VAO-Blender release preparation"
     ]
   },
-  "comment": "Standalone release-set SBOM for the complete three-platform VAO Blender 0.4.0-rc.2 artifact set. It is distributed as a release asset and is not embedded in any platform-specific extension ZIP. Each extension ZIP contains exactly one native rpds-py wheel; this document records all three native-wheel variants in the release set.",
+  "comment": "Standalone release-set SBOM for the complete three-platform VAO Blender 0.5.0-rc.1 artifact set. It is distributed as a release asset and is not embedded in any platform-specific extension ZIP. Each extension ZIP contains exactly one native rpds-py wheel; this document records all three native-wheel variants in the release set.",
   "dataLicense": "CC0-1.0",
   "documentDescribes": [
     "SPDXRef-Package-VAO-Blender"
   ],
-  "documentNamespace": "https://github.com/modavis-project/vao-blender/spdx/v0.4.0-rc.2",
-  "name": "VAO-Blender-0.4.0-rc.2-SBOM",
+  "documentNamespace": "https://github.com/modavis-project/vao-blender/spdx/v0.5.0-rc.1",
+  "name": "VAO-Blender-0.5.0-rc.1-SBOM",
   "packages": [
     {
       "SPDXID": "SPDXRef-Package-VAO-Blender",
       "comment": "This package entry describes the complete three-platform release set, not the contents of one platform-specific extension ZIP.",
       "copyrightText": "Copyright 2026 VAO-Blender contributors",
-      "downloadLocation": "https://github.com/modavis-project/vao-blender/releases/tag/v0.4.0-rc.2",
+      "downloadLocation": "https://github.com/modavis-project/vao-blender/releases/tag/v0.5.0-rc.1",
       "filesAnalyzed": false,
       "licenseConcluded": "GPL-3.0-or-later",
       "licenseDeclared": "GPL-3.0-or-later",
       "name": "VAO Blender",
       "supplier": "Organization: VAO-Blender contributors",
-      "versionInfo": "0.4.0-rc.2"
+      "versionInfo": "0.5.0-rc.1"
     },
     {
       "SPDXID": "SPDXRef-Package-VAO-Standard-040",
@@ -43,6 +43,25 @@
       "packageFileName": "vao-standard-0.4.0.zip",
       "supplier": "Organization: VAO Standard contributors",
       "versionInfo": "0.4.0"
+    },
+    {
+      "SPDXID": "SPDXRef-Package-VAO-Standard-060",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9f087144eaa13f87d7cd33d42eac0a87ac007d0a0853d0cf491f3171c3ea96b7"
+        }
+      ],
+      "copyrightText": "Copyright 2026 Dominik Ukolov and contributors",
+      "downloadLocation": "https://github.com/modavis-project/vao-standard/releases/tag/v0.6.0",
+      "filesAnalyzed": false,
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "CC-BY-4.0 AND Apache-2.0",
+      "name": "Virtual Acoustic Object (VAO) Standard",
+      "packageFileName": "vao-standard-0.6.0.zip",
+      "supplier": "Organization: VAO Standard contributors",
+      "versionInfo": "0.6.0",
+      "sourceInfo": "Commit 9d477213eab90defa75bef0f44e0d292a83e68d9. Normative release bundle SHA-256 13362f26fcd38132920198ccb85d992d2c1d40911af9b50aec343887d2ec3068."
     },
     {
       "SPDXID": "SPDXRef-Package-VAO-Standard-050-Candidate",
@@ -235,7 +254,8 @@
     {"relatedSpdxElement": "SPDXRef-Package-rpds-py-macos-arm64", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
     {"relatedSpdxElement": "SPDXRef-Package-rpds-py-linux-x64", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
     {"relatedSpdxElement": "SPDXRef-Package-rpds-py-windows-x64", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
-    {"relatedSpdxElement": "SPDXRef-Package-six", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"}
+    {"relatedSpdxElement": "SPDXRef-Package-six", "relationshipType": "DEPENDS_ON", "spdxElementId": "SPDXRef-Package-VAO-Blender"},
+    {"spdxElementId": "SPDXRef-Package-VAO-Blender", "relationshipType": "CONTAINS", "relatedSpdxElement": "SPDXRef-Package-VAO-Standard-060"}
   ],
   "spdxVersion": "SPDX-2.3"
 }

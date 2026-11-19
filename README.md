@@ -1,20 +1,17 @@
 # VAO Blender: A Blender Extension for Virtual Acoustic Objects
 
-[![Release candidate](https://img.shields.io/badge/release-0.4.0--rc.2%20prerelease-D97706.svg)](RELEASE_NOTES.md)
+[![Release candidate](https://img.shields.io/badge/release-0.5.0--rc.1%20prerelease-D97706.svg)](RELEASE_NOTES.md)
 [![VAO 0.4.0](https://img.shields.io/badge/VAO-0.4.0%20published-245B78.svg)](https://github.com/modavis-project/vao-standard/releases/tag/v0.4.0)
 [![VAO 0.5.0 candidate](https://img.shields.io/badge/VAO-0.5.0%20candidate-2C5F73.svg)](https://github.com/modavis-project/vao-standard/tree/d17b3f188fdf7fadd01ba025383e4feca8def935)
 
-Current release state: **prerelease**. Version 0.4.0-rc.2 has reserved DOI
-[`10.5281/zenodo.22210517`](https://doi.org/10.5281/zenodo.22210517) and intended
-publication date 2026-08-31. Its GitHub release and Zenodo record remain
-unpublished until the exact native evidence matrix is complete.
+Current release state: **prerelease**. The current candidate is 0.5.0-rc.1, dated 2026-11-19.
 
 VAO Blender opens a Virtual Acoustic Object (`.vao`) in Blender, verifies its
 carrier and payload, presents the package as inspectable research data, and can
 materialize a supported 3D realization. It works offline and treats every VAO as
 untrusted input.
 
-This checkout adds [VAO 0.6.0](https://github.com/modavis-project/vao-standard/releases/tag/v0.6.0)
+This release adds [VAO 0.6.0](https://github.com/modavis-project/vao-standard/releases/tag/v0.6.0)
 Core and carrier validation against the signed release. The 0.4.0 and historical
 0.5.0 candidate readers keep their existing pins. See the compatibility table
 for earlier formats.
@@ -65,15 +62,15 @@ Blender's Python 3.13 runtime; the manifest deliberately excludes Blender 5.3+.
 Candidate-specific native execution evidence is recorded explicitly in the
 [release notes](RELEASE_NOTES.md) and is required before publication.
 
-After publication, download `PUBLICATION_SHA256SUMS` and the ZIP for your
+Download `PUBLICATION_SHA256SUMS` and the ZIP for your
 platform from the same release, verify the checksum, then choose **Edit →
 Preferences → Get Extensions → Install from Disk** in Blender. Do not unpack the
 ZIP.
 
 ```text
-vao_blender-0.4.0-rc.2-windows_x64.zip
-vao_blender-0.4.0-rc.2-macos_arm64.zip
-vao_blender-0.4.0-rc.2-linux_x64.zip
+vao_blender-0.5.0-rc.1-windows_x64.zip
+vao_blender-0.5.0-rc.1-macos_arm64.zip
+vao_blender-0.5.0-rc.1-linux_x64.zip
 ```
 
 For a published candidate, `PUBLICATION_SHA256SUMS` is the complete release-set
@@ -119,12 +116,7 @@ available.
 
 ## Citation
 
-Version 0.4.0-rc.2 has reserved DOI
-[10.5281/zenodo.22210517](https://doi.org/10.5281/zenodo.22210517) and intended
-publication date 2026-08-31. The DOI will resolve after the reviewed Zenodo draft
-is published; until then, use [`CITATION.cff`](CITATION.cff) as the authoritative
-citation metadata. The prior release remains archived at
-[10.5281/zenodo.22134389](https://doi.org/10.5281/zenodo.22134389).
+Cite the [GitHub prerelease](https://github.com/modavis-project/vao-blender/releases/tag/v0.5.0-rc.1) using [`CITATION.cff`](CITATION.cff). VAO Standard 0.6.0 is archived separately as [10.5281/zenodo.23287792](https://doi.org/10.5281/zenodo.23287792).
 
 The published VAO Standard 0.4.0 is a separate work with DOI
 [10.5281/zenodo.22122774](https://doi.org/10.5281/zenodo.22122774). The exact
@@ -166,7 +158,7 @@ python3.13 scripts/build_extension.py \
 ```
 
 The staging command writes the versioned candidate directory
-`dist/release-candidate/0.4.0-rc.2/`. The final command omits `--staging` and
+`dist/release-candidate/0.5.0-rc.1/`. The final command omits `--staging` and
 therefore requires the exact annotated tag at `HEAD`. The build creates three
 platform packages, a deterministic source archive, checksums, release evidence,
 and a standalone release-set SBOM. The SBOM is a release asset, not a member of

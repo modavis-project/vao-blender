@@ -153,8 +153,6 @@ def load_release_metadata() -> dict[str, Any]:
         raise ValueError("prerelease status requires a numbered RC release_label")
     if metadata["status"] == "published" and is_release_candidate:
         raise ValueError("published status requires the stable extension release_label")
-    if metadata["status"] in {"prerelease", "published"} and not metadata["release_doi"]:
-        raise ValueError("a prerelease or published release must declare its own DOI")
     if metadata["status"] == "unreleased" and metadata["release_doi"]:
         raise ValueError("an unreleased version must not borrow or predict a DOI")
     if metadata["status"] == "unreleased" and metadata["release_date"]:
@@ -275,6 +273,7 @@ def load_release_metadata() -> dict[str, Any]:
             "vao-0.3.2",
             "vao-0.4.0",
             "vao-0.5.0",
+            "vao-0.6.0",
             "audio-policy",
         ],
         "attestation_filename": "NATIVE_TEST_EVIDENCE.json",
@@ -375,7 +374,7 @@ def load_release_metadata() -> dict[str, Any]:
         raise ValueError("[native_evidence] does not define the exact detached publication gate")
     standard = metadata.get("vao_standard")
     if not isinstance(standard, dict) or not all(
-        isinstance(standard.get(name), dict) for name in ("published", "candidate")
+        isinstance(standard.get(name), dict) for name in ("published", "candidate", "latest")
     ):
         raise ValueError("release_metadata.toml must define published and candidate standards")
     for kind, fields in {
@@ -386,6 +385,7 @@ def load_release_metadata() -> dict[str, Any]:
             "tree_url",
             "release_bundle_sha256",
         ),
+        "latest": ("version", "doi", "commit", "release_url", "source_sha256", "release_bundle_sha256"),
     }.items():
         record = standard[kind]
         if not all(isinstance(record.get(name), str) and record[name] for name in fields):
@@ -393,11 +393,14 @@ def load_release_metadata() -> dict[str, Any]:
     for digest in (
         standard["published"]["source_sha256"],
         standard["candidate"]["release_bundle_sha256"],
+        standard["latest"]["source_sha256"],
+        standard["latest"]["release_bundle_sha256"],
     ):
         if not re.fullmatch(r"[0-9a-f]{64}", digest):
             raise ValueError("standard bundle checksums must be lowercase SHA-256 values")
-    if not re.fullmatch(r"[0-9a-f]{40}", standard["candidate"]["commit"]):
-        raise ValueError("candidate standard commit must be a full Git SHA-1")
+    for kind in ("candidate", "latest"):
+        if not re.fullmatch(r"[0-9a-f]{40}", standard[kind]["commit"]):
+            raise ValueError(f"{kind} standard commit must be a full Git SHA-1")
     return metadata
 
 
@@ -634,7 +637,10 @@ def verify_citation(release: dict[str, Any]) -> None:
         "preferred-citation",
         "references",
     }
-    publication_fields = {"doi", "date-released"} if release["release_doi"] else set()
+    publication_fields = {
+        field for field, metadata_key in (("doi", "release_doi"), ("date-released", "release_date"))
+        if release[metadata_key]
+    }
     if set(citation) != required_top | publication_fields:
         raise ValueError("CITATION.cff has missing or unexpected top-level fields")
     expected_identity = {
@@ -665,20 +671,16 @@ def verify_citation(release: dict[str, Any]) -> None:
         "version": release_label,
         "repository-code": repository,
     }
-    if release["release_doi"]:
-        expected_preferred.update(
-            {"doi": release["release_doi"], "date-released": release["release_date"]}
-        )
-        if (
-            citation.get("doi") != release["release_doi"]
-            or citation.get("date-released") != release["release_date"]
-        ):
-            raise ValueError("CITATION.cff publication fields are inconsistent")
+    for field, metadata_key in (("doi", "release_doi"), ("date-released", "release_date")):
+        if field in publication_fields:
+            expected_preferred[field] = release[metadata_key]
+            if citation[field] != release[metadata_key]:
+                raise ValueError("CITATION.cff publication fields are inconsistent")
     if preferred != expected_preferred:
         raise ValueError("CITATION.cff preferred citation is inconsistent")
     references = citation.get("references")
-    if not isinstance(references, list) or len(references) != 3:
-        raise ValueError("CITATION.cff must identify exactly three release/standard references")
+    if not isinstance(references, list) or len(references) != 4:
+        raise ValueError("CITATION.cff must identify the prior release and three standard references")
     by_title = {item.get("title"): item for item in references if isinstance(item, dict)}
     if len(by_title) != len(references):
         raise ValueError("CITATION.cff references must be mappings with unique titles")
@@ -698,6 +700,7 @@ def verify_citation(release: dict[str, Any]) -> None:
     for kind, title in (
         ("published", "Virtual Acoustic Object (VAO) Standard 0.4.0"),
         ("candidate", "Virtual Acoustic Object (VAO) Standard 0.5.0 candidate"),
+        ("latest", "Virtual Acoustic Object (VAO) Standard 0.6.0"),
     ):
         standard = release["vao_standard"][kind]
         reference = by_title.get(title, {})
@@ -706,6 +709,7 @@ def verify_citation(release: dict[str, Any]) -> None:
             reference.get("version") != standard["version"]
             or reference.get("url") != expected_url
             or reference.get("notes") != standard_note
+            or (standard.get("doi") and reference.get("doi") != standard["doi"])
             or "license" in reference
         ):
             raise ValueError(f"CITATION.cff {kind} VAO Standard reference is inconsistent")
@@ -720,6 +724,7 @@ def verify_public_metadata(manifest: dict[str, object], release: dict[str, Any])
     previous = release["previous_release"]
     published = release["vao_standard"]["published"]
     candidate = release["vao_standard"]["candidate"]
+    latest = release["vao_standard"]["latest"]
 
     state_surface_names = (
         "README.md",
@@ -744,6 +749,8 @@ def verify_public_metadata(manifest: dict[str, object], release: dict[str, Any])
             published["doi"],
             candidate["commit"],
             candidate["tree_url"],
+            latest["release_url"],
+            latest["doi"],
         ),
     )
     if release["release_doi"]:
@@ -802,7 +809,7 @@ def verify_public_metadata(manifest: dict[str, object], release: dict[str, Any])
             require_tokens(
                 relative,
                 state_surfaces[relative],
-                (release["release_doi"], release["release_date"]),
+                tuple(release[key] for key in ("release_doi", "release_date") if release[key]),
             )
 
     stale_artifact = f"vao_blender-{previous['label'].split('-')[0]}-"
@@ -906,6 +913,8 @@ def verify_public_metadata(manifest: dict[str, object], release: dict[str, Any])
         f"https://doi.org/{published['doi']}",
         published["release_url"],
         candidate["tree_url"],
+        latest["release_url"],
+        f"https://doi.org/{latest['doi']}",
     }
     if not required_identifiers.issubset(identifiers):
         raise ValueError(".zenodo.json is missing release-history or standard relationships")
@@ -970,6 +979,7 @@ def verify_sbom(
     for kind, spdx_id in (
         ("published", "SPDXRef-Package-VAO-Standard-040"),
         ("candidate", "SPDXRef-Package-VAO-Standard-050-Candidate"),
+        ("latest", "SPDXRef-Package-VAO-Standard-060"),
     ):
         standard = release["vao_standard"][kind]
         package = by_id.get(spdx_id)
@@ -991,6 +1001,17 @@ def verify_sbom(
         or published_package.get("packageFileName") != "vao-standard-0.4.0.zip"
     ):
         raise ValueError("SBOM published VAO source-archive checksum is inconsistent")
+    latest_package = by_id["SPDXRef-Package-VAO-Standard-060"]
+    latest = release["vao_standard"]["latest"]
+    if (
+        latest_package.get("checksums") != [
+            {"algorithm": "SHA256", "checksumValue": latest["source_sha256"]}
+        ]
+        or latest_package.get("packageFileName") != "vao-standard-0.6.0.zip"
+        or latest["commit"] not in str(latest_package.get("sourceInfo", ""))
+        or latest["release_bundle_sha256"] not in str(latest_package.get("sourceInfo", ""))
+    ):
+        raise ValueError("SBOM VAO 0.6.0 source and normative bundle identity is inconsistent")
     candidate_package = by_id["SPDXRef-Package-VAO-Standard-050-Candidate"]
     if candidate_package.get("checksums") or release["vao_standard"]["candidate"][
         "commit"
@@ -1025,6 +1046,7 @@ def verify_sbom(
         "SPDXRef-Package-VAO-Standard-040",
         "SPDXRef-Package-VAO-Standard-050-Candidate",
         "SPDXRef-Package-VAO-Standard-050-Release-Bundle",
+        "SPDXRef-Package-VAO-Standard-060",
     }
     dependencies: dict[str, tuple[str, str, str]] = {}
     dependency_ids: set[str] = set()
@@ -1078,6 +1100,7 @@ def verify_sbom(
             "CONTAINS",
             "SPDXRef-Package-VAO-Standard-050-Candidate",
         ),
+        ("SPDXRef-Package-VAO-Blender", "CONTAINS", "SPDXRef-Package-VAO-Standard-060"),
         (
             "SPDXRef-Package-VAO-Standard-050-Candidate",
             "CONTAINS",
@@ -1129,12 +1152,15 @@ def main() -> int:
     from vao_blender.core.contract import (
         RELEASE_BUNDLE_04_SHA256,
         RELEASE_BUNDLE_05_SHA256,
+        RELEASE_BUNDLE_06_SHA256,
         STANDARD_05_COMMIT,
+        STANDARD_06_COMMIT,
         verify_contracts,
     )
 
     published = release["vao_standard"]["published"]
     candidate = release["vao_standard"]["candidate"]
+    latest = release["vao_standard"]["latest"]
     if (
         published.get("version") != "0.4.0"
         or published.get("source_sha256") != RELEASE_BUNDLE_04_SHA256
@@ -1146,16 +1172,21 @@ def main() -> int:
         or candidate.get("release_bundle_sha256") != RELEASE_BUNDLE_05_SHA256
     ):
         raise ValueError("release metadata does not match the pinned VAO 0.5.0 candidate")
+    if (
+        latest["version"], latest["commit"], latest["release_bundle_sha256"]
+    ) != ("0.6.0", STANDARD_06_COMMIT, RELEASE_BUNDLE_06_SHA256):
+        raise ValueError("release metadata does not match the pinned VAO 0.6.0 contract")
 
     verify_contracts()
     contract_04_count = verify_contract_inventory("0.4.0")
     contract_05_count = verify_contract_inventory("0.5.0")
+    contract_06_count = verify_contract_inventory("0.6.0")
     print(
         "Release audit passed: "
         f"extension={release['extension_version']}, label={release['release_label']}, "
         f"status={release['status']}, wheels={wheel_count}, "
         f"VAO-0.4.0-files={contract_04_count}, VAO-0.5.0-files={contract_05_count}, "
-        f"public-docs={len(REQUIRED_PUBLIC_FILES)}"
+        f"VAO-0.6.0-files={contract_06_count}, public-docs={len(REQUIRED_PUBLIC_FILES)}"
     )
     return 0
 

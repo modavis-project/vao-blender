@@ -30,6 +30,7 @@ TEST_SCRIPTS = {
     "vao-0.3.2": "tests/blender/test_vao03_integration.py",
     "vao-0.4.0": "tests/blender/test_vao04_integration.py",
     "vao-0.5.0": "tests/blender/test_vao05_integration.py",
+    "vao-0.6.0": "tests/blender/test_vao06_integration.py",
     "audio-policy": "tests/blender/test_audio_engine_policy.py",
 }
 MAX_WHEEL_MEMBER_BYTES = 64 * 1024 * 1024

@@ -7,7 +7,7 @@
       "orcid": "0000-0002-7904-3892"
     }
   ],
-  "description": "<p>VAO Blender is a security-conscious Blender extension for validating, inspecting, and importing supported Virtual Acoustic Object packages. Version 0.4.0-rc.2 implements the published VAO Standard 0.4.0, exact commit-pinned inspection and visual materialization for the VAO 0.5.0 candidate, and isolated compatibility readers for VAO 0.3.2 and 0.2.2.</p><p>The extension verifies carrier structure, manifests, release binding, inventories, byte sizes, SHA-256 fixity, immutable references, and validation completeness before media access. It provides paged metadata and diagnostic inspection, transactional visual materialization with durable provenance, explicit rights and capability gates, lifecycle-safe sessions, and a bounded content-addressed cache.</p><p>VAO Blender works offline, does not modify source packages, and does not execute packaged scripts. Modern VAO interaction/runtime execution, room-impulse-response convolution, acoustic simulation, and acoustic rendering remain outside this release. The VAO 0.2.2 audio preview executes only the fully compiled, explicitly supported interaction subset.</p>",
+  "description": "<p>VAO Blender verifies and displays Virtual Acoustic Object carriers. It adds offline Core validation and embedded GLB import for VAO 0.6.0. MMIC metadata can be inspected; MMIC domain validation and execution use the VAO reference tools. Existing readers retain their pins.</p>",
   "keywords": [
     "acoustics",
     "Blender",
@@ -18,16 +18,16 @@
   ],
   "language": "eng",
   "license": "gpl-3.0-or-later",
-  "notes": "Prerelease metadata for 0.4.0-rc.2. The Zenodo-generated reserved version DOI is maintained only in the manual draft and is intentionally absent here. Publication remains a separate maintainer action after the full native-platform evidence matrix is complete.",
-  "publication_date": "2026-08-31",
+  "notes": "GitHub prerelease 0.5.0-rc.1.",
+  "publication_date": "2026-11-19",
   "related_identifiers": [
     {
-      "identifier": "https://github.com/modavis-project/vao-blender/releases/tag/v0.4.0-rc.2",
+      "identifier": "https://github.com/modavis-project/vao-blender/releases/tag/v0.5.0-rc.1",
       "relation": "isIdenticalTo",
       "resource_type": "software"
     },
     {
-      "identifier": "https://doi.org/10.5281/zenodo.22134389",
+      "identifier": "https://doi.org/10.5281/zenodo.22210517",
       "relation": "isNewVersionOf",
       "resource_type": "software"
     },
@@ -44,9 +44,18 @@
       "identifier": "https://github.com/modavis-project/vao-standard/tree/d17b3f188fdf7fadd01ba025383e4feca8def935",
       "relation": "references",
       "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/modavis-project/vao-standard/releases/tag/v0.6.0",
+      "relation": "references",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://doi.org/10.5281/zenodo.23287792",
+      "relation": "references"
     }
   ],
   "title": "VAO Blender: A Blender Extension for Virtual Acoustic Objects",
   "upload_type": "software",
-  "version": "0.4.0-rc.2"
+  "version": "0.5.0-rc.1"
 }

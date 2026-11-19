@@ -1,12 +1,12 @@
 # Canonical, reviewable release identity. Publication fields remain empty until
 # the corresponding external records exist; release tooling must never invent
 # or reuse a DOI from an earlier version.
-extension_version = "0.4.0-rc.2"
-release_label = "0.4.0-rc.2"
-release_tag = "v0.4.0-rc.2"
+extension_version = "0.5.0-rc.1"
+release_label = "0.5.0-rc.1"
+release_tag = "v0.5.0-rc.1"
 status = "prerelease"
-release_doi = "10.5281/zenodo.22210517"
-release_date = "2026-08-31"
+release_doi = ""
+release_date = "2026-11-19"
 repository = "https://github.com/modavis-project/vao-blender"
 
 [blender]
@@ -52,6 +52,7 @@ required_tests = [
   "vao-0.3.2",
   "vao-0.4.0",
   "vao-0.5.0",
+  "vao-0.6.0",
   "audio-policy",
 ]
 attestation_filename = "NATIVE_TEST_EVIDENCE.json"
@@ -66,9 +67,9 @@ hosts = [
 ]
 
 [previous_release]
-label = "0.3.0-rc.1"
-doi = "10.5281/zenodo.22134389"
-tag = "v0.3.0-rc.1"
+label = "0.4.0-rc.2"
+doi = "10.5281/zenodo.22210517"
+tag = "v0.4.0-rc.2"
 
 [vao_standard.published]
 version = "0.4.0"
@@ -81,3 +82,11 @@ version = "0.5.0"
 commit = "d17b3f188fdf7fadd01ba025383e4feca8def935"
 tree_url = "https://github.com/modavis-project/vao-standard/tree/d17b3f188fdf7fadd01ba025383e4feca8def935"
 release_bundle_sha256 = "82efb6ee31353e72c81671e2c6500c51dc223d7f21af4983705933ea6caa5c96"
+
+[vao_standard.latest]
+version = "0.6.0"
+doi = "10.5281/zenodo.23287792"
+commit = "9d477213eab90defa75bef0f44e0d292a83e68d9"
+release_url = "https://github.com/modavis-project/vao-standard/releases/tag/v0.6.0"
+source_sha256 = "9f087144eaa13f87d7cd33d42eac0a87ac007d0a0853d0cf491f3171c3ea96b7"
+release_bundle_sha256 = "13362f26fcd38132920198ccb85d992d2c1d40911af9b50aec343887d2ec3068"

@@ -1,30 +1,28 @@
 # Installation
 
-Current release state: **prerelease**. The filenames below identify the frozen
-candidate. Public downloads remain unavailable until the exact native evidence
-matrix is complete and the GitHub prerelease is published.
+Current release state: **prerelease**. Install the ZIP built for your platform.
 
 ## Release package
 
 1. Use Blender 5.1.x or 5.2.x on Windows x64, macOS Apple Silicon, or Linux x64.
    Blender 5.3+ is deliberately outside the manifest range until
    its Python ABI and integration behavior have been tested.
-2. After publication, download `PUBLICATION_SHA256SUMS`, `SHA256SUMS`,
+2. Download `PUBLICATION_SHA256SUMS`, `SHA256SUMS`,
    `NATIVE_TEST_EVIDENCE.json`, and the matching
-   `vao_blender-0.4.0-rc.2-<platform>.zip` from the same
+   `vao_blender-0.5.0-rc.1-<platform>.zip` from the same
    [GitHub release](https://github.com/modavis-project/vao-blender/releases).
    Blender uses the suffixes `windows_x64`, `macos_arm64`, and `linux_x64` in
    the generated filenames.
 3. Verify the package before installing it. On macOS or Linux:
 
    ```console
-   grep 'vao_blender-0.4.0-rc.2-<platform>.zip' PUBLICATION_SHA256SUMS | shasum -a 256 -c -
+   grep 'vao_blender-0.5.0-rc.1-<platform>.zip' PUBLICATION_SHA256SUMS | shasum -a 256 -c -
    ```
 
    On Windows PowerShell:
 
    ```powershell
-   Get-FileHash .\vao_blender-0.4.0-rc.2-windows_x64.zip -Algorithm SHA256
+   Get-FileHash .\vao_blender-0.5.0-rc.1-windows_x64.zip -Algorithm SHA256
    ```
 
    Compare that value with the matching line in `PUBLICATION_SHA256SUMS`. Do not
@@ -34,10 +32,8 @@ matrix is complete and the GitHub prerelease is published.
 5. Select the ZIP without unpacking it and enable **VAO Blender** if necessary.
 6. Open a 3D Viewport, press **N**, and select the **VAO** tab.
 
-The GitHub prerelease tag and Blender extension version are both `0.4.0-rc.2`
-(the tag adds the conventional `v` prefix). The candidate metadata carries the
-Zenodo-reserved version DOI and remains private until the release records are
-published by a maintainer.
+The GitHub prerelease tag and Blender extension version are both `0.5.0-rc.1`
+(the tag adds the conventional `v` prefix).
 `SHA256SUMS` binds the immutable canonical build set.
 `NATIVE_TEST_EVIDENCE.json` binds six installed-extension test cells to those
 exact platform ZIP hashes, and `PUBLICATION_SHA256SUMS` binds the base inventory
@@ -85,7 +81,7 @@ python3.13 scripts/build_extension.py \
   --staging --overwrite
 ```
 
-The staging command writes `dist/release-candidate/0.4.0-rc.2/`. The final
+The staging command writes `dist/release-candidate/0.5.0-rc.1/`. The final
 command omits `--staging` and refuses a dirty checkout, a missing or lightweight
 tag, or a tag that does not point to `HEAD`. Copying the source tree into
 Blender's legacy `scripts/addons` directory is not a supported installation
