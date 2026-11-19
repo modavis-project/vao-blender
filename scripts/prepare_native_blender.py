@@ -16,6 +16,7 @@ import tarfile
 import tempfile
 import tomllib
 import unicodedata
+import urllib.error
 import urllib.request
 import zipfile
 from pathlib import Path, PurePosixPath
@@ -26,6 +27,11 @@ MAX_ARCHIVE_BYTES = 1024 * 1024 * 1024
 MAX_ARCHIVE_MEMBERS = 200_000
 MAX_ARCHIVE_MEMBER_BYTES = 2 * 1024 * 1024 * 1024
 MAX_ARCHIVE_EXPANDED_BYTES = 8 * 1024 * 1024 * 1024
+BLENDER_DOWNLOAD = "https://download.blender.org/release/"
+BLENDER_MIRRORS = (
+    "https://ftp.halifax.rwth-aachen.de/blender/release/",
+    "https://mirror.clarkson.edu/blender/release/",
+)
 
 
 def sha256(path: Path) -> str:
@@ -50,6 +56,9 @@ def host_policy(version: str, platform_name: str) -> tuple[dict[str, Any], dict[
 
 def download(policy: dict[str, Any], destination: Path) -> Path:
     url = policy["archive_url"]
+    if not url.startswith(BLENDER_DOWNLOAD):
+        raise RuntimeError("native-host archive must identify an official Blender release")
+    relative = url.removeprefix(BLENDER_DOWNLOAD)
     archive = destination.parent / Path(url).name
     if archive.exists() or archive.is_symlink():
         raise RuntimeError(f"refusing existing native-host archive path: {archive}")
@@ -58,25 +67,40 @@ def download(policy: dict[str, Any], destination: Path) -> Path:
     )
     os.close(descriptor)
     temporary = Path(temporary_name)
-    request = urllib.request.Request(url, headers={"User-Agent": "VAO-Blender-release-gate/1"})
     try:
-        with urllib.request.urlopen(request, timeout=60) as response, temporary.open("wb") as out:
-            declared = response.headers.get("Content-Length")
-            if declared and int(declared) > MAX_ARCHIVE_BYTES:
-                raise RuntimeError("official Blender archive exceeds the release-gate limit")
-            total = 0
-            for block in iter(lambda: response.read(1024 * 1024), b""):
-                total += len(block)
-                if total > MAX_ARCHIVE_BYTES:
+        for server in (BLENDER_DOWNLOAD, *BLENDER_MIRRORS):
+            source = server + relative
+            request = urllib.request.Request(
+                source, headers={"User-Agent": "VAO-Blender-release-gate/1"}
+            )
+            try:
+                response = urllib.request.urlopen(request, timeout=60)
+            except (urllib.error.URLError, TimeoutError) as exc:
+                print(f"Blender archive unavailable at {source}: {exc}")
+                continue
+            with response, temporary.open("wb") as out:
+                declared = response.headers.get("Content-Length")
+                if declared and int(declared) > MAX_ARCHIVE_BYTES:
                     raise RuntimeError("official Blender archive exceeds the release-gate limit")
-                out.write(block)
-        if sha256(temporary) != policy["archive_sha256"]:
-            raise RuntimeError("official Blender archive failed its pinned SHA-256")
-        os.replace(temporary, archive)
+                total = 0
+                for block in iter(lambda: response.read(1024 * 1024), b""):
+                    total += len(block)
+                    if total > MAX_ARCHIVE_BYTES:
+                        raise RuntimeError(
+                            "official Blender archive exceeds the release-gate limit"
+                        )
+                    out.write(block)
+            if sha256(temporary) != policy["archive_sha256"]:
+                raise RuntimeError(f"Blender archive from {source} failed its pinned SHA-256")
+            print(f"Verified Blender archive from {source}")
+            os.replace(temporary, archive)
+            return archive
+        raise RuntimeError(
+            f"Blender archive is unavailable from its release site and mirrors: {url}"
+        )
     finally:
         if temporary.exists():
             temporary.unlink()
-    return archive
 
 
 def safe_archive_name(name: str) -> bool:

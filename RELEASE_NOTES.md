@@ -1,4 +1,4 @@
-# VAO Blender 0.5.0-rc.1
+# VAO Blender 0.5.0-rc.2
 
 Current release state: **prerelease**.
 Status: **prerelease**.

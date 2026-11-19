@@ -18,11 +18,11 @@
   ],
   "language": "eng",
   "license": "gpl-3.0-or-later",
-  "notes": "GitHub prerelease 0.5.0-rc.1.",
+  "notes": "GitHub prerelease 0.5.0-rc.2.",
   "publication_date": "2026-11-19",
   "related_identifiers": [
     {
-      "identifier": "https://github.com/modavis-project/vao-blender/releases/tag/v0.5.0-rc.1",
+      "identifier": "https://github.com/modavis-project/vao-blender/releases/tag/v0.5.0-rc.2",
       "relation": "isIdenticalTo",
       "resource_type": "software"
     },
@@ -57,5 +57,5 @@
   ],
   "title": "VAO Blender: A Blender Extension for Virtual Acoustic Objects",
   "upload_type": "software",
-  "version": "0.5.0-rc.1"
+  "version": "0.5.0-rc.2"
 }

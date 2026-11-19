@@ -4,7 +4,7 @@ All notable changes are documented here. The project follows semantic versioning
 for the Blender extension; supported VAO format versions remain exact contract
 identities.
 
-## 0.5.0-rc.1 · 2026-11-19
+## 0.5.0-rc.2 · 2026-11-19
 
 - Read the published VAO 0.6.0 Core and carrier contract offline. Verify the
   embedded bytes and inspect MMIC declarations alongside the other records.

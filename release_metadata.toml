@@ -1,9 +1,9 @@
 # Canonical, reviewable release identity. Publication fields remain empty until
 # the corresponding external records exist; release tooling must never invent
 # or reuse a DOI from an earlier version.
-extension_version = "0.5.0-rc.1"
-release_label = "0.5.0-rc.1"
-release_tag = "v0.5.0-rc.1"
+extension_version = "0.5.0-rc.2"
+release_label = "0.5.0-rc.2"
+release_tag = "v0.5.0-rc.2"
 status = "prerelease"
 release_doi = ""
 release_date = "2026-11-19"

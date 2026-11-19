@@ -1,10 +1,10 @@
 # VAO Blender: A Blender Extension for Virtual Acoustic Objects
 
-[![Release candidate](https://img.shields.io/badge/release-0.5.0--rc.1%20prerelease-D97706.svg)](RELEASE_NOTES.md)
+[![Release candidate](https://img.shields.io/badge/release-0.5.0--rc.2%20prerelease-D97706.svg)](RELEASE_NOTES.md)
 [![VAO 0.4.0](https://img.shields.io/badge/VAO-0.4.0%20published-245B78.svg)](https://github.com/modavis-project/vao-standard/releases/tag/v0.4.0)
 [![VAO 0.5.0 candidate](https://img.shields.io/badge/VAO-0.5.0%20candidate-2C5F73.svg)](https://github.com/modavis-project/vao-standard/tree/d17b3f188fdf7fadd01ba025383e4feca8def935)
 
-Current release state: **prerelease**. The current candidate is 0.5.0-rc.1, dated 2026-11-19.
+Current release state: **prerelease**. The current candidate is 0.5.0-rc.2, dated 2026-11-19.
 
 VAO Blender opens a Virtual Acoustic Object (`.vao`) in Blender, verifies its
 carrier and payload, presents the package as inspectable research data, and can
@@ -68,9 +68,9 @@ Preferences → Get Extensions → Install from Disk** in Blender. Do not unpack
 ZIP.
 
 ```text
-vao_blender-0.5.0-rc.1-windows_x64.zip
-vao_blender-0.5.0-rc.1-macos_arm64.zip
-vao_blender-0.5.0-rc.1-linux_x64.zip
+vao_blender-0.5.0-rc.2-windows_x64.zip
+vao_blender-0.5.0-rc.2-macos_arm64.zip
+vao_blender-0.5.0-rc.2-linux_x64.zip
 ```
 
 For a published candidate, `PUBLICATION_SHA256SUMS` is the complete release-set
@@ -116,7 +116,7 @@ available.
 
 ## Citation
 
-Cite the [GitHub prerelease](https://github.com/modavis-project/vao-blender/releases/tag/v0.5.0-rc.1) using [`CITATION.cff`](CITATION.cff). VAO Standard 0.6.0 is archived separately as [10.5281/zenodo.23287792](https://doi.org/10.5281/zenodo.23287792).
+Cite the [GitHub prerelease](https://github.com/modavis-project/vao-blender/releases/tag/v0.5.0-rc.2) using [`CITATION.cff`](CITATION.cff). VAO Standard 0.6.0 is archived separately as [10.5281/zenodo.23287792](https://doi.org/10.5281/zenodo.23287792).
 
 The published VAO Standard 0.4.0 is a separate work with DOI
 [10.5281/zenodo.22122774](https://doi.org/10.5281/zenodo.22122774). The exact
@@ -158,7 +158,7 @@ python3.13 scripts/build_extension.py \
 ```
 
 The staging command writes the versioned candidate directory
-`dist/release-candidate/0.5.0-rc.1/`. The final command omits `--staging` and
+`dist/release-candidate/0.5.0-rc.2/`. The final command omits `--staging` and
 therefore requires the exact annotated tag at `HEAD`. The build creates three
 platform packages, a deterministic source archive, checksums, release evidence,
 and a standalone release-set SBOM. The SBOM is a release asset, not a member of

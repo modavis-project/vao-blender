@@ -385,7 +385,14 @@ def load_release_metadata() -> dict[str, Any]:
             "tree_url",
             "release_bundle_sha256",
         ),
-        "latest": ("version", "doi", "commit", "release_url", "source_sha256", "release_bundle_sha256"),
+        "latest": (
+            "version",
+            "doi",
+            "commit",
+            "release_url",
+            "source_sha256",
+            "release_bundle_sha256",
+        ),
     }.items():
         record = standard[kind]
         if not all(isinstance(record.get(name), str) and record[name] for name in fields):
@@ -638,7 +645,8 @@ def verify_citation(release: dict[str, Any]) -> None:
         "references",
     }
     publication_fields = {
-        field for field, metadata_key in (("doi", "release_doi"), ("date-released", "release_date"))
+        field
+        for field, metadata_key in (("doi", "release_doi"), ("date-released", "release_date"))
         if release[metadata_key]
     }
     if set(citation) != required_top | publication_fields:
@@ -680,7 +688,9 @@ def verify_citation(release: dict[str, Any]) -> None:
         raise ValueError("CITATION.cff preferred citation is inconsistent")
     references = citation.get("references")
     if not isinstance(references, list) or len(references) != 4:
-        raise ValueError("CITATION.cff must identify the prior release and three standard references")
+        raise ValueError(
+            "CITATION.cff must identify the prior release and three standard references"
+        )
     by_title = {item.get("title"): item for item in references if isinstance(item, dict)}
     if len(by_title) != len(references):
         raise ValueError("CITATION.cff references must be mappings with unique titles")
@@ -1004,9 +1014,8 @@ def verify_sbom(
     latest_package = by_id["SPDXRef-Package-VAO-Standard-060"]
     latest = release["vao_standard"]["latest"]
     if (
-        latest_package.get("checksums") != [
-            {"algorithm": "SHA256", "checksumValue": latest["source_sha256"]}
-        ]
+        latest_package.get("checksums")
+        != [{"algorithm": "SHA256", "checksumValue": latest["source_sha256"]}]
         or latest_package.get("packageFileName") != "vao-standard-0.6.0.zip"
         or latest["commit"] not in str(latest_package.get("sourceInfo", ""))
         or latest["release_bundle_sha256"] not in str(latest_package.get("sourceInfo", ""))
@@ -1172,9 +1181,11 @@ def main() -> int:
         or candidate.get("release_bundle_sha256") != RELEASE_BUNDLE_05_SHA256
     ):
         raise ValueError("release metadata does not match the pinned VAO 0.5.0 candidate")
-    if (
-        latest["version"], latest["commit"], latest["release_bundle_sha256"]
-    ) != ("0.6.0", STANDARD_06_COMMIT, RELEASE_BUNDLE_06_SHA256):
+    if (latest["version"], latest["commit"], latest["release_bundle_sha256"]) != (
+        "0.6.0",
+        STANDARD_06_COMMIT,
+        RELEASE_BUNDLE_06_SHA256,
+    ):
         raise ValueError("release metadata does not match the pinned VAO 0.6.0 contract")
 
     verify_contracts()

@@ -1,7 +1,7 @@
 # Publish a VAO Blender prerelease
 
-Current release state: **prerelease**. Version 0.5.0-rc.1 is dated 2026-11-19 and uses
-the Git tag `v0.5.0-rc.1`.
+Current release state: **prerelease**. Version 0.5.0-rc.2 is dated 2026-11-19 and uses
+the Git tag `v0.5.0-rc.2`.
 
 Dispatch `native-release-evidence.yml` from the annotated tag. The workflow
 builds the three extension ZIPs on the pinned Blender 5.2.1 Linux host and tests
@@ -10,8 +10,8 @@ the exact ZIPs on Blender 5.1.2 and 5.2.1 for each supported platform.
 To review the assembled release, download the workflow artifact and run:
 
 ```console
-python scripts/native_evidence.py verify --release-dir dist/release-candidate/0.5.0-rc.1
-cd dist/release-candidate/0.5.0-rc.1
+python scripts/native_evidence.py verify --release-dir dist/release-candidate/0.5.0-rc.2
+cd dist/release-candidate/0.5.0-rc.2
 shasum -a 256 -c PUBLICATION_SHA256SUMS
 ```
 
