@@ -1,0 +1,10 @@
+@prefix mmic: <https://w3id.org/modavis/vao/mmic#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+# Informative mappings only. No imports or subclass entailments are added to core MMIC.
+mmic:PhysicalCarrier skos:closeMatch <http://www.cidoc-crm.org/cidoc-crm/E84_Information_Carrier> .
+mmic:DigitalCarrier skos:relatedMatch <http://www.europeana.eu/schemas/edm/WebResource> .

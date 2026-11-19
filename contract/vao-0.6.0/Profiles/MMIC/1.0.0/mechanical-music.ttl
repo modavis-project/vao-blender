@@ -1,0 +1,349 @@
+@prefix mmic: <https://w3id.org/modavis/vao/mmic#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+<https://w3id.org/modavis/vao/mmic> a owl:Ontology ; owl:versionIRI <https://w3id.org/modavis/vao/profile/mmic/1.0.0/ontology> ; owl:versionInfo "1.0.0" ; rdfs:comment "Standalone mechanical-music module governed by VAO maintainers; not an accepted MODAVIS Network module."@en .
+mmic:PhysicalCarrier a owl:Class ; rdfs:label "PhysicalCarrier"@en .
+mmic:DigitalCarrier a owl:Class ; rdfs:label "DigitalCarrier"@en .
+mmic:CarrierState a owl:Class ; rdfs:label "CarrierState"@en .
+mmic:CarrierPart a owl:Class ; rdfs:label "CarrierPart"@en .
+mmic:Observation a owl:Class ; rdfs:label "Observation"@en .
+mmic:ModelAssignment a owl:Class ; rdfs:label "ModelAssignment"@en .
+mmic:Track a owl:Class ; rdfs:label "Track"@en .
+mmic:RoleAssignment a owl:Class ; rdfs:label "RoleAssignment"@en .
+mmic:Interpretation a owl:Class ; rdfs:label "Interpretation"@en .
+mmic:Comparison a owl:Class ; rdfs:label "Comparison"@en .
+mmic:EvidenceClaim a owl:Class ; rdfs:label "EvidenceClaim"@en .
+mmic:Correction a owl:Class ; rdfs:label "Correction"@en .
+mmic:EncodedProgramme a owl:Class ; rdfs:label "EncodedProgramme"@en .
+mmic:ObservedFeature a owl:Class ; rdfs:label "ObservedFeature"@en .
+mmic:ReadingModel a owl:Class ; rdfs:label "ReadingModel"@en .
+mmic:NativeSignal a owl:Class ; rdfs:label "NativeSignal"@en .
+mmic:MidiExportBinding a owl:Class ; rdfs:label "MidiExportBinding"@en .
+mmic:ObservedPlayback a owl:Class ; rdfs:label "ObservedPlayback"@en .
+mmic:CarrierDesign a owl:Class ; rdfs:label "CarrierDesign"@en .
+mmic:FabricationActivity a owl:Class ; rdfs:label "FabricationActivity"@en .
+mmic:GeometryLocation a owl:Class ; rdfs:label "GeometryLocation"@en .
+mmic:DomainDocument a owl:Class ; rdfs:label "DomainDocument"@en .
+mmic:Object a owl:Class ; rdfs:label "Object"@en .
+mmic:Array a owl:Class ; rdfs:label "Array"@en .
+mmic:activityId a rdf:Property ; rdfs:label "activityId"@en .
+mmic:agentId a rdf:Property ; rdfs:label "agentId"@en .
+mmic:algorithm a rdf:Property ; rdfs:label "algorithm"@en .
+mmic:alignment a rdf:Property ; rdfs:label "alignment"@en .
+mmic:alignmentRealizationId a rdf:Property ; rdfs:label "alignmentRealizationId"@en .
+mmic:anchors a rdf:Property ; rdfs:label "anchors"@en .
+mmic:artifactPins a rdf:Property ; rdfs:label "artifactPins"@en .
+mmic:assignmentId a rdf:Property ; rdfs:label "assignmentId"@en .
+mmic:assignments a rdf:Property ; rdfs:label "assignments"@en .
+mmic:axial a rdf:Property ; rdfs:label "axial"@en .
+mmic:axialBounds a rdf:Property ; rdfs:label "axialBounds"@en .
+mmic:axialEnd a rdf:Property ; rdfs:label "axialEnd"@en .
+mmic:axialStart a rdf:Property ; rdfs:label "axialStart"@en .
+mmic:axialUnit a rdf:Property ; rdfs:label "axialUnit"@en .
+mmic:basis a rdf:Property ; rdfs:label "basis"@en .
+mmic:bindingIds a rdf:Property ; rdfs:label "bindingIds"@en .
+mmic:bounds a rdf:Property ; rdfs:label "bounds"@en .
+mmic:calibrationStatus a rdf:Property ; rdfs:label "calibrationStatus"@en .
+mmic:canonicalization a rdf:Property ; rdfs:label "canonicalization"@en .
+mmic:carrierId a rdf:Property ; rdfs:label "carrierId"@en .
+mmic:carriers a rdf:Property ; rdfs:label "carriers"@en .
+mmic:changeKind a rdf:Property ; rdfs:label "changeKind"@en .
+mmic:channel a rdf:Property ; rdfs:label "channel"@en .
+mmic:codeRealizationId a rdf:Property ; rdfs:label "codeRealizationId"@en .
+mmic:comparisons a rdf:Property ; rdfs:label "comparisons"@en .
+mmic:conditions a rdf:Property ; rdfs:label "conditions"@en .
+mmic:constraints a rdf:Property ; rdfs:label "constraints"@en .
+mmic:controller a rdf:Property ; rdfs:label "controller"@en .
+mmic:corrections a rdf:Property ; rdfs:label "corrections"@en .
+mmic:coverage a rdf:Property ; rdfs:label "coverage"@en .
+mmic:delaySeconds a rdf:Property ; rdfs:label "delaySeconds"@en .
+mmic:designId a rdf:Property ; rdfs:label "designId"@en .
+mmic:designs a rdf:Property ; rdfs:label "designs"@en .
+mmic:deterministic a rdf:Property ; rdfs:label "deterministic"@en .
+mmic:digitalEntityId a rdf:Property ; rdfs:label "digitalEntityId"@en .
+mmic:direction a rdf:Property ; rdfs:label "direction"@en .
+mmic:domain a rdf:Property ; rdfs:label "domain"@en .
+mmic:durationPolicy a rdf:Property ; rdfs:label "durationPolicy"@en .
+mmic:durationSeconds a rdf:Property ; rdfs:label "durationSeconds"@en .
+mmic:encoding a rdf:Property ; rdfs:label "encoding"@en .
+mmic:end a rdf:Property ; rdfs:label "end"@en .
+mmic:endTurn a rdf:Property ; rdfs:label "endTurn"@en .
+mmic:environmentRealizationId a rdf:Property ; rdfs:label "environmentRealizationId"@en .
+mmic:events a rdf:Property ; rdfs:label "events"@en .
+mmic:evidence a rdf:Property ; rdfs:label "evidence"@en .
+mmic:evidenceIds a rdf:Property ; rdfs:label "evidenceIds"@en .
+mmic:excludedFeatureIds a rdf:Property ; rdfs:label "excludedFeatureIds"@en .
+mmic:execution a rdf:Property ; rdfs:label "execution"@en .
+mmic:exportBindings a rdf:Property ; rdfs:label "exportBindings"@en .
+mmic:exports a rdf:Property ; rdfs:label "exports"@en .
+mmic:extensions a rdf:Property ; rdfs:label "extensions"@en .
+mmic:extent a rdf:Property ; rdfs:label "extent"@en .
+mmic:externalIdentifiers a rdf:Property ; rdfs:label "externalIdentifiers"@en .
+mmic:extrapolation a rdf:Property ; rdfs:label "extrapolation"@en .
+mmic:fabricationStatus a rdf:Property ; rdfs:label "fabricationStatus"@en .
+mmic:fabrications a rdf:Property ; rdfs:label "fabrications"@en .
+mmic:face a rdf:Property ; rdfs:label "face"@en .
+mmic:features a rdf:Property ; rdfs:label "features"@en .
+mmic:fragmentBounds a rdf:Property ; rdfs:label "fragmentBounds"@en .
+mmic:gapPolicy a rdf:Property ; rdfs:label "gapPolicy"@en .
+mmic:geometry a rdf:Property ; rdfs:label "geometry"@en .
+mmic:historicalApplicability a rdf:Property ; rdfs:label "historicalApplicability"@en .
+mmic:id a rdf:Property ; rdfs:label "id"@en .
+mmic:index a rdf:Property ; rdfs:label "index"@en .
+mmic:initialState a rdf:Property ; rdfs:label "initialState"@en .
+mmic:initialValue a rdf:Property ; rdfs:label "initialValue"@en .
+mmic:inspectionRealizationId a rdf:Property ; rdfs:label "inspectionRealizationId"@en .
+mmic:instrumentId a rdf:Property ; rdfs:label "instrumentId"@en .
+mmic:interpolation a rdf:Property ; rdfs:label "interpolation"@en .
+mmic:interpretations a rdf:Property ; rdfs:label "interpretations"@en .
+mmic:interventionActivityId a rdf:Property ; rdfs:label "interventionActivityId"@en .
+mmic:issuer a rdf:Property ; rdfs:label "issuer"@en .
+mmic:joins a rdf:Property ; rdfs:label "joins"@en .
+mmic:keys a rdf:Property ; rdfs:label "keys"@en .
+mmic:kind a rdf:Property ; rdfs:label "kind"@en .
+mmic:label a rdf:Property ; rdfs:label "label"@en .
+mmic:layoutRealizationId a rdf:Property ; rdfs:label "layoutRealizationId"@en .
+mmic:left a rdf:Property ; rdfs:label "left"@en .
+mmic:leftEventId a rdf:Property ; rdfs:label "leftEventId"@en .
+mmic:leftInterpretationId a rdf:Property ; rdfs:label "leftInterpretationId"@en .
+mmic:length a rdf:Property ; rdfs:label "length"@en .
+mmic:levels a rdf:Property ; rdfs:label "levels"@en .
+mmic:location a rdf:Property ; rdfs:label "location"@en .
+mmic:locator a rdf:Property ; rdfs:label "locator"@en .
+mmic:losses a rdf:Property ; rdfs:label "losses"@en .
+mmic:matchedCoverage a rdf:Property ; rdfs:label "matchedCoverage"@en .
+mmic:material a rdf:Property ; rdfs:label "material"@en .
+mmic:maxResidualSeconds a rdf:Property ; rdfs:label "maxResidualSeconds"@en .
+mmic:maximumTarget a rdf:Property ; rdfs:label "maximumTarget"@en .
+mmic:measuredGeometry a rdf:Property ; rdfs:label "measuredGeometry"@en .
+mmic:message a rdf:Property ; rdfs:label "message"@en .
+mmic:method a rdf:Property ; rdfs:label "method"@en .
+mmic:metrics a rdf:Property ; rdfs:label "metrics"@en .
+mmic:minimumClearance a rdf:Property ; rdfs:label "minimumClearance"@en .
+mmic:minimumRepeatSeconds a rdf:Property ; rdfs:label "minimumRepeatSeconds"@en .
+mmic:minimumTarget a rdf:Property ; rdfs:label "minimumTarget"@en .
+mmic:missingRegions a rdf:Property ; rdfs:label "missingRegions"@en .
+mmic:modelId a rdf:Property ; rdfs:label "modelId"@en .
+mmic:modelRoleId a rdf:Property ; rdfs:label "modelRoleId"@en .
+mmic:modelSHA256 a rdf:Property ; rdfs:label "modelSHA256"@en .
+mmic:models a rdf:Property ; rdfs:label "models"@en .
+mmic:nativeRealizationId a rdf:Property ; rdfs:label "nativeRealizationId"@en .
+mmic:observationId a rdf:Property ; rdfs:label "observationId"@en .
+mmic:observations a rdf:Property ; rdfs:label "observations"@en .
+mmic:offValue a rdf:Property ; rdfs:label "offValue"@en .
+mmic:onValue a rdf:Property ; rdfs:label "onValue"@en .
+mmic:onsetSeconds a rdf:Property ; rdfs:label "onsetSeconds"@en .
+mmic:operatorAgentId a rdf:Property ; rdfs:label "operatorAgentId"@en .
+mmic:orientation a rdf:Property ; rdfs:label "orientation"@en .
+mmic:origin a rdf:Property ; rdfs:label "origin"@en .
+mmic:pairs a rdf:Property ; rdfs:label "pairs"@en .
+mmic:partIds a rdf:Property ; rdfs:label "partIds"@en .
+mmic:parts a rdf:Property ; rdfs:label "parts"@en .
+mmic:period a rdf:Property ; rdfs:label "period"@en .
+mmic:pitch a rdf:Property ; rdfs:label "pitch"@en .
+mmic:playbackId a rdf:Property ; rdfs:label "playbackId"@en .
+mmic:playbacks a rdf:Property ; rdfs:label "playbacks"@en .
+mmic:position a rdf:Property ; rdfs:label "position"@en .
+mmic:predecessorId a rdf:Property ; rdfs:label "predecessorId"@en .
+mmic:previousInterpretationId a rdf:Property ; rdfs:label "previousInterpretationId"@en .
+mmic:previousValue a rdf:Property ; rdfs:label "previousValue"@en .
+mmic:programmeId a rdf:Property ; rdfs:label "programmeId"@en .
+mmic:programmes a rdf:Property ; rdfs:label "programmes"@en .
+mmic:protocol a rdf:Property ; rdfs:label "protocol"@en .
+mmic:purpose a rdf:Property ; rdfs:label "purpose"@en .
+mmic:quantityUnit a rdf:Property ; rdfs:label "quantityUnit"@en .
+mmic:reader a rdf:Property ; rdfs:label "reader"@en .
+mmic:readerOffset a rdf:Property ; rdfs:label "readerOffset"@en .
+mmic:readerOffsetUnit a rdf:Property ; rdfs:label "readerOffsetUnit"@en .
+mmic:realizationId a rdf:Property ; rdfs:label "realizationId"@en .
+mmic:reason a rdf:Property ; rdfs:label "reason"@en .
+mmic:recordingKind a rdf:Property ; rdfs:label "recordingKind"@en .
+mmic:recordingRealizationId a rdf:Property ; rdfs:label "recordingRealizationId"@en .
+mmic:redactions a rdf:Property ; rdfs:label "redactions"@en .
+mmic:referenceStatus a rdf:Property ; rdfs:label "referenceStatus"@en .
+mmic:replacementInterpretationId a rdf:Property ; rdfs:label "replacementInterpretationId"@en .
+mmic:replacementTargetId a rdf:Property ; rdfs:label "replacementTargetId"@en .
+mmic:replacementValue a rdf:Property ; rdfs:label "replacementValue"@en .
+mmic:reportRealizationId a rdf:Property ; rdfs:label "reportRealizationId"@en .
+mmic:reproducibility a rdf:Property ; rdfs:label "reproducibility"@en .
+mmic:resetPolicy a rdf:Property ; rdfs:label "resetPolicy"@en .
+mmic:response a rdf:Property ; rdfs:label "response"@en .
+mmic:responseAssumption a rdf:Property ; rdfs:label "responseAssumption"@en .
+mmic:reviewStatus a rdf:Property ; rdfs:label "reviewStatus"@en .
+mmic:right a rdf:Property ; rdfs:label "right"@en .
+mmic:rightEventId a rdf:Property ; rdfs:label "rightEventId"@en .
+mmic:rightInterpretationId a rdf:Property ; rdfs:label "rightInterpretationId"@en .
+mmic:role a rdf:Property ; rdfs:label "role"@en .
+mmic:roleAssignmentId a rdf:Property ; rdfs:label "roleAssignmentId"@en .
+mmic:roleAssignments a rdf:Property ; rdfs:label "roleAssignments"@en .
+mmic:roleId a rdf:Property ; rdfs:label "roleId"@en .
+mmic:roles a rdf:Property ; rdfs:label "roles"@en .
+mmic:rounding a rdf:Property ; rdfs:label "rounding"@en .
+mmic:runtime a rdf:Property ; rdfs:label "runtime"@en .
+mmic:samples a rdf:Property ; rdfs:label "samples"@en .
+mmic:schemaVersion a rdf:Property ; rdfs:label "schemaVersion"@en .
+mmic:scheme a rdf:Property ; rdfs:label "scheme"@en .
+mmic:scope a rdf:Property ; rdfs:label "scope"@en .
+mmic:seconds a rdf:Property ; rdfs:label "seconds"@en .
+mmic:segmented a rdf:Property ; rdfs:label "segmented"@en .
+mmic:selected a rdf:Property ; rdfs:label "selected"@en .
+mmic:selection a rdf:Property ; rdfs:label "selection"@en .
+mmic:selector a rdf:Property ; rdfs:label "selector"@en .
+mmic:sequence a rdf:Property ; rdfs:label "sequence"@en .
+mmic:sha256 a rdf:Property ; rdfs:label "sha256"@en .
+mmic:signalKind a rdf:Property ; rdfs:label "signalKind"@en .
+mmic:sourceBounds a rdf:Property ; rdfs:label "sourceBounds"@en .
+mmic:sourceFeatureIds a rdf:Property ; rdfs:label "sourceFeatureIds"@en .
+mmic:sourceIRI a rdf:Property ; rdfs:label "sourceIRI"@en .
+mmic:sourceKind a rdf:Property ; rdfs:label "sourceKind"@en .
+mmic:sourceRealizationId a rdf:Property ; rdfs:label "sourceRealizationId"@en .
+mmic:sourceRealizationIds a rdf:Property ; rdfs:label "sourceRealizationIds"@en .
+mmic:spec a rdf:Property ; rdfs:label "spec"@en .
+mmic:specSHA256 a rdf:Property ; rdfs:label "specSHA256"@en .
+mmic:start a rdf:Property ; rdfs:label "start"@en .
+mmic:startTurn a rdf:Property ; rdfs:label "startTurn"@en .
+mmic:stateId a rdf:Property ; rdfs:label "stateId"@en .
+mmic:states a rdf:Property ; rdfs:label "states"@en .
+mmic:status a rdf:Property ; rdfs:label "status"@en .
+mmic:synthetic a rdf:Property ; rdfs:label "synthetic"@en .
+mmic:target a rdf:Property ; rdfs:label "target"@en .
+mmic:targetId a rdf:Property ; rdfs:label "targetId"@en .
+mmic:tempoMicroseconds a rdf:Property ; rdfs:label "tempoMicroseconds"@en .
+mmic:ticksPerBeat a rdf:Property ; rdfs:label "ticksPerBeat"@en .
+mmic:timeUnit a rdf:Property ; rdfs:label "timeUnit"@en .
+mmic:timing a rdf:Property ; rdfs:label "timing"@en .
+mmic:toleranceSeconds a rdf:Property ; rdfs:label "toleranceSeconds"@en .
+mmic:tool a rdf:Property ; rdfs:label "tool"@en .
+mmic:trackId a rdf:Property ; rdfs:label "trackId"@en .
+mmic:trackIndex a rdf:Property ; rdfs:label "trackIndex"@en .
+mmic:tracks a rdf:Property ; rdfs:label "tracks"@en .
+mmic:trajectory a rdf:Property ; rdfs:label "trajectory"@en .
+mmic:uncertaintySeconds a rdf:Property ; rdfs:label "uncertaintySeconds"@en .
+mmic:unit a rdf:Property ; rdfs:label "unit"@en .
+mmic:unmatchedLeftEventIds a rdf:Property ; rdfs:label "unmatchedLeftEventIds"@en .
+mmic:unmatchedRightEventIds a rdf:Property ; rdfs:label "unmatchedRightEventIds"@en .
+mmic:unsupportedPolicy a rdf:Property ; rdfs:label "unsupportedPolicy"@en .
+mmic:value a rdf:Property ; rdfs:label "value"@en .
+mmic:velocity a rdf:Property ; rdfs:label "velocity"@en .
+mmic:version a rdf:Property ; rdfs:label "version"@en .
+mmic:wrapsSeam a rdf:Property ; rdfs:label "wrapsSeam"@en .
+mmic:Null a owl:NamedIndividual .
+mmic:ControlFunction a skos:ConceptScheme .
+mmic:Sustain a skos:Concept ; skos:inScheme mmic:ControlFunction ; skos:prefLabel "Sustain"@en ; skos:scopeNote "Use CC64 when the selected export is MIDI 1.0 control change; native mechanical meaning remains model-qualified."@en .
+mmic:SoftPedal a skos:Concept ; skos:inScheme mmic:ControlFunction ; skos:prefLabel "Soft pedal"@en ; skos:scopeNote "Use CC67 when the selected export is MIDI 1.0 control change; native mechanical meaning remains model-qualified."@en .
+<https://w3id.org/modavis/vao/mmic#scheme/basis> a skos:ConceptScheme ; rdfs:label "basis"@en .
+<https://w3id.org/modavis/vao/mmic#concept/basis/assumed> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/basis> ; skos:prefLabel "assumed"@en .
+<https://w3id.org/modavis/vao/mmic#concept/basis/estimated> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/basis> ; skos:prefLabel "estimated"@en .
+<https://w3id.org/modavis/vao/mmic#concept/basis/measured> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/basis> ; skos:prefLabel "measured"@en .
+<https://w3id.org/modavis/vao/mmic#concept/basis/synthetic> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/basis> ; skos:prefLabel "synthetic"@en .
+<https://w3id.org/modavis/vao/mmic#concept/basis/unknown> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/basis> ; skos:prefLabel "unknown"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/calibrationStatus> a skos:ConceptScheme ; rdfs:label "calibrationStatus"@en .
+<https://w3id.org/modavis/vao/mmic#concept/calibrationStatus/assumed> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/calibrationStatus> ; skos:prefLabel "assumed"@en .
+<https://w3id.org/modavis/vao/mmic#concept/calibrationStatus/estimated> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/calibrationStatus> ; skos:prefLabel "estimated"@en .
+<https://w3id.org/modavis/vao/mmic#concept/calibrationStatus/measured> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/calibrationStatus> ; skos:prefLabel "measured"@en .
+<https://w3id.org/modavis/vao/mmic#concept/calibrationStatus/uncalibrated> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/calibrationStatus> ; skos:prefLabel "uncalibrated"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/changeKind> a skos:ConceptScheme ; rdfs:label "changeKind"@en .
+<https://w3id.org/modavis/vao/mmic#concept/changeKind/description> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/changeKind> ; skos:prefLabel "description"@en .
+<https://w3id.org/modavis/vao/mmic#concept/changeKind/physical-intervention> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/changeKind> ; skos:prefLabel "physical-intervention"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/direction> a skos:ConceptScheme ; rdfs:label "direction"@en .
+<https://w3id.org/modavis/vao/mmic#concept/direction/forward> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/direction> ; skos:prefLabel "forward"@en .
+<https://w3id.org/modavis/vao/mmic#concept/direction/reverse> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/direction> ; skos:prefLabel "reverse"@en .
+<https://w3id.org/modavis/vao/mmic#concept/direction/undetermined> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/direction> ; skos:prefLabel "undetermined"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/encoding> a skos:ConceptScheme ; rdfs:label "encoding"@en .
+<https://w3id.org/modavis/vao/mmic#concept/encoding/other> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/encoding> ; skos:prefLabel "other"@en .
+<https://w3id.org/modavis/vao/mmic#concept/encoding/perforated-disc> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/encoding> ; skos:prefLabel "perforated-disc"@en .
+<https://w3id.org/modavis/vao/mmic#concept/encoding/perforated-roll> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/encoding> ; skos:prefLabel "perforated-roll"@en .
+<https://w3id.org/modavis/vao/mmic#concept/encoding/pinned-barrel> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/encoding> ; skos:prefLabel "pinned-barrel"@en .
+<https://w3id.org/modavis/vao/mmic#concept/encoding/projection-disc> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/encoding> ; skos:prefLabel "projection-disc"@en .
+<https://w3id.org/modavis/vao/mmic#concept/encoding/undetermined> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/encoding> ; skos:prefLabel "undetermined"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/fabricationStatus> a skos:ConceptScheme ; rdfs:label "fabricationStatus"@en .
+<https://w3id.org/modavis/vao/mmic#concept/fabricationStatus/design-only> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/fabricationStatus> ; skos:prefLabel "design-only"@en .
+<https://w3id.org/modavis/vao/mmic#concept/fabricationStatus/fabricated> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/fabricationStatus> ; skos:prefLabel "fabricated"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/gapPolicy> a skos:ConceptScheme ; rdfs:label "gapPolicy"@en .
+<https://w3id.org/modavis/vao/mmic#concept/gapPolicy/explicit-unmatched> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/gapPolicy> ; skos:prefLabel "explicit-unmatched"@en .
+<https://w3id.org/modavis/vao/mmic#concept/gapPolicy/none> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/gapPolicy> ; skos:prefLabel "none"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/interpolation> a skos:ConceptScheme ; rdfs:label "interpolation"@en .
+<https://w3id.org/modavis/vao/mmic#concept/interpolation/linear> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/interpolation> ; skos:prefLabel "linear"@en .
+<https://w3id.org/modavis/vao/mmic#concept/interpolation/none> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/interpolation> ; skos:prefLabel "none"@en .
+<https://w3id.org/modavis/vao/mmic#concept/interpolation/undetermined> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/interpolation> ; skos:prefLabel "undetermined"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/kind> a skos:ConceptScheme ; rdfs:label "kind"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/bridge> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "bridge"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/cyclic> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "cyclic"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/cylindrical> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "cylindrical"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/damage> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "damage"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/envelope> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "envelope"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/gate> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "gate"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/impulse> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "impulse"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/interval> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "interval"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/latch> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "latch"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/linear> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "linear"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/perforation> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "perforation"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/pin> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "pin"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/point> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "point"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/print> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "print"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/projection> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "projection"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/slot> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "slot"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/undetermined> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "undetermined"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/unknown> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "unknown"@en .
+<https://w3id.org/modavis/vao/mmic#concept/kind/unresolved> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/kind> ; skos:prefLabel "unresolved"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/message> a skos:ConceptScheme ; rdfs:label "message"@en .
+<https://w3id.org/modavis/vao/mmic#concept/message/control-change> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/message> ; skos:prefLabel "control-change"@en .
+<https://w3id.org/modavis/vao/mmic#concept/message/note> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/message> ; skos:prefLabel "note"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/origin> a skos:ConceptScheme ; rdfs:label "origin"@en .
+<https://w3id.org/modavis/vao/mmic#concept/origin/generated> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/origin> ; skos:prefLabel "generated"@en .
+<https://w3id.org/modavis/vao/mmic#concept/origin/historical> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/origin> ; skos:prefLabel "historical"@en .
+<https://w3id.org/modavis/vao/mmic#concept/origin/synthetic> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/origin> ; skos:prefLabel "synthetic"@en .
+<https://w3id.org/modavis/vao/mmic#concept/origin/unknown> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/origin> ; skos:prefLabel "unknown"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/recordingKind> a skos:ConceptScheme ; rdfs:label "recordingKind"@en .
+<https://w3id.org/modavis/vao/mmic#concept/recordingKind/physical> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/recordingKind> ; skos:prefLabel "physical"@en .
+<https://w3id.org/modavis/vao/mmic#concept/recordingKind/simulated> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/recordingKind> ; skos:prefLabel "simulated"@en .
+<https://w3id.org/modavis/vao/mmic#concept/recordingKind/unknown> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/recordingKind> ; skos:prefLabel "unknown"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/referenceStatus> a skos:ConceptScheme ; rdfs:label "referenceStatus"@en .
+<https://w3id.org/modavis/vao/mmic#concept/referenceStatus/situated-evidence> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/referenceStatus> ; skos:prefLabel "situated-evidence"@en .
+<https://w3id.org/modavis/vao/mmic#concept/referenceStatus/synthetic-test> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/referenceStatus> ; skos:prefLabel "synthetic-test"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/reproducibility> a skos:ConceptScheme ; rdfs:label "reproducibility"@en .
+<https://w3id.org/modavis/vao/mmic#concept/reproducibility/deterministic> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/reproducibility> ; skos:prefLabel "deterministic"@en .
+<https://w3id.org/modavis/vao/mmic#concept/reproducibility/documented> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/reproducibility> ; skos:prefLabel "documented"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/resetPolicy> a skos:ConceptScheme ; rdfs:label "resetPolicy"@en .
+<https://w3id.org/modavis/vao/mmic#concept/resetPolicy/event-release> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/resetPolicy> ; skos:prefLabel "event-release"@en .
+<https://w3id.org/modavis/vao/mmic#concept/resetPolicy/explicit-final-reset> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/resetPolicy> ; skos:prefLabel "explicit-final-reset"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/reviewStatus> a skos:ConceptScheme ; rdfs:label "reviewStatus"@en .
+<https://w3id.org/modavis/vao/mmic#concept/reviewStatus/provisional> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/reviewStatus> ; skos:prefLabel "provisional"@en .
+<https://w3id.org/modavis/vao/mmic#concept/reviewStatus/reviewed> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/reviewStatus> ; skos:prefLabel "reviewed"@en .
+<https://w3id.org/modavis/vao/mmic#concept/reviewStatus/unreviewed> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/reviewStatus> ; skos:prefLabel "unreviewed"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/role> a skos:ConceptScheme ; rdfs:label "role"@en .
+<https://w3id.org/modavis/vao/mmic#concept/role/auxiliary> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/role> ; skos:prefLabel "auxiliary"@en .
+<https://w3id.org/modavis/vao/mmic#concept/role/guidance> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/role> ; skos:prefLabel "guidance"@en .
+<https://w3id.org/modavis/vao/mmic#concept/role/note> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/role> ; skos:prefLabel "note"@en .
+<https://w3id.org/modavis/vao/mmic#concept/role/performance-control> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/role> ; skos:prefLabel "performance-control"@en .
+<https://w3id.org/modavis/vao/mmic#concept/role/registration> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/role> ; skos:prefLabel "registration"@en .
+<https://w3id.org/modavis/vao/mmic#concept/role/synchronization> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/role> ; skos:prefLabel "synchronization"@en .
+<https://w3id.org/modavis/vao/mmic#concept/role/transport> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/role> ; skos:prefLabel "transport"@en .
+<https://w3id.org/modavis/vao/mmic#concept/role/unknown> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/role> ; skos:prefLabel "unknown"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/signalKind> a skos:ConceptScheme ; rdfs:label "signalKind"@en .
+<https://w3id.org/modavis/vao/mmic#concept/signalKind/envelope> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/signalKind> ; skos:prefLabel "envelope"@en .
+<https://w3id.org/modavis/vao/mmic#concept/signalKind/gate> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/signalKind> ; skos:prefLabel "gate"@en .
+<https://w3id.org/modavis/vao/mmic#concept/signalKind/impulse> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/signalKind> ; skos:prefLabel "impulse"@en .
+<https://w3id.org/modavis/vao/mmic#concept/signalKind/latch> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/signalKind> ; skos:prefLabel "latch"@en .
+<https://w3id.org/modavis/vao/mmic#concept/signalKind/unresolved> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/signalKind> ; skos:prefLabel "unresolved"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/sourceKind> a skos:ConceptScheme ; rdfs:label "sourceKind"@en .
+<https://w3id.org/modavis/vao/mmic#concept/sourceKind/audio-derived> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/sourceKind> ; skos:prefLabel "audio-derived"@en .
+<https://w3id.org/modavis/vao/mmic#concept/sourceKind/carrier-derived> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/sourceKind> ; skos:prefLabel "carrier-derived"@en .
+<https://w3id.org/modavis/vao/mmic#concept/sourceKind/simulated> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/sourceKind> ; skos:prefLabel "simulated"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/status> a skos:ConceptScheme ; rdfs:label "status"@en .
+<https://w3id.org/modavis/vao/mmic#concept/status/accepted> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/status> ; skos:prefLabel "accepted"@en .
+<https://w3id.org/modavis/vao/mmic#concept/status/assumed> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/status> ; skos:prefLabel "assumed"@en .
+<https://w3id.org/modavis/vao/mmic#concept/status/complete> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/status> ; skos:prefLabel "complete"@en .
+<https://w3id.org/modavis/vao/mmic#concept/status/estimated> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/status> ; skos:prefLabel "estimated"@en .
+<https://w3id.org/modavis/vao/mmic#concept/status/hypothesis> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/status> ; skos:prefLabel "hypothesis"@en .
+<https://w3id.org/modavis/vao/mmic#concept/status/measured> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/status> ; skos:prefLabel "measured"@en .
+<https://w3id.org/modavis/vao/mmic#concept/status/partial> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/status> ; skos:prefLabel "partial"@en .
+<https://w3id.org/modavis/vao/mmic#concept/status/rejected> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/status> ; skos:prefLabel "rejected"@en .
+<https://w3id.org/modavis/vao/mmic#concept/status/undetermined> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/status> ; skos:prefLabel "undetermined"@en .
+<https://w3id.org/modavis/vao/mmic#concept/status/unknown> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/status> ; skos:prefLabel "unknown"@en .
+<https://w3id.org/modavis/vao/mmic#scheme/unsupportedPolicy> a skos:ConceptScheme ; rdfs:label "unsupportedPolicy"@en .
+<https://w3id.org/modavis/vao/mmic#concept/unsupportedPolicy/explicit-exclusions> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/unsupportedPolicy> ; skos:prefLabel "explicit-exclusions"@en .
+<https://w3id.org/modavis/vao/mmic#concept/unsupportedPolicy/reject> a skos:Concept ; skos:inScheme <https://w3id.org/modavis/vao/mmic#scheme/unsupportedPolicy> ; skos:prefLabel "reject"@en .

@@ -1,0 +1,34 @@
+{
+  "id": "https://w3id.org/modavis/vao/profile/mmic/1.0.0",
+  "specificationVersion": "1.0.0",
+  "status": "released",
+  "owner": "VAO maintainers",
+  "envelopeVersions": [
+    "0.6.0"
+  ],
+  "capabilities": {
+    "documentation": "https://w3id.org/modavis/vao/profile/mmic/1.0.0/capability/documentation",
+    "decoding": "https://w3id.org/modavis/vao/profile/mmic/1.0.0/capability/decoding",
+    "comparison": "https://w3id.org/modavis/vao/profile/mmic/1.0.0/capability/comparison",
+    "generation": "https://w3id.org/modavis/vao/profile/mmic/1.0.0/capability/generation"
+  },
+  "dependencyCatalogSHA256": "194c55a6acdfdce1cfe3043b9e1a725cb831837fae9460133f96dff825e2a129",
+  "supportedTopologies": [
+    "linear",
+    "cyclic",
+    "cylindrical with complete piecewise-linear reader path"
+  ],
+  "supportedExports": [
+    "SMF 0/1 PPQN; explicit fixed initial tempo; note and CC 0..119"
+  ],
+  "unsupportedExecution": [
+    "segmented transport",
+    "unknown geometry",
+    "uncalibrated timing",
+    "SysEx",
+    "SMPTE",
+    "MPE"
+  ],
+  "historicalCertification": "not established",
+  "resolvableNamespaceClaim": false
+}

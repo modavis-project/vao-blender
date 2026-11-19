@@ -7,6 +7,7 @@ import math
 
 import bpy
 
+from ..core.archive import MODERN_VERSIONS
 from .performance import EVENT_KEYS
 from .scene_adapter import representation_collection
 from .session import active_session, selected_detached
@@ -61,7 +62,10 @@ class VAO_PT_overview(VAO_PT_base, bpy.types.Panel):
 
         states = layout.box()
         states.label(text="Independent result dimensions")
-        _state_row(states, "Package validity", runtime.validity_state)
+        validity_label = (
+            "Core and carrier" if runtime.format_version == "0.6.0" else "Package validity"
+        )
+        _state_row(states, validity_label, runtime.validity_state)
         _state_row(states, "Runtime support", runtime.support_state)
         _state_row(states, "Rights/media", runtime.rights_state)
         _state_row(states, "Scene data", runtime.materialization_state)
@@ -81,7 +85,7 @@ class VAO_PT_overview(VAO_PT_base, bpy.types.Panel):
         if runtime.release_id:
             _full_value(box, "Release", runtime.release_id)
         box.label(text=f"Entities {runtime.entity_count:,} · relations {runtime.relation_count:,}")
-        if runtime.format_version in {"0.3.2", "0.4.0", "0.5.0"}:
+        if runtime.format_version in MODERN_VERSIONS:
             box.label(
                 text=(
                     f"Logical assets {runtime.logical_asset_count:,} · "
@@ -91,7 +95,7 @@ class VAO_PT_overview(VAO_PT_base, bpy.types.Panel):
             box.label(
                 text=f"Carrier {runtime.carrier_mode or '—'} · verified {runtime.verified_assets:,}"
             )
-            if runtime.format_version == "0.5.0":
+            if runtime.format_version in {"0.5.0", "0.6.0"}:
                 box.label(
                     text=(
                         f"Observations {runtime.scientific_observation_count:,} · "
@@ -304,7 +308,7 @@ class VAO_PT_play(VAO_PT_base, bpy.types.Panel):
         layout = self.layout
         runtime = context.scene.vao_runtime
         session = active_session(context.scene)
-        if session and session.outcome.contract_line in {"0.3.2", "0.4.0", "0.5.0"}:
+        if session and session.outcome.contract_line in MODERN_VERSIONS:
             layout.label(text="Modern program-audio/acoustic execution is unavailable", icon="INFO")
             layout.label(text="Validated records remain inspectable; supported geometry can load")
             return
@@ -394,6 +398,7 @@ class VAO_PT_diagnostics(VAO_PT_base, bpy.types.Panel):
             "0.3.2": "Pinned private VAO 0.3.2 implemented editor draft",
             "0.4.0": "Pinned published VAO 0.4.0 standard",
             "0.5.0": "Pinned VAO 0.5.0 standard candidate",
+            "0.6.0": "Pinned published VAO 0.6.0 standard",
         }.get(outcome.contract_line, "Pinned private VAO 0.2.2 development snapshot")
         summary.label(text=contract_status, icon="INFO")
 

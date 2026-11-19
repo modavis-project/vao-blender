@@ -4,6 +4,12 @@ All notable changes are documented here. The project follows semantic versioning
 for the Blender extension; supported VAO format versions remain exact contract
 identities.
 
+## Development
+
+- Read the published VAO 0.6.0 Core and carrier contract offline. Verify the
+  embedded bytes and inspect MMIC declarations alongside the other records.
+- Keep MMIC domain validation and execution outside the Blender runtime.
+
 ## 0.4.0-rc.2 — Unreleased
 
 - Added exact offline validation for the VAO 0.5.0 candidate at standard commit

@@ -1,0 +1,41 @@
+{
+  "profile": "https://w3id.org/modavis/vao/profile/mmic/1.0.0",
+  "specificationVersion": "1.0.0",
+  "ontologyVersionIRI": "https://w3id.org/modavis/vao/profile/mmic/1.0.0/ontology",
+  "networkResolution": false,
+  "normativeImportClosure": [
+    "mechanical-music.ttl"
+  ],
+  "artifacts": [
+    {
+      "path": "mmic.schema.json",
+      "byteSize": 59425,
+      "sha256": "0f7acd31cd17bac592e1e32960e7e891f83f80c04e14c1508a37669d1235b182"
+    },
+    {
+      "path": "mechanical-music.ttl",
+      "byteSize": 34356,
+      "sha256": "4e91967befca16bbb3944acd3b8717a20275f5ee0103338eec19ce300e3e8cca"
+    },
+    {
+      "path": "context.jsonld",
+      "byteSize": 13587,
+      "sha256": "ec7feb97ea0c4c5486bdc5ab859c5a4a148857794ecc0951c0817aa7915c3f17"
+    },
+    {
+      "path": "shapes.ttl",
+      "byteSize": 1201,
+      "sha256": "d8b58c0e7b5f62f6511437fdec397d18cbce5af82c4f289752df197a37978c03"
+    },
+    {
+      "path": "optional-alignments.ttl",
+      "byteSize": 657,
+      "sha256": "4a670c3d2bf032ba443caa7df09b8d883ebeec1b857bab3f9be3e500e5294cb5"
+    }
+  ],
+  "optionalAlignments": {
+    "CRM": "7.1.3",
+    "EDM": "5.2.8",
+    "status": "informative mappings only; receiving-profile compliance is not asserted"
+  }
+}

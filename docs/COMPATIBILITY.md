@@ -9,27 +9,28 @@ macOS x64 host build on which the release can pass the same native evidence gate
 
 ## VAO format matrix
 
-| Capability | 0.2.2 | 0.3.2 editor draft | 0.4.0 published | 0.5.0 candidate |
-| --- | :---: | :---: | :---: | :---: |
-| Exact pinned contract validation | Yes | Yes | Yes | Yes, by commit |
-| Carrier/manifest/release binding | Legacy rules | Yes | Yes | Yes |
-| Bootstrap/preservation carrier modes | No | Yes | Yes | Yes |
-| Streaming payload size and SHA-256 | Yes | Yes | Yes | Yes |
-| Archive hash and payload completeness gate | Yes | Yes | Yes | Yes |
-| Graph/entity/asset inspection | Yes | Yes | Yes | Yes |
-| Logical asset and realization model | No | Yes | Yes | Yes |
-| Exact embedded GLB realization import | Yes | Yes | Yes | Yes |
-| Coordinate frames and poses | No | Yes | Yes, including 2D | Yes, including 2D |
-| Measurement, response-set, and RIR metadata | No | Yes | Yes | Yes |
-| External carrier-member network retrieval | No | No | No | No; use VAO CLI first |
-| Supported instrument interaction/audio preview | Exact compiled subset | No | No | No |
-| Acoustic rendering, convolution, simulation | No | No | No | No |
-| Package scripts or runtime programs | Never | Never | Never | Never |
+| Capability | 0.2.2 | 0.3.2 editor draft | 0.4.0 published | 0.5.0 candidate | 0.6.0 published |
+| --- | :---: | :---: | :---: | :---: | :---: |
+| Exact pinned contract validation | Yes | Yes | Yes | Yes, by commit | Core and carrier |
+| Carrier/manifest/release binding | Legacy rules | Yes | Yes | Yes | Yes |
+| Bootstrap/preservation carrier modes | No | Yes | Yes | Yes | Yes |
+| Streaming payload size and SHA-256 | Yes | Yes | Yes | Yes | Yes |
+| Archive hash and payload completeness gate | Yes | Yes | Yes | Yes | Yes |
+| Graph/entity/asset inspection | Yes | Yes | Yes | Yes | Yes |
+| Logical asset and realization model | No | Yes | Yes | Yes | Yes |
+| Exact embedded GLB realization import | Yes | Yes | Yes | Yes | Yes |
+| Coordinate frames and poses | No | Yes | Yes, including 2D | Yes, including 2D | Yes, including 2D |
+| Measurement, response-set, and RIR metadata | No | Yes | Yes | Yes | Yes |
+| External carrier-member network retrieval | No | No | No | No; use VAO CLI first | No; use VAO CLI first |
+| Supported instrument interaction/audio preview | Exact compiled subset | No | No | No | No |
+| Acoustic rendering, convolution, simulation | No | No | No | No | No |
+| Package scripts or runtime programs | Never | Never | Never | Never | Never |
+| MMIC declarations and verified payload inventory | No | No | No | No | Inspection only |
 
-The four readers are independent. Only the literal format versions shown above
+Each format uses its own pinned reader. Only the literal format versions shown above
 are accepted. VAO 0.3.0, 0.4.1, a prerelease label, or a missing version is not
 interpreted as a supported version. The 0.5 reader is pinned to standard commit
-`d17b3f188fdf7fadd01ba025383e4feca8def935` and must be repinned when the candidate changes.
+`d17b3f188fdf7fadd01ba025383e4feca8def935` for existing candidate data.
 
 ## What “supported” means
 

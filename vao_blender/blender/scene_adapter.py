@@ -8,6 +8,7 @@ from pathlib import Path
 import bpy
 from mathutils import Matrix
 
+from ..core.archive import MODERN_VERSIONS
 from ..core.gltf import inject_glb_node_indices
 from ..core.vao03 import frame_to_root, matrix_inverse, matrix_multiply, pose_to_root
 
@@ -280,7 +281,7 @@ def import_visual(
         )
     if bpy.context.scene is not None and bpy.context.scene != scene:
         raise RuntimeError("visual import must run in the owning scene context")
-    is_modern = session.outcome.contract_line in {"0.3.2", "0.4.0", "0.5.0"}
+    is_modern = session.outcome.contract_line in MODERN_VERSIONS
     graph = session.outcome.graph
     if is_modern:
         acoustic_scene = session.outcome.acoustic_scene

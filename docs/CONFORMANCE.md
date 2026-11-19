@@ -1,13 +1,14 @@
-# VAO 0.4.0 and 0.5.0 conformance
+# VAO conformance
 
-VAO Blender retains two independent modern contract pins:
+VAO Blender uses three independent modern contract pins:
 
 - the signed VAO Standard 0.4.0 release archive, SHA-256 `2acbda0a257c7f71e2b57e01617678745de2ecf11197b4687aa623f71d23955d`;
-- VAO Standard 0.5.0 candidate commit `d17b3f188fdf7fadd01ba025383e4feca8def935`, whose normative release-bundle inventory has SHA-256 `82efb6ee31353e72c81671e2c6500c51dc223d7f21af4983705933ea6caa5c96`.
+- VAO Standard 0.5.0 candidate commit `d17b3f188fdf7fadd01ba025383e4feca8def935`, whose normative release-bundle inventory has SHA-256 `82efb6ee31353e72c81671e2c6500c51dc223d7f21af4983705933ea6caa5c96`;
+- VAO Standard 0.6.0 release commit `9d477213eab90defa75bef0f44e0d292a83e68d9`, with normative bundle SHA-256 `13362f26fcd38132920198ccb85d992d2c1d40911af9b50aec343887d2ec3068`.
 
 The 0.5 pin is explicitly a candidate, not a published-standard claim. Its source commit, normative artifacts, reference validator, local dependencies, licence, and provenance are vendored and verified before use.
 
-For an embedded 0.4 or 0.5 carrier, validation proceeds in this order:
+For an embedded 0.4, 0.5 or 0.6 carrier, validation proceeds in this order:
 
 1. preflight archive paths, entry kinds, counts, compression ratios, and size limits;
 2. read bounded `META-INF/vao-carrier.json` and `vao-manifest.json` bytes and parse them as strict duplicate-key-free finite JSON;
@@ -31,7 +32,14 @@ realization, checks carrier mode and manifest identity, and installs a metadata
 session. Prior verification performed by another tool is not silently trusted as
 a substitute for this extension's own requested complete pass.
 
-## Deliberate non-claims
+## Mechanical music
+
+For an MMIC carrier the 0.6.0 Core reader checks the profile declaration, carrier
+and embedded bytes. Blender displays the indexed records and reports MMIC as
+unsupported. Use the released VAO reference tools to validate MMIC domain data.
+Blender does not run MMIC decoding, comparison, generation or playback.
+
+## Scope
 
 VAO Blender is a conforming consumer only for the capabilities it reports. It is not the VAO standard, a general authoring tool, a certification authority, a malware scanner, a rights-clearance service, or a scientific-validity reviewer. It does not implement modern interaction/runtime execution, remote carrier-member acquisition, or acoustic rendering. Conformance does not establish the truth or adequacy of a measurement, simulation, reconstruction, or rights assertion.
 

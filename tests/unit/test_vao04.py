@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import tempfile
 import unittest
 import zipfile
@@ -82,24 +83,51 @@ def rebuild_carrier(
     return destination
 
 
-def build_visual_bootstrap(destination: Path) -> Path:
+def build_visual_bootstrap(destination: Path, *, format_version: str = "0.4.0") -> Path:
     manifest_data = VISUAL_MANIFEST.read_bytes()
     manifest = json.loads(manifest_data)
+    if format_version == "0.6.0":
+        # This is a new test release for the same verified GLB bytes.
+        manifest["formatVersion"] = format_version
+        manifest["$schema"] = manifest["$schema"].replace("/0.4.0/", "/0.6.0/")
+        manifest["@context"][0] = manifest["@context"][0].replace("/0.4.0/", "/0.6.0/")
+        manifest["modavisBinding"]["mappingVersion"] = format_version
+        manifest["modavisBinding"]["mappingIRI"] = (
+            "https://w3id.org/modavis/vao/0.6.0/modavis-mapping"
+        )
+        old_release = manifest["release"]["id"]
+        new_release = old_release + ":vao06-regression"
+        manifest["release"]["id"] = new_release
+        manifest["release"]["contentVersion"] = "0.6.0-test-1"
+        for activity in manifest["scientific"]["activities"]:
+            activity["outputIds"] = [
+                new_release if item == old_release else item
+                for item in activity.get("outputIds", [])
+            ]
+        for profile in manifest["profiles"]:
+            profile["version"] = format_version
+        manifest_data = re.sub(
+            r'(https://w3id.org/modavis/vao/profile/[^"\s]+?)/0\.4\.0(?=")',
+            r"\1/0.6.0",
+            json.dumps(manifest, indent=2, ensure_ascii=False),
+        ).encode("utf-8")
     realization_id = "urn:vao:fixture:acousticrooms:realization:geometry:glb"
     payload_path = "payload/geometry/Bathrooms_idx_0.glb"
     with zipfile.ZipFile(VAO03_VISUAL_FIXTURE, "r") as source:
         glb = source.read(payload_path)
     carrier = {
-        "$schema": "https://w3id.org/modavis/vao/0.4.0/schema/carrier.json",
+        "$schema": f"https://w3id.org/modavis/vao/{format_version}/schema/carrier.json",
         "carrierMode": "bootstrap",
         "completeGroupIds": [],
         "embeddedRealizations": [{"path": payload_path, "realizationId": realization_id}],
-        "formatVersion": "0.4.0",
+        "formatVersion": format_version,
         "manifestByteSize": len(manifest_data),
         "manifestSHA256": hashlib.sha256(manifest_data).hexdigest(),
         "releaseId": manifest["release"]["id"],
         "type": "VAOCarrier",
     }
+    if format_version == "0.6.0":
+        carrier["id"] = "urn:vao:test:visual-regression:06:carrier"
     carrier_data = (
         json.dumps(carrier, indent=2, ensure_ascii=False, sort_keys=True, allow_nan=False) + "\n"
     ).encode("utf-8")

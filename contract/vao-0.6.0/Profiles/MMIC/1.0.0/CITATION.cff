@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "Cite the versioned VAO Standard when using this MMIC profile."
+title: "Mechanical Music Information Carriers (MMIC) Application Profile"
+version: "1.0.0"
+date-released: 2026-10-10
+license: CC-BY-4.0
+authors:
+  - family-names: Ukolov
+    given-names: Dominik
+    orcid: https://orcid.org/0000-0002-7904-3892
+repository-code: https://github.com/modavis-project/vao-standard
+url: https://github.com/modavis-project/vao-standard/tree/v0.6.0/Profiles/MMIC/1.0.0

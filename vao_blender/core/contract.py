@@ -100,10 +100,27 @@ FILE_05_SHA256 = {
     "requirements-lock.txt": "cfc21919a7f6c3eda016e2d2b37c75298bf7760469bb6938833dd60255feb30b",
 }
 
+STANDARD_06_COMMIT = "9d477213eab90defa75bef0f44e0d292a83e68d9"
+RELEASE_BUNDLE_06_SHA256 = "13362f26fcd38132920198ccb85d992d2c1d40911af9b50aec343887d2ec3068"
+CONTRACT_06_ROOT = Path(__file__).resolve().parents[2] / "contract" / "vao-0.6.0"
+FILE_06_SHA256 = {
+    "Schemas/vao-release-bundle-0.6.0.json": RELEASE_BUNDLE_06_SHA256,
+    "Schemas/vao-manifest-0.3.schema.json": "7b1a8aeb7417a2dbb1f93a0c3dfa2dfd4569cccc259dd7a4bc88dc06d9e0a9ea",
+    "Schemas/vao-manifest-0.4.0.schema.json": "3b8fba703654b8f5e42101e2ecc9fca769bf19115d01ae13d044a36c10fcbc83",
+    "Tools/mmic.py": "a4e4e59e5c2c73d5a5fc9b91c7118b791cd262c8d604534cb9e419b9414ae0a2",
+    "Tools/vao03.py": "ff22f72bdf691e87f0101c682238cd2da933643dca86e82d318e3b75f87211ac",
+    "Tools/vao06.py": "81929e42fbd42bfaf0aba1a6648c90d73e23cfab882d9c37fe42775ba59a05aa",
+    "Tools/vao06_runtime.py": "335699f7b33a4db97e9a5cdfeb0d0ba2d2a13f72ab70b116140af865fa62f0ed",
+    "Tools/vao_resources.py": "4af739d85c5d31ec6f87cf6074372904a27eec06a3d8543eb7123bcdf34297b1",
+    "Tools/vaom.py": "e52d11ccd5c6305345b6aac4f33949e4f1a1074e2c7374d031b6f35a36644eb0",
+}
+
+
 _REFERENCE_LOCK = threading.Lock()
 _REFERENCE_03: ModuleType | None = None
 _REFERENCE_04: ModuleType | None = None
 _REFERENCE_05: ModuleType | None = None
+_REFERENCE_06: ModuleType | None = None
 
 
 class ContractIntegrityError(RuntimeError):
@@ -205,49 +222,62 @@ def verify_contract_04() -> None:
             )
 
 
-def verify_contract_05() -> None:
-    """Verify the commit-pinned VAO 0.5.0 candidate and normative bundle."""
+def _verify_commit_bundle(root: Path, version: str, commit: str, file_pins: dict[str, str]) -> None:
     try:
-        recorded = (CONTRACT_05_ROOT / "STANDARD_COMMIT").read_text(encoding="ascii").strip()
+        recorded = (root / "STANDARD_COMMIT").read_text(encoding="ascii").strip()
     except OSError as exc:
-        raise ContractIntegrityError("VAO 0.5.0 contract commit pin is absent") from exc
-    if recorded != STANDARD_05_COMMIT:
-        raise ContractIntegrityError("VAO 0.5.0 contract commit pin does not match")
-    for name, expected in FILE_05_SHA256.items():
-        path = CONTRACT_05_ROOT / name
+        raise ContractIntegrityError(f"VAO {version} contract commit pin is absent") from exc
+    if recorded != commit:
+        raise ContractIntegrityError(f"VAO {version} contract commit pin does not match")
+    for name, expected in file_pins.items():
+        path = root / name
         try:
             actual = hashlib.sha256(path.read_bytes()).hexdigest()
         except OSError as exc:
             raise ContractIntegrityError(
-                f"vendored VAO 0.5.0 contract file is unavailable: {name}"
+                f"vendored VAO {version} contract file is unavailable: {name}"
             ) from exc
         if actual != expected:
             raise ContractIntegrityError(
-                f"vendored VAO 0.5.0 contract file failed integrity: {name}"
+                f"vendored VAO {version} contract file failed integrity: {name}"
             )
 
-    bundle_path = CONTRACT_05_ROOT / "Schemas" / "vao-release-bundle-0.5.0.json"
+    bundle_path = root / "Schemas" / f"vao-release-bundle-{version}.json"
     try:
         bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
         artifacts = bundle["artifacts"]
     except (OSError, UnicodeError, json.JSONDecodeError, KeyError, TypeError) as exc:
-        raise ContractIntegrityError("VAO 0.5.0 normative artifact bundle is unreadable") from exc
-    if bundle.get("formatVersion") != "0.5.0" or not isinstance(artifacts, list):
-        raise ContractIntegrityError("VAO 0.5.0 normative artifact bundle has an invalid identity")
+        raise ContractIntegrityError(
+            f"VAO {version} normative artifact bundle is unreadable"
+        ) from exc
+    if bundle.get("formatVersion") != version or not isinstance(artifacts, list):
+        raise ContractIntegrityError(
+            f"VAO {version} normative artifact bundle has an invalid identity"
+        )
     for artifact in artifacts:
         try:
             name = str(artifact["path"])
             expected_size = int(artifact["byteSize"])
             expected_digest = str(artifact["sha256"])
-            data = (CONTRACT_05_ROOT / name).read_bytes()
+            data = (root / name).read_bytes()
         except (OSError, KeyError, TypeError, ValueError) as exc:
             raise ContractIntegrityError(
-                "VAO 0.5.0 normative artifact inventory is incomplete"
+                f"VAO {version} normative artifact inventory is incomplete"
             ) from exc
         if len(data) != expected_size or hashlib.sha256(data).hexdigest() != expected_digest:
             raise ContractIntegrityError(
-                f"vendored VAO 0.5.0 normative artifact failed integrity: {name}"
+                f"vendored VAO {version} normative artifact failed integrity: {name}"
             )
+
+
+def verify_contract_05() -> None:
+    """Verify the commit-pinned VAO 0.5.0 candidate and normative bundle."""
+    _verify_commit_bundle(CONTRACT_05_ROOT, "0.5.0", STANDARD_05_COMMIT, FILE_05_SHA256)
+
+
+def verify_contract_06() -> None:
+    """Verify the published VAO 0.6.0 normative bundle and reference validator."""
+    _verify_commit_bundle(CONTRACT_06_ROOT, "0.6.0", STANDARD_06_COMMIT, FILE_06_SHA256)
 
 
 def verify_contracts() -> None:
@@ -255,6 +285,7 @@ def verify_contracts() -> None:
     verify_contract_03()
     verify_contract_04()
     verify_contract_05()
+    verify_contract_06()
 
 
 def reference_validator_03() -> ModuleType:
@@ -393,4 +424,36 @@ def reference_validator_05() -> ModuleType:
         if getattr(reference, "FORMAT_VERSION", None) != "0.5.0":
             raise ContractIntegrityError("pinned VAO validator has an unexpected format version")
         _REFERENCE_05 = reference
+        return reference
+
+
+def reference_validator_06() -> ModuleType:
+    """Load the published VAO 0.6.0 reference validator offline."""
+    global _REFERENCE_06
+    with _REFERENCE_LOCK:
+        if _REFERENCE_06 is not None:
+            return _REFERENCE_06
+        verify_contract_06()
+        tools = CONTRACT_06_ROOT / "Tools"
+        aliases = ("vao_resources", "vaom", "vao03", "vao06_runtime", "mmic")
+        previous = {name: sys.modules.get(name) for name in aliases}
+        try:
+            for name in aliases:
+                sys.modules[name] = _module_from_path(
+                    f"_vao_blender_pinned_060_{name}", tools / f"{name}.py"
+                )
+            reference = _module_from_path("_vao_blender_pinned_060_reference", tools / "vao06.py")
+        except ModuleNotFoundError as exc:
+            raise ContractIntegrityError(
+                "VAO 0.6.0 validation dependencies are unavailable; install the bundled wheels"
+            ) from exc
+        finally:
+            for name, module in previous.items():
+                if module is None:
+                    sys.modules.pop(name, None)
+                else:
+                    sys.modules[name] = module
+        if getattr(reference, "FORMAT_VERSION", None) != "0.6.0":
+            raise ContractIntegrityError("pinned VAO validator has an unexpected format version")
+        _REFERENCE_06 = reference
         return reference

@@ -1,0 +1,19 @@
+@prefix mmic: <https://w3id.org/modavis/vao/mmic#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+mmic:LocationShape a sh:NodeShape ; sh:targetClass mmic:GeometryLocation ;
+ sh:property [ sh:path mmic:kind ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ("point" "interval") ] ;
+ sh:property [ sh:path mmic:start ; sh:minCount 1 ; sh:maxCount 1 ] ;
+ sh:property [ sh:path mmic:end ; sh:minCount 1 ; sh:maxCount 1 ] ;
+ sh:sparql [ sh:message "Point endpoints must coincide on every axis (MMIC-07)." ; sh:select """
+ PREFIX mmic: <https://w3id.org/modavis/vao/mmic#>
+ SELECT $this WHERE { $this mmic:kind "point" ; mmic:start ?s ; mmic:end ?e .
+ OPTIONAL { $this mmic:axialStart ?a . } OPTIONAL { $this mmic:axialEnd ?b . }
+ OPTIONAL { $this mmic:startTurn ?u . } OPTIONAL { $this mmic:endTurn ?v . }
+ FILTER(?s != ?e || (BOUND(?a) != BOUND(?b)) || (BOUND(?a) && ?a != ?b) ||
+ (BOUND(?u) != BOUND(?v)) || (BOUND(?u) && ?u != ?v)) }
+ """ ] .

@@ -14,7 +14,7 @@ import bpy
 from bpy.props import BoolProperty, IntProperty, StringProperty
 from bpy_extras.io_utils import ExportHelper, ImportHelper
 
-from ..core.archive import ProgressRecord, ValidationLimits, validate_package
+from ..core.archive import MODERN_VERSIONS, ProgressRecord, ValidationLimits, validate_package
 from ..core.cancellation import CancellationToken
 from ..core.diagnostics import Diagnostic, Severity, Stage, ordered
 from ..core.model import OutcomeState, ValidationOutcome
@@ -720,7 +720,7 @@ class VAO_OT_load_visual(bpy.types.Operator):
             return False
         runtime = context.scene.vao_runtime
         identifier = runtime.selected_realization_id or runtime.selected_asset_id
-        if session.outcome.contract_line in {"0.3.2", "0.4.0", "0.5.0"}:
+        if session.outcome.contract_line in MODERN_VERSIONS:
             acoustic = session.outcome.acoustic_scene
             realization = session.outcome.realizations.get(identifier)
             return bool(

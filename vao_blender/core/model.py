@@ -286,11 +286,12 @@ class ValidationOutcome:
             "reader": f"VAO-Blender/{__version__}",
             "contract": {
                 "line": self.contract_line,
+                **({"validationScope": "core-carrier"} if self.contract_line == "0.6.0" else {}),
                 "releaseBundleSHA256": self.contract_sha256
                 or ("76b55f33b09c94ad90aac79e8a599d007841e2c11288664f9c67987b4e68f328"),
                 "status": (
                     "published-standard"
-                    if self.contract_line == "0.4.0"
+                    if self.contract_line in {"0.4.0", "0.6.0"}
                     else (
                         "commit-pinned-standard-candidate"
                         if self.contract_line == "0.5.0"

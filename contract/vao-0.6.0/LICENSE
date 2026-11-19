@@ -1,0 +1,11 @@
+# Licensing
+
+This repository licenses its components separately:
+
+- `CC-BY-4.0` for documentation, JSON Schemas, JSON-LD/RDF/SHACL semantic artifacts, examples/fixtures, release metadata, and the OKF knowledge bundle.
+- `Apache-2.0` for reference software, tests, and automation.
+- `CC0-1.0` for the original synthetic MMIC fixture data under `Fixtures/MMIC/`; embedded reference code and dependency declarations retain `Apache-2.0`.
+
+The complete license texts are in `LICENSES/CC-BY-4.0.txt`, `LICENSES/Apache-2.0.txt` and `LICENSES/CC0-1.0.txt`. The authoritative path mapping is recorded in `REUSE.toml`. Where a file carries an SPDX header, that header takes precedence for the file.
+
+Copyright 2026 Dominik Ukolov and contributors.

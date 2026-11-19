@@ -19,10 +19,12 @@ from .contract import (
     RELEASE_BUNDLE_03_SHA256,
     RELEASE_BUNDLE_04_SHA256,
     RELEASE_BUNDLE_05_SHA256,
+    RELEASE_BUNDLE_06_SHA256,
     ContractIntegrityError,
     reference_validator_03,
     reference_validator_04,
     reference_validator_05,
+    reference_validator_06,
 )
 from .diagnostics import Diagnostic, Severity, Stage, ordered
 from .graph import build_graph
@@ -45,7 +47,13 @@ CONTRACT_SHA256 = "76b55f33b09c94ad90aac79e8a599d007841e2c11288664f9c67987b4e68f
 CHUNK_SIZE = 4 * 1024 * 1024
 VAO03_CARRIER_PATH = "META-INF/vao-carrier.json"
 VAO03_MAX_CARRIER_BYTES = 16 * 1024 * 1024
-MODERN_VERSIONS = {"0.3.2", "0.4.0", "0.5.0"}
+MODERN_REFERENCE_VALIDATORS = {
+    "0.4.0": (reference_validator_04, RELEASE_BUNDLE_04_SHA256),
+    "0.5.0": (reference_validator_05, RELEASE_BUNDLE_05_SHA256),
+    "0.6.0": (reference_validator_06, RELEASE_BUNDLE_06_SHA256),
+}
+MODERN_VERSIONS = frozenset({"0.3.2", *MODERN_REFERENCE_VALIDATORS})
+MMIC_PROFILE_BASE = "https://w3id.org/modavis/vao/profile/mmic/"
 
 
 @dataclass(frozen=True, slots=True)
@@ -340,6 +348,10 @@ def _has_errors(diagnostics: Iterable[Diagnostic]) -> bool:
     return any(item.severity == Severity.ERROR for item in diagnostics)
 
 
+def _modern_diagnostic_prefix(version: str) -> str:
+    return "VAO" + "".join(version.split(".")[:2])
+
+
 def _check_version_entries(
     entries: dict[str, zipfile.ZipInfo],
     version: str,
@@ -355,7 +367,7 @@ def _check_version_entries(
         return
     if version not in MODERN_VERSIONS:
         return
-    prefix = {"0.3.2": "VAO03", "0.4.0": "VAO04", "0.5.0": "VAO05"}[version]
+    prefix = _modern_diagnostic_prefix(version)
     descriptor = entries.get(VAO03_CARRIER_PATH)
     if descriptor is None:
         raise PackageInvalid(
@@ -839,6 +851,20 @@ def _capabilities_modern(
             results.append(
                 CapabilityResult(capability, False, "capability is not implemented by VAO-Blender")
             )
+    if manifest.get("formatVersion") == "0.6.0":
+        mmic_profiles = {
+            identifier
+            for identifier in (*manifest.get("conformsTo", []), *manifest.get("extensions", {}))
+            if identifier.startswith(MMIC_PROFILE_BASE)
+        }
+        results.extend(
+            CapabilityResult(
+                identifier,
+                False,
+                "MMIC records are inspectable; domain validation and execution are unavailable",
+            )
+            for identifier in sorted(mmic_profiles)
+        )
     return tuple(results)
 
 
@@ -856,14 +882,9 @@ def _validate_modern_reference(
     version: str,
 ) -> ValidationOutcome:
     """Validate a pinned modern schema, carrier closure, chunks, and fixity."""
-    if version == "0.5.0":
-        prefix = "VAO05"
-        contract_sha = RELEASE_BUNDLE_05_SHA256
-        reference = reference_validator_05()
-    else:
-        prefix = "VAO04"
-        contract_sha = RELEASE_BUNDLE_04_SHA256
-        reference = reference_validator_04()
+    prefix = _modern_diagnostic_prefix(version)
+    validator, contract_sha = MODERN_REFERENCE_VALIDATORS[version]
+    reference = validator()
     diagnostics: list[Diagnostic] = []
     verified: dict[str, VerificationRecord] = {}
     verified_bytes = 0
@@ -1128,34 +1149,27 @@ def validate_package(
                     progress,
                     verify_payload,
                 )
-            if version == "0.4.0":
-                return _validate_modern_reference(
-                    source,
-                    zf,
-                    entries,
-                    manifest_bytes,
-                    manifest,
-                    manifest_sha,
-                    archive_sha,
-                    token,
-                    progress,
-                    verify_payload,
-                    "0.4.0",
-                )
-            if version == "0.5.0":
-                return _validate_modern_reference(
-                    source,
-                    zf,
-                    entries,
-                    manifest_bytes,
-                    manifest,
-                    manifest_sha,
-                    archive_sha,
-                    token,
-                    progress,
-                    verify_payload,
-                    "0.5.0",
-                )
+            if version in MODERN_REFERENCE_VALIDATORS:
+                try:
+                    return _validate_modern_reference(
+                        source,
+                        zf,
+                        entries,
+                        manifest_bytes,
+                        manifest,
+                        manifest_sha,
+                        archive_sha,
+                        token,
+                        progress,
+                        verify_payload,
+                        version,
+                    )
+                except (AttributeError, KeyError, TypeError, ValueError) as exc:
+                    prefix = _modern_diagnostic_prefix(version)
+                    raise PackageInvalid(
+                        f"{prefix}-CNT-007",
+                        "manifest or carrier fields do not match their declared types",
+                    ) from exc
             if version != "0.2.2":
                 diagnostics.append(
                     Diagnostic(
@@ -1164,7 +1178,7 @@ def validate_package(
                         stage=Stage.SCHEMA,
                         message=(
                             f"unsupported VAO formatVersion {version!r}; VAO-Blender supports "
-                            "only the exact pinned 0.2.2, 0.3.2, 0.4.0, and 0.5.0 contracts"
+                            "the exact pinned 0.2.2, 0.3.2, 0.4.0, 0.5.0, and 0.6.0 contracts"
                         ),
                         pointer="/formatVersion",
                     )

@@ -14,12 +14,10 @@ carrier and payload, presents the package as inspectable research data, and can
 materialize a supported 3D realization. It works offline and treats every VAO as
 untrusted input.
 
-The current extension candidate is 0.4.0-rc.2, targeting the 0.4.0 release line.
-It implements the published [VAO Standard 0.4.0](https://github.com/modavis-project/vao-standard/releases/tag/v0.4.0),
-adds exact support for the 0.5.0 candidate at commit
-`d17b3f188fdf7fadd01ba025383e4feca8def935`, and keeps isolated compatibility
-readers for VAO 0.3.2 and 0.2.2. The 0.5.0 line is explicitly a pinned candidate,
-not a claim that 0.5.0 has been published.
+This checkout adds [VAO 0.6.0](https://github.com/modavis-project/vao-standard/releases/tag/v0.6.0)
+Core and carrier validation against the signed release. The 0.4.0 and historical
+0.5.0 candidate readers keep their existing pins. See the compatibility table
+for earlier formats.
 
 ## What it does
 
@@ -48,6 +46,7 @@ rejected instead of being passed to a similar reader.
 
 | VAO format | Status | Available behavior |
 | --- | --- | --- |
+| 0.6.0 | Published standard | Core and carrier validation, metadata inspection, and supported embedded GLB import. MMIC records remain inspectable as data. |
 | 0.5.0 | Commit-pinned standard candidate | Strict carrier validation, paged metadata inspection, and exact embedded visual-realization import |
 | 0.4.0 | Published standard | Strict carrier validation, paged metadata inspection, and exact embedded visual-realization import |
 | 0.3.2 | Historical editor draft | Pinned compatibility validation, visual-acoustic inspection, and exact embedded visual-realization import |
@@ -111,7 +110,7 @@ available.
 
 - [Installation and updates](docs/INSTALLATION.md)
 - [Compatibility](docs/COMPATIBILITY.md)
-- [VAO 0.4.0/0.5.0 conformance](docs/CONFORMANCE.md)
+- [VAO conformance](docs/CONFORMANCE.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Security model](docs/SECURITY_AND_TRUST.md) and [security reporting](SECURITY.md)
 - [Privacy and local data](docs/PRIVACY.md)

@@ -26,6 +26,12 @@ contracts solely for compatibility with existing packages. Their exact hashes
 and available provenance records are kept beside the files. They are not claimed
 as published VAO standards.
 
+The unmodified reader and normative files in `contract/vao-0.6.0/` come
+from [VAO Standard v0.6.0](https://github.com/modavis-project/vao-standard/releases/tag/v0.6.0),
+commit `9d477213eab90defa75bef0f44e0d292a83e68d9`. Reference tools are
+Apache-2.0 and specifications are CC BY 4.0. The synthetic MMIC test carrier
+has CC0 data with Apache-2.0 code and lock-file exceptions as declared in its manifest.
+
 ## Bundled Python wheels
 
 The extension bundles unmodified wheels from PyPI. Exact files and SHA-256 values

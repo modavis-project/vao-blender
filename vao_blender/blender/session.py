@@ -13,6 +13,7 @@ from uuid import uuid4
 
 import bpy
 
+from ..core.archive import MODERN_VERSIONS
 from ..core.cache import AssetCache
 from ..core.diagnostics import Diagnostic, Severity, Stage
 from ..core.model import OutcomeState, ValidationOutcome
@@ -121,7 +122,7 @@ class Session:
                 "media is unavailable until validation is complete, the exact source is "
                 "attached, and any rights limitation is acknowledged"
             )
-        if self.outcome.contract_line in {"0.3.2", "0.4.0", "0.5.0"}:
+        if self.outcome.contract_line in MODERN_VERSIONS:
             raise RuntimeError(
                 f"VAO {self.outcome.contract_line} program-audio and acoustic execution are not "
                 "implemented; validated records remain inspectable and supported visual geometry "
